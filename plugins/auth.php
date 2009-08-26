@@ -24,23 +24,3 @@ if (authenticate($username, $password, $params)) {
 } else {
   $user_access = USER_FORBIDDEN;
 }
-
-function create_teacher_record($id, $fname, $lname, $email) {
-  $dbHandle->exec('DROP TABLE IF EXISTS teachers');
-  $dbHandle->exec('DROP TABLE IF EXISTS appointments');
-
-  $sqlCreateTable = 'CREATE TABLE teachers(id INTEGER, fname CHAR(30), lname CHAR(30), email CHAR(200))';
-  $dbHandle->exec($sqlCreateTable);
-
-  $stmt = $dbHandle->prepare('INSERT INTO teachers (id, fname, lname, email) VALUES (:id, :fname, :lname, :email)');
-  $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-  $stmt->bindParam(':fname', $fname, PDO::PARAM_STR);
-  $stmt->bindParam(':lname', $lname, PDO::PARAM_STR);
-  $stmt->bindParam(':email', $email, PDO::PARAM_STR);
-  $stmt->execute();
-  
-  $sqlCreateTable = 'CREATE TABLE appointments(id INTEGER PRIMARY KEY AUTOINCREMENT, student CHAR(50), teacher INTEGER, time INTEGER)';
-  $dbHandle->exec($sqlCreateTable);
-  
-  touch('db_installed');
-}
