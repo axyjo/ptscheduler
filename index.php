@@ -1,21 +1,12 @@
 <?php
 
-require_once('authentication.php');
-require_once('template.php');
-$template = new Template;
-$admins = array();
-$admins['AkshayJoshi'] = true;
+require('config.php');
+require($base_path.'/plugins/auth.php');
+require($base_path.'/plugins/db.php');
+require($base_path.'/plugins/template.php');
+$template = new Template();
 
-$date_boundaries = array();
-$date_boundaries['start'] = '2009-03-19';
-$date_boundaries['end'] = '2009-03-19';
-
-$time_boundaries = array();
-$time_boundaries['start'] = (8*60*60);
-$time_boundaries['end'] = (16*60*60) + (30*60);
-$time_increments = (10*60);
-
-if (!authenticate($user,$pass)) {
+if ($user_access = USER_FORBIDDEN) {
   // Bad or no username/password.
   // Send HTTP 401 error to make the
   // browser prompt the user.
@@ -35,7 +26,6 @@ if (!authenticate($user,$pass)) {
 
 } else {  
   require_once('database.php');
-
   $date_boundaries['start'] = explode('-',$date_boundaries['start']);
   $date_boundaries['end'] = explode('-',$date_boundaries['end']);
 
@@ -83,8 +73,6 @@ ui-icon-alert"> </span>
 			  </div>';
     }
   }
-  
-  //http://www.litewebsite.com/?c=49 
   function render_student_home() {
     global $ldap_return;
     global $template;

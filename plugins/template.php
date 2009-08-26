@@ -54,7 +54,7 @@ class Template {
   private function render_footer() {
     $return = '</div>
       </div>
-      <small>&copy; 2009 Akshay Joshi</small>
+      <small>&copy; 2009 <a href="http://akshayjoshi.com">Akshay Joshi</a></small>
       </div>
       </body>
       </html>';
