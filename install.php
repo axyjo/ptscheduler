@@ -1,13 +1,14 @@
 <?php
 
-function create_user_record($id, $uid, $fname, $lname, $email) {
+function create_user_record($id, $uid, $fname, $lname, $email, $status) {
   global $dbHandle;
-  $stmt = $dbHandle->prepare('INSERT INTO users (id, uid, fname, lname, email) VALUES (:id, :uid, :fname, :lname, :email)');
+  $stmt = $dbHandle->prepare('INSERT INTO users (id, uid, fname, lname, email, status) VALUES (:id, :uid, :fname, :lname, :email, :status)');
   $stmt->bindParam(':id', $id, PDO::PARAM_INT);
   $stmt->bindParam(':uid', $uid, PDO::PARAM_STR);
   $stmt->bindParam(':fname', $fname, PDO::PARAM_STR);
   $stmt->bindParam(':lname', $lname, PDO::PARAM_STR);
   $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+  $stmt->bindParam(':status', $status, PDO::PARAM_INT);
   $stmt->execute();
 }
 
@@ -36,7 +37,7 @@ $return .= '<li>Committing transaction</li>';
 //$dbHandle->exec('BEGIN TRANSACTION');
 $return .= '<li>Starting a new transaction.</li>';
 
-$sqlCreateTable = 'CREATE TABLE users(id INTEGER, uid CHAR(50), fname CHAR(30), lname CHAR(30), email CHAR(200))';
+$sqlCreateTable = 'CREATE TABLE users(id INTEGER, uid CHAR(50), fname CHAR(30), lname CHAR(30), email CHAR(200), status INTEGER)';
 $dbHandle->exec($sqlCreateTable);
 $return .= '<li>Created table <code>users</code>.</li>';
 
@@ -46,7 +47,12 @@ $return .= '<li>Created table <code>appointments</code>.</li>';
 
 $users = user_list($params);
 foreach($users as $id => $user) {
-  create_user_record($id, $user['uid'], $user['fname'], $user['lname'], $user['email']);
+  //deny by default
+  $status = USER_FORBIDDEN;
+  if ($user['fname'] == 'Family') $status = USER_PARENT;
+  if (isset($teachers[$user['uid']])) $status = USER_TEACHER;
+  if (isset($admins[$user['uid']])) $status = USER_ADMIN;
+  create_user_record($id, $user['uid'], $user['fname'], $user['lname'], $user['email'], $status);
   $return .= '<li>Created user #'.$id.' - '.$user['fname'].' '.$user['lname'].' ('.$user['uid'].' '.$user['email'].')';
 }
 
