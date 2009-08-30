@@ -13,7 +13,7 @@ $method = key($auth);
 $params = $auth[$method];
 require_once($method.'.auth.php');
 
-if (authenticate($username, $password, $params)) {
+if ($username && $password && authenticate($username, $password, $params)) {
   if (isset($admins[$username])) {
     $user_access = USER_ADMIN;
   } elseif (isset($teachers[$username])) {
