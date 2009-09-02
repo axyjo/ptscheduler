@@ -59,6 +59,9 @@ foreach($users as $id => $user) {
 //$dbHandle->exec('COMMIT');
 $return .= '<li>Committing transaction</li>';
 
+create_user_record(-1, '_break', 'Scheduled', 'Break', 'a@example.com', USER_PARENT)
+$return .= '<li>Created break user</li>';
+
 $return .= '</ul>';
 $template->set_content($return);
 $template->render();
