@@ -4,6 +4,7 @@ require('config.php');
 require($base_path.'/plugins/auth.php');
 require($base_path.'/plugins/db.php');
 require($base_path.'/plugins/template.php');
+require($base_path.'/plugins/time.php');
 $template = new Template();
 
 if ($user_access == USER_FORBIDDEN) {
@@ -15,10 +16,7 @@ if ($user_access == USER_FORBIDDEN) {
   // Display message if user cancels dialog
   include($base_path.'/views/forbidden.php');
 } else {  
-  $date_boundaries['start'] = explode('-',$date_boundaries['start']);
-  $date_boundaries['end'] = explode('-',$date_boundaries['end']);
-  
-  $sqlGet = 'SELECT * FROM users WHERE id != 0 ORDER BY `lname` ASC ';
+  $sqlGet = 'SELECT * FROM users WHERE status = '.USER_TEACHER.' ORDER BY `lname` ASC ';
   $result_res = $dbHandle->query($sqlGet);
   $tempteachers = array();
   $teachers = array();

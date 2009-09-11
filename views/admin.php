@@ -1,39 +1,55 @@
 <?php
 $template->set_title('Viewing Admin Page');
-    global $dbHandle;
-    global $teachers;
-    global $ldap_return;
-    global $template;
-    $return .= "<h3>All Current Appointments:</h3>";
-    $appointmentsGet = 'SELECT * FROM appointments INNER JOIN teachers ON appointments.teacher=teachers.id ORDER BY `teacher`,`time` ASC';
-    $result_res = $dbHandle->query($appointmentsGet);
-    $appointments = array();
-    while ($result = $result_res->fetch()) $appointments[] = $result;
-  //  var_dump($appointments);
-    $newappointments = array();
-    foreach($appointments as $appointment) {
-      $time = date('l, F j Y', $appointment['time']);
-      $name = $appointment['fname'] . ' ' . $appointment['lname'];
-      $newappointments[$time][$name][] = $appointment;
-    }
-    //var_dump($appointments);
-    $hadAppointments = false;
-    foreach($newappointments as $date => $dateval) {
-      $hadAppointments = true;
-      $return .= '<h4>'.$date.'</h4>';
-      foreach($dateval as $teacher => $appointment) {
-//		var_dump($appointment);
-        $return .= '<h5>'.$teacher.'</h5>';
-        foreach ($appointment as $thing) {
-//        $return .= date('r', $appointment[0]['time']).' - '.$appointment[0]['student'].' with '.$appointment[0]['fname'].' '.$appointment[0]['lname'];
-        $return .= date('r', $thing['time']).' - '.$thing['student'].' with '.$thing['fname'].' '.$thing['lname'];
-                $return .= '<br />';
+$return = '<br />';
+$times = return_times();
+$tabular_times = array();
+for($i = 0; $i < count($times); $i++) {
+  if (!isset($tabular_times[date('i', $times[$i])])) {
+    $tabular_times[date('i', $times[$i])] = array();
+  }
+  $tabular_times[date('i', $times[$i])][date('H', $times[$i])] = $times[$i];
+
+}
+
+foreach($teachers as $teacher) {
+  $sql = 'SELECT * FROM appointments WHERE teacher='.$teacher['id'];
+  $app_res = $dbHandle->query($sql);
+  $appointments = array();
+  while ($result = $app_res->fetch()) $appointments[] = $result;
+  $newappointments = array();
+	foreach($appointments as $appointment) {
+ 		$newappointments[$appointment['time']][] = $appointment;
+  }
+
+  $return .= '<span class="teacher grid_2"><strong>';
+  $return .= $teacher['fname'].' '.$teacher['lname'];
+  $return .= '</strong></span><br />';
+  foreach($tabular_times as $minute => $hours_array) {
+    $i = 0;
+    foreach($hours_array as $hour => $epoch) {
+      if(isset($newappointments[$epoch])) {
+        if($newappointments[$epoch]['student'] == 0) {
+          //break
+          $class = 'yellow';
+          $title = 'Break';
+        } else {
+          //real appointment
+          $class = 'red';
+          $title = 'Appointment with: '.$newappointments[$epoch]['student'];
         }
-
+      } else {
+        //free
+        $class = 'green';
+        $title = 'Available';
       }
-      
-    }
 
-    if ($hadAppointments == false) $return .= 'Sorry, you currently do not have any appointments in the future.<br /><br />';
-    $template->set_content($return);
-  
+      $time = $hour.$minute;
+
+      $return .= '<span title="'.$title.'" class="'.$class.' times grid_1 push_2" id="t_'.$teacher['id'].'-'.$epoch.'">'.$time.'</span>';
+    }
+    $return .= '<br />';
+  }
+}
+
+//if ($hadAppointments == false) $return .= 'Sorry, you currently do not have any appointments in the future.<br /><br />';
+$template->set_content($return);

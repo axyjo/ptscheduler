@@ -213,3 +213,15 @@ div.spacer {
 	background-color: #8FC73E;
 	height: 1em;
 }
+
+.red {
+  color: #800000;
+}
+
+.yellow {
+  color: #DAA520;
+}
+
+.green {
+  color: #228B22;
+}
