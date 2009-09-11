@@ -22,18 +22,6 @@ p {
 	text-indent: 10px;
 }
 
-div#siteLock {
-	background: transparent;
-	margin: -5px auto 5px auto;
-	text-align: center;
-	padding: 0;
-	float: none;
-	position: relative;
-	height: auto;
-	width: 592px;
-	clear: all;
-}
-
 div {
 	padding: 10px;
 	margin: 0 auto 0 auto;
@@ -42,15 +30,6 @@ div {
 	font-family: arial, times, Times, georgia, serif;
 	font-size: 12px;
 	height: auto;
-	background-color:#E5EBDF;
-}
-
-div#block {
-	width: auto;
-	font-size: 12px;
-	height: auto;
-	position: relative;
-/*	float: left;*/
 	background-color:#E5EBDF;
 }
 
@@ -222,4 +201,15 @@ img.right {
 img:hover, img.over {
 	background-color:#C6EDB6;
 	border: 1px solid #7ACC59;
+}
+
+/* Data */
+.teacher {
+  font-size:120%;
+  float: left;
+}
+
+div.spacer {
+	background-color: #8FC73E;
+	height: 1em;
 }
