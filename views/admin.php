@@ -20,7 +20,7 @@ foreach($teachers as $teacher) {
 	foreach($appointments as $appointment) {
  		$newappointments[$appointment['time']][] = $appointment;
   }
-
+	$return .= '<div id="'.$teacher['id'].'">';
   $return .= '<span class="teacher grid_2"><strong>';
   $return .= $teacher['fname'].' '.$teacher['lname'];
   $return .= '</strong></span><br />';
@@ -49,7 +49,8 @@ foreach($teachers as $teacher) {
     }
     $return .= '<br />';
   }
+  $return .= '</div>';
 }
 
-//if ($hadAppointments == false) $return .= 'Sorry, you currently do not have any appointments in the future.<br /><br />';
+$return .= '<div id="dialog"></div>';
 $template->set_content($return);

@@ -34,9 +34,8 @@ class Template {
       <meta http-equiv="content-type" content="text/html; charset=utf-8" />
       <link rel="stylesheet" type="text/css" media="screen" href="style.css"  />
       <link rel="stylesheet" type="text/css" media="screen" href="grid.css"  />
-      <link rel="stylesheet" type="text/css" media="screen" href="ui/ui.all.css"  />
-      <script type="text/javascript" src="ui/jquery-1.3.js"></script>
-      <script type="text/javascript" src="ui/jquery.ui.all.js"></script>
+      <script type="text/javascript" src="jquery.js"></script>
+      <script type="text/javascript" src="jquery-ui.js"></script>
       '.$this->scripts.'
       </head>
       <body>
