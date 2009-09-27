@@ -1,30 +1,24 @@
 <?php
-$template->set_title('Viewing Student Page');
-global $ldap_return;
-global $teachers;
-global $strMsg;
-global $time_boundaries;
-global $time_increments;
-global $date_boundaries;
+$template->set_title('Viewing Parent Page');
 $return = '<h3>Your Current Appointments:</h3>';
 $time = time() - 300;
-$getQuery = 'SELECT * FROM appointments WHERE `student`= "'.$ldap_return['cn'][0].'" ORDER BY `time` ASC';
+$getQuery = 'SELECT * FROM appointments WHERE `student`= "'.$username.'" ORDER BY `time` ASC';
 //var_dump($ldap_return);
 //$getQuery = 'SELECT * FROM appointments WHERE `student`="'.$ldap_return['cn'][0].'"';
 $result_res = $dbHandle->query($getQuery);
 $appointments = array();
-    
+
 while ($result = $result_res->fetch()) $appointments[] = $result;
 $hadAppointments = false;
 foreach($appointments as $appointment) {
   $hadAppointments = true;
-  $return .= '<br />';			
+  $return .= '<br />';
   $return .= date('r', $appointment['time']).' - '.$teachers[$appointment['teacher']]['fname'].' '.$teachers[$appointment['teacher']]['lname'];
 }
-    
+
 if ($hadAppointments == false) $return .= 'Sorry, you currently do not have any appointments in the future.<br /><br />';
 $return .= '<form action="'.$_SERVER['PHP_SELF'].'" method="post">';
-if(!empty($strMsg)) $return .= $strMsg;      
+if(!empty($strMsg)) $return .= $strMsg;
 $return .= 'Create a new appointment with ';
 $return .= '<select name="teacher">';
 foreach ($teachers as $teacher) {
