@@ -1,10 +1,90 @@
 <?php
 $template->set_title('Viewing Parent Page');
-$return = '<h3>Your Current Appointments:</h3>';
+$template->add_script('
+$(".times").click(function () {
+  var vars = this.id.split("-");
+  var t_id = vars[0];
+  var time = vars[1];
+  $("#throbber_"+t_id).ajaxStart(function() {
+    $(this).show();
+  });
+  $("#throbber_"+t_id).ajaxComplete(function() {
+    $(this).hide();
+    $(this).unbind("ajaxStart ajaxComplete");
+  });
+  
+  if($(this).is(".green")) {
+    $.get("form.php", {teacher: t_id, time: time}, function(data, textStatus) {
+      $("#dialog").html(data);
+      $("#dialog").dialog({
+        modal: true,
+        title: "Adding new appointment",
+        width: 450,
+        show: "fade",
+        hide: "slide",
+        close: function(ev, ui) {
+          $("#textos").append("<div id=\"dialog\" />");
+        }
+      });
+      $(".app_form").ajaxForm({success: function(resp, stat) {
+        $("#throbber_"+t_id).hide()
+        if (resp=="success") {
+          $(".errors").html("<div class=\"green\">Your appointment has been successfully added!</div>")
+          sleep(1250);
+          window.location.reload();
+        } else {
+          $(".errors").html(resp);
+        }
+      }, beforeSubmit: function() {
+        $("#throbber_"+t_id).show();
+      }});
+    });
+  } else {
+    $.get("delete.php", {teacher: t_id, time: time}, function(data, textStatus) {
+      if(data != "403") {
+        $("#dialog").html(data);
+        $("#dialog").dialog({
+          modal: true,
+          title: "Deleting appointment",
+          width: 450,
+          show: "fade",
+          hide: "slide",
+          close: function(ev, ui) {
+            $("#textos").append("<div id=\"dialog\" />");
+          }
+        });
+        $(".app_form").ajaxForm({success: function(resp, stat) {
+          $("#throbber_"+t_id).hide()
+          if (resp=="success") {
+            $(".errors").html("<div class=\"green\">Your appointment has been successfully deleted!</div>")
+            sleep(1250);
+            window.location.reload();
+          } else {
+            $(".errors").html(resp);
+          }
+        }, beforeSubmit: function() {
+          $("#throbber_"+t_id).show();
+        }});
+      };
+    });
+  };
+});');
+
+$return = '<h3>Instructions:</h3>';
+
+$return .= '<ul><li>Please use Firefox or Internet Explorer as your browser (with Javascript enabled). Safari does not work well.</li>
+<li>To schedule, please click next to the teachers name. Then, click on the time that you would like to schedule. Finally, click the Submit button.</li>
+<li>If <strong>an error occurs</strong> while scheduling your appointment, please refresh the page.</li>
+<li>If you need to delete a previously scheduled appointment, click the appointment again and select the Delete button.</li>
+<li>If you need to schedule for another student, you will need to completely close your browser and login again. We hope to have a logoff button in the future.</li>
+
+<li>Locations of where teachers will be for conferences be emailed to you. They will also be available on the window of the HS office.</li>
+
+<li>Please email <a href="mailto:jesse-remington@acs.sch.ae">jesse-remington@acs.sch.ae</a> if you have problems.</li> </ul>';
+
+$return .= '<h3>Your Current Appointments (<a href="javascript:window.print()">Print</a>):</h3>';
 $time = time() - 300;
-$getQuery = 'SELECT * FROM appointments WHERE `student`= "'.$username.'" ORDER BY `time` ASC';
-//var_dump($ldap_return);
-//$getQuery = 'SELECT * FROM appointments WHERE `student`="'.$ldap_return['cn'][0].'"';
+$getQuery = 'SELECT * FROM appointments WHERE `parent`= "'.$user_id.'" ORDER BY `time` ASC';
 $result_res = $dbHandle->query($getQuery);
 $appointments = array();
 
@@ -13,44 +93,63 @@ $hadAppointments = false;
 foreach($appointments as $appointment) {
   $hadAppointments = true;
   $return .= '<br />';
-  $return .= date('r', $appointment['time']).' - '.$teachers[$appointment['teacher']]['fname'].' '.$teachers[$appointment['teacher']]['lname'];
+  $return .= date($date_format, $appointment['time']).' - '.$teachers[$appointment['teacher']]['fname'].' '.$teachers[$appointment['teacher']]['lname'];
 }
 
 if ($hadAppointments == false) $return .= 'Sorry, you currently do not have any appointments in the future.<br /><br />';
-$return .= '<form action="'.$_SERVER['PHP_SELF'].'" method="post">';
-if(!empty($strMsg)) $return .= $strMsg;
-$return .= 'Create a new appointment with ';
-$return .= '<select name="teacher">';
-foreach ($teachers as $teacher) {
-  $return .= '<option value="'.$teacher['id'].'">';
-  $return .= $teacher['fname'].' '.$teacher['lname'];
+
+$times = return_times();
+$tabular_times = array();
+for($i = 0; $i < count($times); $i++) {
+  if (!isset($tabular_times[date('i', $times[$i])])) {
+    $tabular_times[date('i', $times[$i])] = array();
+  }
+  $tabular_times[date('i', $times[$i])][date('H', $times[$i])] = $times[$i];
+
 }
-$return .= '</select>';
-$return .= '<br />';
-//update the following with js date picker thing.
-$return .= ' on <input type="textbox" id="date" name="date" />';
-$return .= '<br />';
-//update the following with js time picker thing.
-$return .= ' at <input type="textbox" id="time" name="time" /><div id="slider"></div>';
-$js_func = '
-function slideValue() {
-  var val = $("#slider").slider("value");
-  var end = '.$time_boundaries['end'].';
-  var start = '.$time_boundaries['start'].';
-  var increment = '.$time_increments.';
 
-  var final = start+(increment*val);
-  var minutes = (final/60) % 60 + "";
-  var hours = ((final/60)-minutes)/60 + "";
-  if(minutes.length == 1) minutes = "0"+minutes;
-  if(hours.length == 1) hours = "0"+hours;
+$return .= '<div id="time_grid">';
 
-  var finalStr = hours + ":" + minutes;
-  $("#time").val(finalStr);
-}';
-$template->add_script($js_func);
-//The minus 1 in floor exists because the time boundary is the absolute end time, and not the time the last appointment can start at.
-$template->add_script('$(function(){$(\'#slider\').slider({value:0, min:0, max:'.floor((($time_boundaries['end'] - $time_boundaries['start'])/$time_increments)-1).', slide: slideValue, change: slideValue});});');
-$return .= '<input type="submit" name="submit" id="submit" value="Do it!" />';
-$return .= '</form>';
+foreach($teachers as $teacher) {
+  $sql = 'SELECT * FROM appointments WHERE teacher='.$teacher['id'];
+  $app_res = $dbHandle->query($sql);
+  $appointments = array();
+  while ($result = $app_res->fetch()) $appointments[] = $result;
+  $newappointments = array();
+	foreach($appointments as $appointment) {
+ 		$newappointments[$appointment['time']][] = $appointment;
+  }
+	$return .= '<div id="'.$teacher['id'].'">';
+  $return .= '<span class="teacher grid_6"><strong>';
+  $return .= $teacher['fname'].' '.$teacher['lname'];
+  $return .= '</strong > - <a id="link_'.$teacher['id'].'">Click here to view available appointments</a></span><br />
+    <div class="grid_2 throbber" id="throbber_'.$teacher['id'].'">
+    <img src="throbber.gif" />
+    </div><div style="display:none;" id="times_'.$teacher['id'].'">';
+  $script = '$("#link_'.$teacher['id'].'").click(function() { $("#times_'.$teacher['id'].'").toggle(); });';
+  $template->add_script($script);
+  foreach($tabular_times as $minute => $hours_array) {
+    $i = 0;
+    foreach($hours_array as $hour => $epoch) {
+      if(isset($newappointments[$epoch])) {
+          $class = 'red';
+          $title = 'Unavailable';
+      } else {
+        //free
+        $class = 'green';
+        $title = 'Available';
+      }
+
+      $time = $hour.$minute;
+
+      $return .= '<span title="'.$title.'" class="'.$class.' times grid_1 push_2" id="'.$teacher['id'].'-'.$epoch.'">'.$time.'</span>';
+    }
+    $return .= '<br />';
+  }
+  $return .= '</div></div>';
+}
+
+$return .= '</div>';
+
+$return .= '<div id="dialog"></div>';
 $template->set_content($return);

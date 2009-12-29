@@ -202,6 +202,10 @@ img:hover, img.over {
 	border: 1px solid #7ACC59;
 }
 
+#appointment {
+  line-spacing: 1.5;
+}
+
 /* Data */
 .teacher {
   font-size:120%;
@@ -223,4 +227,41 @@ div.spacer {
 
 .green {
   color: #228B22;
+}
+
+.purple {
+  color: #FF00FF;
+}
+
+.throbber {
+  float: left;
+  margin-right: -100%;
+  display: none;
+  width:32px;
+}
+
+/* Dialog */
+.ui-dialog {
+	background-color: #fff;
+	border: 2px solid #000;
+}
+
+.ui-widget-overlay {
+	background: #aaaaaa;
+	opacity: .30;
+	filter:Alpha(Opacity=30);
+}
+
+.ui-dialog-title {
+	float:left;
+	font-variant: small-caps;
+	font-style: oblique;
+}
+
+.ui-dialog-titlebar-close {
+	float:right;
+}
+
+.ui-dialog-content {
+	clear:both;
 }

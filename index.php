@@ -1,8 +1,8 @@
 <?php
 
 require('config.php');
-require($base_path.'/plugins/auth.php');
 require($base_path.'/plugins/db.php');
+require($base_path.'/plugins/auth.php');
 require($base_path.'/plugins/template.php');
 require($base_path.'/plugins/time.php');
 $template = new Template();

@@ -1,59 +1,77 @@
 <?php
 
-$admins['AkshayJoshi'] = TRUE;
-$teachers['CarolynClark'] = TRUE;
-$teachers['LaneGraciano'] = TRUE;
-$teachers['PaulSelf'] = TRUE;
-$teachers['MarkSommers'] = TRUE;
-$teachers['JocelynWiley'] = TRUE;
-$teachers['Robert-Allan'] = TRUE;
-$teachers['Laura-Berntson'] = TRUE;
-$teachers['OckiFernandes'] = TRUE;
-$teachers['DanielNicolson'] = TRUE;
-$teachers['JoannaRoberts'] = TRUE;
-$teachers['SamWerlinich'] = TRUE;
-$teachers['DrewDavis'] = TRUE;
-$teachers['SharonKerr'] = TRUE;
-$teachers['AmitKhanna'] = TRUE;
-$teachers['ShawnKrause'] = TRUE;
-$teachers['LindseyShoemaker'] = TRUE;
-$teachers['David-Berntson'] = TRUE;
-$teachers['Paul-Brocklehurst'] = TRUE;
-$teachers['Glenda-Frank'] = TRUE;
-$teachers['Deborah-Jones'] = TRUE;
-$teachers['HanaBayyari'] = TRUE;
-$teachers['RajaBayyari'] = TRUE;
-$teachers['HanyaMikati'] = TRUE;
-$teachers['AliMirzo'] = TRUE;
-$teachers['RimaSarakbi'] = TRUE;
-$teachers['LaylaBlock'] = TRUE;
-$teachers['Valdir-Chagas'] = TRUE;
+$admins['akshayjoshi'] = TRUE;
+$admins['sandyrobinson'] = TRUE;
+$admins['michelleremington'] = TRUE;
+$admins['geoffreymorgan'] = TRUE;
+$admins['ptscheduler'] = TRUE;
+$admins['luisbolanos'] = TRUE;
+$admins['susannjeroudi'] = TRUE;
+$teachers['carolynclark'] = TRUE;
+$teachers['lanegraciano'] = TRUE;
+$teachers['paulself'] = TRUE;
+$teachers['marksommers'] = TRUE;
+$teachers['jocelynwiley'] = TRUE;
+$teachers['robert-allan'] = TRUE;
+$teachers['laura-berntson'] = TRUE;
+$teachers['ockifernandes'] = TRUE;
+$teachers['danielnicolson'] = TRUE;
+$teachers['joannaroberts'] = TRUE;
+$teachers['samwerlinich'] = TRUE;
+$teachers['drewdavis'] = TRUE;
+$teachers['sharonkerr'] = TRUE;
+$teachers['amitkhanna'] = TRUE;
+$teachers['shawnkrause'] = TRUE;
+$teachers['lindseyshoemaker'] = TRUE;
+$teachers['david-berntson'] = TRUE;
+$teachers['paul-brocklehurst'] = TRUE;
+$teachers['glenda-frank'] = TRUE;
+$teachers['deborah-jones'] = TRUE;
+$teachers['hanabayyari'] = TRUE;
+$teachers['rajabayyari'] = TRUE;
+$teachers['hanyamikati'] = TRUE;
+$teachers['alimirzo'] = TRUE;
+$teachers['rimasarakbi'] = TRUE;
+$teachers['laylablock'] = TRUE;
+$teachers['valdir-chagas'] = TRUE;
 $teachers['manalyoussef'] = TRUE;
-$teachers['ClaudiaGonzalez'] = TRUE;
-$teachers['ValiaJimenez'] = TRUE;
+$teachers['claudiagonzalez'] = TRUE;
+$teachers['valiajimenez'] = TRUE;
 $teachers['mercedesavila'] = TRUE;
-$teachers['Loretta-Mazzuchin'] = TRUE;
-$teachers['LyndaHalabi'] = TRUE;
-$teachers['MarthaJensen'] = TRUE;
-$teachers['John-Salminen'] = TRUE;
-$teachers['NicolasPavlos'] = TRUE;
-$teachers['DonnaAllen'] = TRUE;
-$teachers['JasmineBrawn'] = TRUE;
-$teachers['HajeHalabi'] = TRUE;
-$teachers['Bradley-Newell'] = TRUE;
-$teachers['AnneRussell'] = TRUE;
-$teachers['Mark-Hopkin'] = TRUE;
+$teachers['loretta-mazzuchin'] = TRUE;
+$teachers['lyndahalabi'] = TRUE;
+$teachers['marthajensen'] = TRUE;
+$teachers['john-salminen'] = TRUE;
+$teachers['nicolaspavlos'] = TRUE;
+$teachers['donnaallen'] = TRUE;
+$teachers['jasminebrawn'] = TRUE;
+$teachers['hajehalabi'] = TRUE;
+$teachers['bradley-newell'] = TRUE;
+$teachers['annerussell'] = TRUE;
+$teachers['mark-hopkin'] = TRUE;
 $teachers['abhayanivarthi'] = TRUE;
-$teachers['JesseRemington'] = TRUE;
+$teachers['jesseremington'] = TRUE;
+$teachers['bismaloan'] = TRUE;
+$teachers['suzannedelap'] = TRUE;
+$teachers['jack-murphy'] = TRUE;
 
 function authenticate($user, $pass, $params) {
+  global $dbHandle;
   $ds = ldap_connect($params['host'], $params['port']);
   ldap_set_option($ds, LDAP_OPT_PROTOCOL_VERSION, 3);
-  if (ldap_bind($ds, 'uid='.$user.',cn=users,'.$params['basedn'], $pass)) {
+  if (@ldap_bind($ds, 'uid='.$user.',cn=users,'.$params['basedn'], $pass)) {
     return TRUE;
   } else {
     return FALSE;
   }
+}
+
+function get_user_id($username) {
+  global $dbHandle;
+  $sql = 'SELECT * FROM users WHERE uid = "'.strtolower($username).'"';
+  $res = $dbHandle->query($sql);
+  $arr = $res->fetch();
+  return (int)$arr['id'];
 }
 
 function user_list($params) {
@@ -80,7 +98,14 @@ function user_list($params) {
 }
 
 function check_list($e) {
-  if (isset($e['uid'][0]) && isset($e['givenname'][0]) && isset($e['sn'][0])) return TRUE;
+  if (isset($e['uid'][0]) && isset($e['givenname'][0]) && isset($e['sn'][0])) {
+    if ($e['givenname'][0] == 'Family') {
+      if(count(preg_grep("/^[A-Za-z]+1[0-3][a-z]?$/", array($e['uid'][0]))) == 0) {
+        return FALSE;
+      }
+    }
+    return TRUE;
+  }
   return FALSE;
 }
 
