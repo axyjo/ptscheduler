@@ -1,4 +1,10 @@
 <?php
+
+define('USER_FORBIDDEN', -1);
+define('USER_PARENT', 0);
+define('USER_TEACHER', 1);
+define('USER_ADMIN', 2);
+
 session_start();
 $username = @$_SERVER['PHP_AUTH_USER'];
 $password = @$_SERVER['PHP_AUTH_PW'];

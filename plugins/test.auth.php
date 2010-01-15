@@ -1,9 +1,5 @@
 <?php
 
-$admins['admin'] = TRUE;
-$teachers['teacher1'] = TRUE;
-$teachers['teacher2'] = TRUE;
-
 function authenticate($user, $pass, $params) {
   if($user && $pass && $user == $pass) {
     return TRUE;

@@ -1,11 +1,30 @@
 <?php
 
+$admins = array();
+$teachers = array();
+$date_boundaries = array();
+$time_boundaries = array();
+$auth = array();
+
+header("Expires: Mon, 26 Jul 1997 05:00:00 GMT" );
+header("Last-Modified: " . gmdate( "D, d M Y H:i:s" ) . "GMT" );
+header("Cache-Control: no-cache, must-revalidate" );
+header("Pragma: no-cache" );
+
 require('config.php');
 require($base_path.'/plugins/db.php');
 require($base_path.'/plugins/auth.php');
 require($base_path.'/plugins/template.php');
 require($base_path.'/plugins/time.php');
 $template = new Template();
+
+
+if ($debug) {
+  error_reporting(E_ALL);
+  if (!ini_get('display_errors')) {
+    ini_set('display_errors', 1);
+  }
+}
 
 if ($user_access == USER_FORBIDDEN) {
   // Bad or no username/password.
