@@ -1,3 +1,26 @@
-Recently migrated to GitHub. Please wait until I update the program and the README file.
+This program is licensed under the terms of the MIT License. Please see the
+LICENSE file for the terms.
 
-This program is now licensed under the terms of the MIT License. Please see the LICENSE file for the terms.
+==Requirements==
+
+PTScheduler requires the following components:
+ - a web server (Apache 2.0 or similar)
+ - PHP 5 (5.2 or greater)
+ - a database engine compatible with your PDO installation and its extensions
+
+==Installation==
+
+ 1. Copy the default.config.php to config.php.
+
+ 2. Change the appropriate settings within the config.php file. These include
+the security hash, list of teachers and administrators and the date and time
+constraints.
+
+ 3. Ensure that a database engine is installed and edit the $db_url variable
+in config.php to match your settings.
+ 
+ 4. Change permissions on the config.php file so that all write privileges have
+been revoked.
+
+If using an sqlite database, please ensure that the webserver user has write
+privileges on the database file.
