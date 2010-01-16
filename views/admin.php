@@ -67,7 +67,9 @@ $(".times").click(function () {
   };
 });');
 
-$return = '<h3>Instructions:</h3>';
+$return = '<br /><strong>Currently logged in as: </strong>'. $_SESSION['username'].'. Click <a href="index.php?logout">here</a> to logout.';
+
+$return .= '<h3>Instructions:</h3>';
 
 $return .= '<ul><li>Please use Firefox or Internet Explorer as your browser (with Javascript enabled). Safari does not work well.</li>
 <li>To schedule, please click next to the teachers name. Then, click on the time that you would like to schedule. Finally, click the Submit button.</li>

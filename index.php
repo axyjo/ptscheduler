@@ -7,10 +7,6 @@ $time_boundaries = array();
 $auth = array();
 $base_path = __DIR__;
 
-header("Expires: Mon, 26 Jul 1997 05:00:00 GMT" );
-header("Last-Modified: " . gmdate( "D, d M Y H:i:s" ) . "GMT" );
-header("Cache-Control: no-cache, must-revalidate" );
-header("Pragma: no-cache" );
 
 // Check for the template engine before attemptig to load it.
 if(!file_exists($base_path.'/plugins/template.php')) {
@@ -23,8 +19,9 @@ if(!file_exists($base_path.'/plugins/template.php')) {
 
 // Check for all of the other required files without reverting to PHP's default
 // white page of errors.
-$required_files = array($base_path.'/config.php', $base_path.'/plugins/db.php', $base_path.'/plugins/auth.php', $base_path.'/plugins/time.php');
+$required_files = array($base_path.'/config.php', $base_path.'/plugins/session.php', $base_path.'/plugins/db.php', $base_path.'/plugins/time.php');
 $return = '<div class="error"><ul>';
+$stop = FALSE;
 foreach($required_files as $file) {
   if(!file_exists($file)) {
     $stop = TRUE;
@@ -56,14 +53,17 @@ if ($debug) {
 }
 
 if ($user_access == USER_FORBIDDEN) {
-  // Bad or no username/password.
-  // Send HTTP 401 error to make the
-  // browser prompt the user.
-  header("WWW-Authenticate: Basic");
-  header("HTTP/1.0 401 Unauthorized");
-  // Display message if user cancels dialog
-  include($base_path.'/views/forbidden.php');
+  // Send a login screen to unauthenticated users.
+  if(isset($_GET['login'])) {
+    include($base_path.'/plugins/auth.php');
+  } else {
+    include($base_path.'/views/login.php');
+  }
 } else {  
+  if(isset($_GET['logout'])) {
+    include($base_path.'/plugins/auth.php');
+  }
+  
   $sqlGet = 'SELECT * FROM users WHERE status = '.USER_TEACHER.' ORDER BY `lname` ASC ';
   $result_res = $dbHandle->query($sqlGet);
   $tempteachers = array();
@@ -87,7 +87,5 @@ if ($user_access == USER_FORBIDDEN) {
     //forbidden
     include($base_path.'/views/forbidden.php');
   }
-
 }
-
 $template->render();

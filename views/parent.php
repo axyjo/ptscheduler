@@ -70,13 +70,14 @@ $(".times").click(function () {
   };
 });');
 
-$return = '<h3>Instructions:</h3>';
+$return = '<br /><strong>Currently logged in as: </strong>'. $_SESSION['username'].'. Click <a href="index.php?logout">here</a> to logout.';
+
+$return .= '<h3>Instructions:</h3>';
 
 $return .= '<ul><li>Please use Firefox or Internet Explorer as your browser (with Javascript enabled). Safari does not work well.</li>
 <li>To schedule, please click next to the teachers name. Then, click on the time that you would like to schedule. Finally, click the Submit button.</li>
 <li>If <strong>an error occurs</strong> while scheduling your appointment, please refresh the page.</li>
 <li>If you need to delete a previously scheduled appointment, click the appointment again and select the Delete button.</li>
-<li>If you need to schedule for another student, you will need to completely close your browser and login again. We hope to have a logoff button in the future.</li>
 
 <li>Locations of where teachers will be for conferences be emailed to you. They will also be available on the window of the HS office.</li>
 

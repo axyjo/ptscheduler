@@ -18,6 +18,7 @@ function create_user_record($id, $uid, $fname, $lname, $email, $status, $desc = 
 
 require('config.php');
 require($base_path.'/plugins/db.php');
+require($base_path.'/plugins/session.php');
 $method = key($auth);
 $params = $auth[$method];
 require_once($base_path.'/plugins/'.$method.'.auth.php');
@@ -30,8 +31,9 @@ $return .= '<li>Deleted table <code>users</code>.</li>';
 
 $res = $dbHandle->query('SELECT name FROM sqlite_master WHERE type="table" AND name="appointments"');
 if ($res->fetch()) {
-  $dbHandle->exec('ALTER TABLE appointments RENAME TO appointments'.time());
-  $return .= '<li>Renamed existing table <code>appointments</code>.</li>';
+  $new_name = 'appointments_'.time();
+  $dbHandle->exec('ALTER TABLE appointments RENAME TO '.$new_name);
+  $return .= '<li>Renamed existing table <code>appointments</code> to <code>'.$new_name.'</code>.</li>';
 }
 
 $sqlCreateTable = 'CREATE TABLE users(id INTEGER, uid CHAR(50), fname CHAR(30), lname CHAR(30), email CHAR(200), status INTEGER, desc CHAR(200))';
@@ -51,7 +53,7 @@ foreach($users as $id => $user) {
   if (isset($admins[strtolower($user['uid'])])) $status = USER_ADMIN;
   create_user_record($id, $user['uid'], $user['fname'], $user['lname'], $user['email'], $status, $user['desc']);
   $return .= '<li>Created user #';
-  $return .= $id.' - '.$user['fname'].' '.$user['lname'].' ('.$user['uid'].' '.$user['email'].') - '.$user['desc'];
+  $return .= $id.' - '.$user['fname'].' '.$user['lname'].' ('.$user['uid'].' '.$user['email'].') - '.$user['desc'] . $status;
   $return .= '</li>';
 }
 
