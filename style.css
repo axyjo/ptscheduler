@@ -265,3 +265,12 @@ div.spacer {
 .ui-dialog-content {
 	clear:both;
 }
+
+/* Errors */
+
+div.error {
+  color: #fff;
+  background: #e63;
+  border-color: #d52;
+  margin-top: 10px;
+}

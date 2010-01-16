@@ -10,8 +10,8 @@ $teachers['teacher1'] = TRUE;
 $teachers['teacher2'] = TRUE;
 
 // Change this to the absolute path to the directory of this installation. Do
-// not modify if you aren't sure what this setting does.
-$base_path = dirname($_SERVER['SCRIPT_FILENAME']);
+// not modify or uncomment if you aren't sure what this setting does.
+// $base_path = __DIR__;
 
 // Change the key of the following array to the date of the conferences in
 // YYYY-MM-DD format. See the commented example below.
