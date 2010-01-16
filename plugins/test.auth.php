@@ -2,7 +2,9 @@
 
 function authenticate($user, $pass, $params) {
   if($user && $pass && $user == $pass) {
-    return TRUE;
+    if($user == 'admin' && $user == 'teacher1' && $user == 'teacher2' && $user == 'parent1' && $user == 'parent2') {
+      return TRUE;
+    }
   }
   return FALSE;
 }
