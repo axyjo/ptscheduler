@@ -27,21 +27,21 @@ $return = '<ul>';
 
 $dbHandle->exec('DROP TABLE IF EXISTS users');
 $return .= '<li>Deleted table <code>users</code>.</li>';
-/*
+
 $res = $dbHandle->query('SELECT name FROM sqlite_master WHERE type="table" AND name="appointments"');
 if ($res->fetch()) {
   $dbHandle->exec('ALTER TABLE appointments RENAME TO appointments'.time());
   $return .= '<li>Renamed existing table <code>appointments</code>.</li>';
 }
-*/
+
 $sqlCreateTable = 'CREATE TABLE users(id INTEGER, uid CHAR(50), fname CHAR(30), lname CHAR(30), email CHAR(200), status INTEGER, desc CHAR(200))';
 $dbHandle->exec($sqlCreateTable);
 $return .= '<li>Created table <code>users</code>.</li>';
-/*
+
 $sqlCreateTable = 'CREATE TABLE appointments(id INTEGER PRIMARY KEY AUTOINCREMENT, parent INTEGER, teacher INTEGER, time INTEGER)';
 $dbHandle->exec($sqlCreateTable);
 $return .= '<li>Created table <code>appointments</code>.</li>';
-*/
+
 $users = user_list($params);
 foreach($users as $id => $user) {
   //deny by default
