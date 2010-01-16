@@ -43,10 +43,15 @@ if($stop) {
   }
 }
 
+// Enable verbose error reporting if set.
 if ($debug) {
   error_reporting(E_ALL);
   if (!ini_get('display_errors')) {
     ini_set('display_errors', 1);
+  }
+} else {
+  if (ini_get('display_errors')) {
+    ini_set('display_errors', 0);
   }
 }
 
