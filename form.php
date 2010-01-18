@@ -1,6 +1,7 @@
 <?php
 
-$base_path = __DIR__;
+// This isn't __DIR__ because it isn't supported in PHP < 5.3.0
+$base_path = dirname(__FILE__);
 require('config.php');
 require($base_path.'/plugins/db.php');
 require($base_path.'/plugins/auth.php');
