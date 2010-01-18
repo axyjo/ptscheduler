@@ -41,8 +41,8 @@ $teacher_restrict = 0;
 $date_format = 'D, j M Y H:i';
 
 // This is the offset in timezone from UTC in seconds. Use negative values for
-// negative differences. Defaults to no offset (UTC timezone).
-$timezone_offset = 0;
+// places west of the UTC timezone. Defaults to server default.
+$timezone_offset = (int)date('Z');
 
 // Choose your preferred authentication method. Also, change the settings for
 // your chosen method if there are any. The documentation for that method
