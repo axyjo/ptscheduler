@@ -5,8 +5,8 @@ $teachers = array();
 $date_boundaries = array();
 $time_boundaries = array();
 $auth = array();
-$base_path = __DIR__;
-
+// This isn't __DIR__ because it isn't supported in PHP < 5.3.0
+$base_path = dirname(__FILE__);
 
 // Check for the template engine before attemptig to load it.
 if(!file_exists($base_path.'/plugins/template.php')) {
