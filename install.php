@@ -1,5 +1,8 @@
 <?php
 
+error_reporting(E_ALL);
+ini_set('display_errors', 'On');
+
 function create_user_record($id, $uid, $fname, $lname, $email, $status, $desc = null) {
   global $dbHandle;
   $stmt = $dbHandle->prepare('INSERT INTO users (id, uid, fname, lname, email, status, desc) VALUES (:id, :uid, :fname, :lname, :email, :status, :desc)');
@@ -16,14 +19,9 @@ function create_user_record($id, $uid, $fname, $lname, $email, $status, $desc = 
 
 //if(FALSE) {
 
-require('config.php');
-require($base_path.'/plugins/db.php');
-require($base_path.'/plugins/session.php');
 $method = key($auth);
 $params = $auth[$method];
-require_once($base_path.'/plugins/'.$method.'.auth.php');
-require($base_path.'/plugins/template.php');
-$template = new Template();
+include($base_path.'/plugins/'.$method.'.auth.php');
 $return = '<ul>';
 
 $dbHandle->exec('DROP TABLE IF EXISTS users');
@@ -48,9 +46,10 @@ $users = user_list($params);
 foreach($users as $id => $user) {
   //deny by default
   $status = USER_FORBIDDEN;
-  if ($user['fname'] == 'Family') $status = USER_PARENT;
-  if (isset($teachers[strtolower($user['uid'])])) $status = USER_TEACHER;
-  if (isset($admins[strtolower($user['uid'])])) $status = USER_ADMIN;
+  if(!isset($user['desc'])) $user['desc'] = '';
+  if($user['fname'] == 'Family') $status = USER_PARENT;
+  if(isset($teachers[strtolower($user['uid'])])) $status = USER_TEACHER;
+  if(isset($admins[strtolower($user['uid'])])) $status = USER_ADMIN;
   create_user_record($id, $user['uid'], $user['fname'], $user['lname'], $user['email'], $status, $user['desc']);
   $return .= '<li>Created user #';
   $return .= $id.' - '.$user['fname'].' '.$user['lname'].' ('.$user['uid'].' '.$user['email'].') - '.$user['desc'] . $status;
@@ -68,3 +67,4 @@ $dbHandle = NULL;
 } else {
   header('Location: http://acs.sch.ae/ptscheduler');
 }*/
+

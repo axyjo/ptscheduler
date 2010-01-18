@@ -52,7 +52,15 @@ if ($debug) {
   }
 }
 
-if ($user_access == USER_FORBIDDEN) {
+try {
+  $check = 'SELECT 1 FROM users';
+  $check_res = $dbHandle->query($check);
+} catch (PDOException $e) {
+  include($base_path.'/install.php');
+  exit();
+}
+
+if($user_access == USER_FORBIDDEN) {
   // Send a login screen to unauthenticated users.
   if(isset($_GET['login'])) {
     include($base_path.'/plugins/auth.php');
