@@ -34,9 +34,9 @@ $(document).ready(function () {
           }
         });
         $(".app_form").ajaxForm({success: function(resp, stat) {
-          $("#throbber_"+t_id).hide()
+          $("#throbber_"+t_id).hide();
           if (resp=="success") {
-            $(".errors").html("<div class=\"green\">Your appointment has been successfully added!</div>")
+            $(".errors").html("<div class=\"green\">Your appointment has been successfully added!</div>");
             sleep(1250);
             window.location.reload();
           } else {
@@ -61,9 +61,9 @@ $(document).ready(function () {
             }
           });
           $(".app_form").ajaxForm({success: function(resp, stat) {
-            $("#throbber_"+t_id).hide()
+            $("#throbber_"+t_id).hide();
             if (resp=="success") {
-              $(".errors").html("<div class=\"green\">Your appointment has been successfully deleted!</div>")
+              $(".errors").html("<div class=\"green\">Your appointment has been successfully deleted!</div>");
               sleep(1250);
               window.location.reload();
             } else {
@@ -72,8 +72,8 @@ $(document).ready(function () {
           }, beforeSubmit: function() {
             $("#throbber_"+t_id).show();
           }});
-        };
+        }
       });
-    };
+    }
   });
 });
