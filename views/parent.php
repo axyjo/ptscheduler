@@ -15,36 +15,30 @@ $return .= '<ul><li>Please use Firefox or Internet Explorer as your browser (wit
 <li>Please email <a href="mailto:jesse-remington@acs.sch.ae">jesse-remington@acs.sch.ae</a> if you have problems.</li> </ul>';
 
 $return .= '<h3>Your Current Appointments (<a href="javascript:window.print()">Print</a>):</h3>';
+
+getAllTeachers();
+
 $time = time() - 300;
 $getQuery = 'SELECT * FROM appointments WHERE `parent`= "'.$user_id.'" ORDER BY `time` ASC';
 $result_res = $dbHandle->query($getQuery);
 $appointments = array();
-
-getAllTeachers();
-
-while ($result = $result_res->fetch()) $appointments[] = $result;
-$hadAppointments = false;
-foreach($appointments as $appointment) {
-  $hadAppointments = true;
+while($result = $result_res->fetch()) {
+  $appointments[] = $result;
   $return .= '<br />';
-  $return .= date($date_format, $appointment['time']).' - '.$teachers[$appointment['teacher']]['fname'].' '.$teachers[$appointment['teacher']]['lname'];
+  $return .= date($date_format, $result['time']).' - '.$teachers[$result['teacher']]['fname'].' '.$teachers[$result['teacher']]['lname'];
 }
-
-if ($hadAppointments == false) $return .= 'Sorry, you currently do not have any appointments in the future.<br /><br />';
+if (count($appointments) == 0) $return .= 'Sorry, you do not have any appointments in the future.<br /><br />';
 
 $tabular_times = tabularTimes();
 
 $return .= '<div id="time_grid">';
 
-getAllTeachers();
 foreach($teachers as $teacher) {
   $sql = 'SELECT * FROM appointments WHERE teacher='.$teacher['id'];
   $app_res = $dbHandle->query($sql);
   $appointments = array();
-  while ($result = $app_res->fetch()) $appointments[] = $result;
-  $newappointments = array();
-	foreach($appointments as $appointment) {
- 		$newappointments[$appointment['time']][] = $appointment;
+  while($result = $app_res->fetch()) {
+    $appointments[$result['time']] = $result;
   }
 	$return .= '<div id="'.$teacher['id'].'">';
   $return .= '<span class="teacher grid_6"><strong>';
@@ -57,7 +51,7 @@ foreach($teachers as $teacher) {
   foreach($tabular_times as $minute => $hours_array) {
     $i = 0;
     foreach($hours_array as $hour => $epoch) {
-      if(isset($newappointments[$epoch])) {
+      if(isset($appointments[$epoch])) {
           $class = 'red';
           $title = 'Unavailable';
       } else {

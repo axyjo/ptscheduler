@@ -19,10 +19,8 @@ foreach($teachers as $teacher) {
   $sql = 'SELECT * FROM appointments WHERE teacher='.$teacher['id'];
   $app_res = $dbHandle->query($sql);
   $appointments = array();
-  while ($result = $app_res->fetch()) $appointments[] = $result;
-  $newappointments = array();
-	foreach($appointments as $appointment) {
- 		$newappointments[$appointment['time']][] = $appointment;
+  while($result = $app_res->fetch()) {
+    $appointments[$result['time']] = $result;
   }
 	$return .= '<div id="'.$teacher['id'].'">';
   $return .= '<span class="teacher grid_2"><strong>';
@@ -32,15 +30,15 @@ foreach($teachers as $teacher) {
   foreach($tabular_times as $minute => $hours_array) {
     $i = 0;
     foreach($hours_array as $hour => $epoch) {
-      if(isset($newappointments[$epoch])) {
-        if($newappointments[$epoch][0]['parent'] == -1) {
+      if(isset($appointments[$epoch])) {
+        if($appointments[$epoch]['parent'] == -1) {
           //break
           $class = 'yellow';
           $title = 'Break';
         } else {
-          if (!is_null($newappointments[$epoch][0]['parent']) && $newappointments[$epoch][0]['parent'] != 0) {//real appointment
+          if (!is_null($appointments[$epoch]['parent']) && $appointments[$epoch]['parent'] != 0) {//real appointment
             $class = 'red';
-            $sql = 'SELECT * FROM users WHERE id='.$newappointments[$epoch][0]['parent'].';';
+            $sql = 'SELECT * FROM users WHERE id='.$appointments[$epoch]['parent'].';';
             $parent_res = $dbHandle->query($sql);
             $parent = $parent_res->fetch();
             $title = 'Appointment with: '.$parent['fname'].' '.$parent['lname'].' ('.$parent['desc'].')';

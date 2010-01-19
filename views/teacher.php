@@ -13,33 +13,34 @@ $return .= '<ul><li>Please use Firefox or Internet Explorer as your browser (wit
 <li>Please email <a href="mailto:jesse-remington@acs.sch.ae">jesse-remington@acs.sch.ae</a> if you have problems.</li> </ul>';
 
 $return .= '<h3>Your Current Appointments (<a href="javascript:window.print()">Print</a>):</h3>';
+
+getAllParents();
+
 $time = time() - 300;
 $getQuery = 'SELECT * FROM appointments WHERE `teacher`= "'.$user_id.'" ORDER BY `time` ASC';
 $result_res = $dbHandle->query($getQuery);
 $appointments = array();
-
-while ($result = $result_res->fetch()) $appointments[] = $result;
-$hadAppointments = false;
-foreach($appointments as $appointment) {
-  $hadAppointments = true;
-  $parent_id = $appointment['parent'];
-  $res = $dbHandle->query('SELECT * FROM users WHERE id='.$parent_id);
-  $parent = $res->fetch();
-  if($appointment['parent'] != -1)  $return .= date($date_format, $appointment['time']).' - Family of '.$parent['desc'].' '.$parent['lname'];
+while($result = $result_res->fetch()) {
+  $appointments[] = $result;
+  // The <br> tag is on the outside of the check so that even breaks are
+  // counted into calculation. This is so that teachers can visually see break
+  // periods in their printed schedule.
   $return .= '<br />';
+  if($result['parent'] != -1)  {
+    $parent = $parents[$result['parent']];
+    $return .= date($date_format, $result['time']).' - Family of '.$parent['desc'].' '.$parent['lname'];
+  }
 }
+if (count($appointments) == 0) $return .= 'Sorry, you do not have any appointments in the future.<br /><br />';
 
-if ($hadAppointments == false) $return .= 'Sorry, you currently do not have any appointments in the future.<br /><br />';
 
 $tabular_times = tabularTimes();
 
 $sql = 'SELECT * FROM appointments WHERE teacher='.$user_id;
 $app_res = $dbHandle->query($sql);
 $appointments = array();
-while ($result = $app_res->fetch()) $appointments[] = $result;
-$newappointments = array();
-foreach($appointments as $appointment) {
-  $newappointments[$appointment['time']][] = $appointment;
+while($result = $app_res->fetch()) {
+  $appointments[$result['time']] = $result;
 }
 
 getAllTeachers();
@@ -53,15 +54,15 @@ $return .= '</strong > - <a id="link_'.$user_id.'">Click here to view available 
 foreach($tabular_times as $minute => $hours_array) {
   $i = 0;
   foreach($hours_array as $hour => $epoch) {
-    if(isset($newappointments[$epoch])) {
-      if($newappointments[$epoch][0]['parent'] == -1) {
+    if(isset($appointments[$epoch])) {
+      if($appointments[$epoch]['parent'] == -1) {
         //break
         $class = 'yellow';
         $title = 'Break';
       } else {
         //real appointment
         $class = 'red';
-        $sql = 'SELECT * FROM users WHERE id='.$newappointments[$epoch][0]['parent'];
+        $sql = 'SELECT * FROM users WHERE id='.$appointments[$epoch]['parent'];
         $parent_res = $dbHandle->query($sql);
         $parent = $parent_res->fetch();
         $title = 'Appointment with: '.$parent['fname'].' '.$parent['lname'].' ('.$parent['desc'].')';
