@@ -14,8 +14,6 @@ $return .= '<ul><li>Please use Firefox or Internet Explorer as your browser (wit
 
 $return .= '<h3>Your Current Appointments (<a href="javascript:window.print()">Print</a>):</h3>';
 
-getAllParents();
-
 $time = time() - 300;
 $getQuery = 'SELECT * FROM appointments WHERE `teacher`= "'.$user_id.'" ORDER BY `time` ASC';
 $result_res = $dbHandle->query($getQuery);
@@ -27,7 +25,7 @@ while($result = $result_res->fetch()) {
   // periods in their printed schedule.
   $return .= '<br />';
   if($result['parent'] != -1)  {
-    $parent = $parents[$result['parent']];
+    $parent = getUser($result['parent']);
     $return .= date($date_format, $result['time']).' - Family of '.$parent['desc'].' '.$parent['lname'];
   }
 }
@@ -43,8 +41,7 @@ while($result = $app_res->fetch()) {
   $appointments[$result['time']] = $result;
 }
 
-getAllTeachers();
-$teacher = $teachers[$user_id];
+$teacher = getUser($user_id);
 $return .= '<div id="'.$user_id.'">';
 $return .= '<span class="teacher grid_6"><strong>';
 $return .= $teacher['fname'].' '.$teacher['lname'];

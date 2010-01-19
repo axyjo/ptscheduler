@@ -47,3 +47,26 @@ function getAllParents() {
     }
   }
 }
+
+function getUser($uid) {
+  // Check the teachers array first, then parents and finally, admins.
+  getAllTeachers();
+  global $teachers;
+  if(!isset($teachers[$uid])) {
+    getAllParents();
+    global $parents;
+    if(!isset($parents[$uid])) {
+      getAllAdmins();
+      global $admins;
+      if(!isset($admins[$uid])) {
+        return FALSE;
+      } else {
+        return $admins[$uid];
+      }
+    } else {
+      return $parents[$uid];
+    }
+  } else {
+    return $teachers[$uid];
+  }
+}
