@@ -9,7 +9,7 @@ function authenticate($user, $pass, $params) {
   return FALSE;
 }
 
-function user_list($params) {
+function userList($params) {
   $list = array();
   $list[1] = array('uid' => 'admin', 'fname' => 'Admin', 'lname' => 'Istrator', 'email' => 'admin@localhost');
   $list[2] = array('uid' => 'teacher1', 'fname' => 'Teacher', 'lname' => 'One', 'email' => 't1@localhost');
@@ -19,7 +19,7 @@ function user_list($params) {
   return $list;
 }
 
-function get_user_id($username) {
+function getUserId($username) {
   if($username == 'admin') return 1;
   if($username == 'teacher1') return 2;
   if($username == 'teacher2') return 3;

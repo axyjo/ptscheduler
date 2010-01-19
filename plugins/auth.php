@@ -13,9 +13,9 @@ if(isset($_GET['login'])) {
     $_SESSION['username'] = $username;
     getAllAdmins();
     getAllTeachers();
-    if (isset($admins[get_user_id($username)])) {
+    if (isset($admins[getUserId($username)])) {
       $_SESSION['user_access'] = USER_ADMIN;
-    } elseif(isset($teachers[get_user_id($username)]) && $teacher_restrict < time()) {
+    } elseif(isset($teachers[getUserId($username)]) && $teacher_restrict < time()) {
       $_SESSION['user_access'] = USER_TEACHER;
     } else {
       if($parent_restrict < time()) {
@@ -36,7 +36,7 @@ if(isset($_GET['login'])) {
   header('Location: index.php');
   
   if($_SESSION['user_access'] != USER_FORBIDDEN) {
-    $_SESSION['user_id'] = get_user_id($username);
+    $_SESSION['user_id'] = getUserId($username);
   }
 } elseif(isset($_GET['logout'])) {
   session_destroy();

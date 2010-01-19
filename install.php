@@ -1,8 +1,5 @@
 <?php
 
-error_reporting(E_ALL);
-ini_set('display_errors', 'On');
-
 function create_user_record($id, $uid, $fname, $lname, $email, $status, $desc = null) {
   global $dbHandle;
   $stmt = $dbHandle->prepare('INSERT INTO users (id, uid, fname, lname, email, status, desc) VALUES (:id, :uid, :fname, :lname, :email, :status, :desc)');
@@ -16,8 +13,6 @@ function create_user_record($id, $uid, $fname, $lname, $email, $status, $desc = 
   $stmt->execute();
   $stmt->closeCursor();
 }
-
-//if(FALSE) {
 
 $method = key($auth);
 $params = $auth[$method];
@@ -42,7 +37,7 @@ $sqlCreateTable = 'CREATE TABLE appointments(id INTEGER PRIMARY KEY AUTOINCREMEN
 $dbHandle->exec($sqlCreateTable);
 $return .= '<li>Created table <code>appointments</code>.</li>';
 
-$users = user_list($params);
+$users = userList($params);
 foreach($users as $id => $user) {
   //deny by default
   $status = USER_FORBIDDEN;
@@ -63,8 +58,3 @@ $return .= '</ul>';
 $template->set_content($return);
 $template->render();
 $dbHandle = NULL;
-/*
-} else {
-  header('Location: http://acs.sch.ae/ptscheduler');
-}*/
-

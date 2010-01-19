@@ -11,7 +11,7 @@ function authenticate($user, $pass, $params) {
   }
 }
 
-function get_user_id($username) {
+function getUserId($username) {
   global $dbHandle;
   $sql = 'SELECT * FROM users WHERE uid = "'.strtolower($username).'"';
   $res = $dbHandle->query($sql);
@@ -19,7 +19,7 @@ function get_user_id($username) {
   return (int)$arr['id'];
 }
 
-function user_list($params) {
+function userList($params) {
   $ds = ldap_connect($params['host'], $params['port']);
   ldap_set_option($ds, LDAP_OPT_PROTOCOL_VERSION, 3);
 	$r = ldap_search($ds, $params['basedn'], 'uid=*');
@@ -27,9 +27,9 @@ function user_list($params) {
   $list = array();
 	foreach($result as $entity) {
 	  //validate user data
-	  if (check_list($entity)) {
+	  if (checkList($entity)) {
 	    //add processors here
-	    $entity['description'][0] = change_desc(@$entity['description'][0]);
+	    $entity['description'][0] = changeDesc(@$entity['description'][0]);
       //build
       $list[$entity['uidnumber'][0]] = array(
         'uid' => $entity['uid'][0],
@@ -42,7 +42,7 @@ function user_list($params) {
   return $list;
 }
 
-function check_list($e) {
+function checkList($e) {
   if (isset($e['uid'][0]) && isset($e['givenname'][0]) && isset($e['sn'][0])) {
     if ($e['givenname'][0] == 'Family') {
       if(count(preg_grep("/^[A-Za-z]+1[0-3][a-z]?$/", array($e['uid'][0]))) == 0) {
@@ -54,7 +54,7 @@ function check_list($e) {
   return FALSE;
 }
 
-function change_desc($str = null) {
+function changeDesc($str = null) {
   //check for numeric or nulls or none
   if (is_null($str) || is_numeric($str) || $str == 'none') return null;
   //check for old style descs where a semicolon separator was used for more than one child
