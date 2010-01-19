@@ -49,7 +49,6 @@ $return .= '</strong > - <a id="link_'.$user_id.'">Click here to view available 
   <div class="grid_2 throbber" id="throbber_'.$user_id.'"></div>
   <div id="times_'.$user_id.'">';
 foreach($tabular_times as $minute => $hours_array) {
-  $i = 0;
   foreach($hours_array as $hour => $epoch) {
     if(isset($appointments[$epoch])) {
       if($appointments[$epoch]['parent'] == -1) {
@@ -59,9 +58,7 @@ foreach($tabular_times as $minute => $hours_array) {
       } else {
         //real appointment
         $class = 'red';
-        $sql = 'SELECT * FROM users WHERE id='.$appointments[$epoch]['parent'];
-        $parent_res = $dbHandle->query($sql);
-        $parent = $parent_res->fetch();
+        $parent = getUser($appointments[$epoch]['parent']);
         $title = 'Appointment with: '.$parent['fname'].' '.$parent['lname'].' ('.$parent['desc'].')';
       }
     } else {

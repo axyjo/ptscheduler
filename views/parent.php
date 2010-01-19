@@ -49,7 +49,6 @@ foreach($teachers as $teacher) {
   $script = '$("#link_'.$teacher['id'].'").click(function() { $("#times_'.$teacher['id'].'").toggle(); });';
   $template->add_script($script);
   foreach($tabular_times as $minute => $hours_array) {
-    $i = 0;
     foreach($hours_array as $hour => $epoch) {
       if(isset($appointments[$epoch])) {
           $class = 'red';

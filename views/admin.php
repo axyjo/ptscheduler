@@ -28,7 +28,6 @@ foreach($teachers as $teacher) {
   $return .= '</strong></span><br />
     <div class="grid_2 throbber" id="throbber_'.$teacher['id'].'"></div>';
   foreach($tabular_times as $minute => $hours_array) {
-    $i = 0;
     foreach($hours_array as $hour => $epoch) {
       if(isset($appointments[$epoch])) {
         if($appointments[$epoch]['parent'] == -1) {
@@ -38,9 +37,7 @@ foreach($teachers as $teacher) {
         } else {
           if (!is_null($appointments[$epoch]['parent']) && $appointments[$epoch]['parent'] != 0) {//real appointment
             $class = 'red';
-            $sql = 'SELECT * FROM users WHERE id='.$appointments[$epoch]['parent'].';';
-            $parent_res = $dbHandle->query($sql);
-            $parent = $parent_res->fetch();
+            $parent = getUser($appointments[$epoch]['parent']);
             $title = 'Appointment with: '.$parent['fname'].' '.$parent['lname'].' ('.$parent['desc'].')';
           } else {
           	$class = 'purple';

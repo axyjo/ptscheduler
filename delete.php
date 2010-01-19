@@ -29,13 +29,7 @@ if(isset($_POST['hash'])) {
   }
   
   if(!is_null($array['parent'])) {
-    $sql_query = 'SELECT * FROM users WHERE `id`= '.$array['parent'];
-    try {
-      $result = $dbHandle->query($sql_query);
-      $parent = $result->fetch();
-    } catch (Exception $e) {
-      $array = null;
-    }
+    $parent = getUser($array['parent']);
   } else {
     $parent = array('lname' => 'NULL', 'desc' => 'NULL');
   }
@@ -53,13 +47,9 @@ if(isset($_POST['hash'])) {
   echo '<br />';
 
   echo 'Teacher: ';
-  $sql = 'SELECT * FROM users WHERE id=:s LIMIT 1';
-  $stmt = $dbHandle->prepare($sql);
-  $stmt->bindParam(':s', $array['teacher']);
-  $stmt->execute();
-  $row = $stmt->fetch();
-  echo $row['fname'].' '.$row['lname'];
-  echo '<input id="teacher" type="hidden" name="teacher" value="'.$row['id'].'" />';
+  $teacher = getUser($array['teacher']);
+  echo $teacher['fname'].' '.$teacher['lname'];
+  echo '<input id="teacher" type="hidden" name="teacher" value="'.$teacher['id'].'" />';
   if(isset($parent['id'])) {
     echo '<input id="parent" type="hidden" name="parent" value="'.$parent['id'].'" />';
   }
