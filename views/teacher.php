@@ -121,9 +121,8 @@ $return .= '<div id="'.$user_id.'">';
 $return .= '<span class="teacher grid_6"><strong>';
 $return .= $teacher['fname'].' '.$teacher['lname'];
 $return .= '</strong > - <a id="link_'.$user_id.'">Click here to view available appointments</a></span><br />
-  <div class="grid_2 throbber" id="throbber_'.$user_id.'">
-  <img src="throbber.gif" />
-  </div><div id="times_'.$user_id.'">';
+  <div class="grid_2 throbber" id="throbber_'.$user_id.'"></div>
+  <div id="times_'.$user_id.'">';
 foreach($tabular_times as $minute => $hours_array) {
   $i = 0;
   foreach($hours_array as $hour => $epoch) {

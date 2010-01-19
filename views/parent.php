@@ -124,9 +124,8 @@ foreach($teachers as $teacher) {
   $return .= '<span class="teacher grid_6"><strong>';
   $return .= $teacher['fname'].' '.$teacher['lname'];
   $return .= '</strong > - <a id="link_'.$teacher['id'].'">Click here to view available appointments</a></span><br />
-    <div class="grid_2 throbber" id="throbber_'.$teacher['id'].'">
-    <img src="throbber.gif" />
-    </div><div style="display:none;" id="times_'.$teacher['id'].'">';
+    <div class="grid_2 throbber" id="throbber_'.$teacher['id'].'"></div>
+    <div style="display:none;" id="times_'.$teacher['id'].'">';
   $script = '$("#link_'.$teacher['id'].'").click(function() { $("#times_'.$teacher['id'].'").toggle(); });';
   $template->add_script($script);
   foreach($tabular_times as $minute => $hours_array) {

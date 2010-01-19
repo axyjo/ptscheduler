@@ -101,9 +101,7 @@ foreach($teachers as $teacher) {
   $return .= '<span class="teacher grid_2"><strong>';
   $return .= $teacher['fname'].' '.$teacher['lname'];
   $return .= '</strong></span><br />
-    <div class="grid_2 throbber" id="throbber_'.$teacher['id'].'">
-    <img src="throbber.gif" />
-    </div>';
+    <div class="grid_2 throbber" id="throbber_'.$teacher['id'].'"></div>';
   foreach($tabular_times as $minute => $hours_array) {
     $i = 0;
     foreach($hours_array as $hour => $epoch) {

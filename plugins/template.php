@@ -32,13 +32,13 @@ class Template {
       <head>
       <title>Meeting Scheduler | '.$this->title.'</title>
       <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-      <link rel="stylesheet" type="text/css" media="screen" href="grid.css"  />
-      <link rel="stylesheet" type="text/css" media="screen" href="style.css"  />
-      <link rel="stylesheet" type="text/css" media="print"  href="print.css" />
-      <script type="text/javascript" src="application.js"></script>
-      <script type="text/javascript" src="jquery.js"></script>
-      <script type="text/javascript" src="jquery-ui.js"></script>
-      <script type="text/javascript" src="jquery-form.js"></script>
+      <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/grid.css"  />
+      <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/application.css" />
+      <link rel="stylesheet" type="text/css" media="print"  href="stylesheets/print.css" />
+      <script type="text/javascript" src="scripts/application.js"></script>
+      <script type="text/javascript" src="scripts/jquery.js"></script>
+      <script type="text/javascript" src="scripts/jquery-ui.js"></script>
+      <script type="text/javascript" src="scripts/jquery-form.js"></script>
       '.$this->scripts.'
       </head>
       <body>
