@@ -72,6 +72,7 @@ if($user_access == USER_FORBIDDEN) {
     include($base_path.'/plugins/auth.php');
   } elseif(isset($_GET['form'])) {
     include($base_path.'/form.php');
+    exit;
   } elseif(isset($_GET['delete'])) {
     include($base_path.'/delete.php');
     exit;

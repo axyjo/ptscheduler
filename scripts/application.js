@@ -21,7 +21,7 @@ $(document).ready(function () {
     });
     
     if($(this).is(".green")) {
-      $.get("form.php", {teacher: t_id, time: time}, function(data, textStatus) {
+      $.get("index.php?form", {teacher: t_id, time: time}, function(data, textStatus) {
         $("#dialog").html(data);
         $("#dialog").dialog({
           modal: true,

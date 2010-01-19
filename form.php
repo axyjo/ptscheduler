@@ -1,14 +1,5 @@
 <?php
 
-// This isn't __DIR__ because it isn't supported in PHP < 5.3.0
-$base_path = dirname(__FILE__);
-require('config.php');
-require($base_path.'/plugins/db.php');
-require($base_path.'/plugins/auth.php');
-require($base_path.'/plugins/template.php');
-require($base_path.'/plugins/session.php');
-require($base_path.'/plugins/time.php');
-
 //date format Y-m-d or timestamp
 if(isset($_POST['hash'])) {
   //submit the form after checking hash
