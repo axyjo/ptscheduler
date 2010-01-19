@@ -32,15 +32,7 @@ foreach($appointments as $appointment) {
 
 if ($hadAppointments == false) $return .= 'Sorry, you currently do not have any appointments in the future.<br /><br />';
 
-$times = return_times();
-$tabular_times = array();
-for($i = 0; $i < count($times); $i++) {
-  if (!isset($tabular_times[date('i', $times[$i])])) {
-    $tabular_times[date('i', $times[$i])] = array();
-  }
-  $tabular_times[date('i', $times[$i])][date('H', $times[$i])] = $times[$i];
-
-}
+$tabular_times = tabularTimes();
 
 $return .= '<div id="time_grid">';
 

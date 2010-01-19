@@ -1,6 +1,6 @@
 <?php
 
-function return_times() {
+function returnTimes() {
   global $date_boundaries;
   global $time_boundaries;
   global $time_increments;
@@ -19,4 +19,16 @@ function return_times() {
   	}
   }
   return $times;
+}
+
+function tabularTimes() {
+  $times = returnTimes();
+  $return = array();
+  for($i = 0; $i < count($times); $i++) {
+    if (!isset($return[date('i', $times[$i])])) {
+      $return[date('i', $times[$i])] = array();
+    }
+    $return[date('i', $times[$i])][date('H', $times[$i])] = $times[$i];
+  }
+  return $return;
 }

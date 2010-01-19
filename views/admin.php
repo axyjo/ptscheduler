@@ -12,15 +12,7 @@ $return .= '<ul><li>Please use Firefox or Internet Explorer as your browser (wit
 <li>Please email <a href="mailto:jesse-remington@acs.sch.ae">jesse-remington@acs.sch.ae</a> if you have problems.</li> </ul>';
 
 $return .= '<br />';
-$times = return_times();
-$tabular_times = array();
-for($i = 0; $i < count($times); $i++) {
-  if (!isset($tabular_times[date('i', $times[$i])])) {
-    $tabular_times[date('i', $times[$i])] = array();
-  }
-  $tabular_times[date('i', $times[$i])][date('H', $times[$i])] = $times[$i];
-
-}
+$tabular_times = tabularTimes();
 
 getAllTeachers();
 foreach($teachers as $teacher) {
