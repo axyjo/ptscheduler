@@ -70,30 +70,35 @@ if($user_access == USER_FORBIDDEN) {
 } else {  
   if(isset($_GET['logout'])) {
     include($base_path.'/plugins/auth.php');
-  }
-  
-  $sqlGet = 'SELECT * FROM users WHERE status = '.USER_TEACHER.' ORDER BY `lname` ASC ';
-  $result_res = $dbHandle->query($sqlGet);
-  $tempteachers = array();
-  $teachers = array();
-  while ($result = $result_res->fetch()) $tempteachers[] = $result;
-  foreach ($tempteachers as $teacher) {
-    $teachers[$teacher['id']] = $teacher;
-  }
-  
-  //this is the home page
-  if ($user_access == USER_ADMIN) {
-    //admin
-    include($base_path.'/views/admin.php');
-  } elseif ($user_access == USER_TEACHER) {
-    //teacher
-    include($base_path.'/views/teacher.php');
-  } elseif ($user_access == USER_PARENT) {
-    //parent
-    include($base_path.'/views/parent.php');
+  } elseif(isset($_GET['form'])) {
+    include($base_path.'/form.php');
+  } elseif(isset($_GET['delete'])) {
+    include($base_path.'/delete.php');
+    exit;
   } else {
-    //forbidden
-    include($base_path.'/views/forbidden.php');
+    $sqlGet = 'SELECT * FROM users WHERE status = '.USER_TEACHER.' ORDER BY `lname` ASC ';
+    $result_res = $dbHandle->query($sqlGet);
+    $tempteachers = array();
+    $teachers = array();
+    while ($result = $result_res->fetch()) $tempteachers[] = $result;
+    foreach ($tempteachers as $teacher) {
+      $teachers[$teacher['id']] = $teacher;
+    }
+    
+    //this is the home page
+    if ($user_access == USER_ADMIN) {
+      //admin
+      include($base_path.'/views/admin.php');
+    } elseif ($user_access == USER_TEACHER) {
+      //teacher
+      include($base_path.'/views/teacher.php');
+    } elseif ($user_access == USER_PARENT) {
+      //parent
+      include($base_path.'/views/parent.php');
+    } else {
+      //forbidden
+      include($base_path.'/views/forbidden.php');
+    }
   }
 }
 $template->render();

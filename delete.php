@@ -1,11 +1,5 @@
 <?php
 
-require('config.php');
-require($base_path.'/plugins/db.php');
-require($base_path.'/plugins/auth.php');
-require($base_path.'/plugins/template.php');
-require($base_path.'/plugins/time.php');
-
 if(isset($_POST['hash'])) {
   if($user_access == USER_ADMIN 
     || ($user_access == USER_TEACHER && $user_id == $_POST['teacher'])
@@ -51,7 +45,7 @@ if(isset($_POST['hash'])) {
     exit;
   }
 
-  echo '<form class="app_form" id="appointment" method="post" action="'.$_SERVER['PHP_SELF'].'">';
+  echo '<form class="app_form" id="appointment" method="post" action="index.php?delete">';
   echo 'Please confirm the deletion of this appointment:<br />';
   echo '<div class="errors"></div>';
   echo 'Parent: '.$parent['lname'].' ('.$parent['desc'].')';

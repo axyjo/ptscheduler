@@ -47,7 +47,7 @@ $(document).ready(function () {
         }});
       });
     } else {
-      $.get("delete.php", {teacher: t_id, time: time}, function(data, textStatus) {
+      $.get("index.php?delete", {teacher: t_id, time: time}, function(data, textStatus) {
         if(data != "403") {
           $("#dialog").html(data);
           $("#dialog").dialog({
