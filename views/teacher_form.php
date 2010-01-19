@@ -19,7 +19,7 @@ echo '</select>';
 
 echo '<br />';
 
-echo 'Time: '.date('l j F Y h:i A',$time);
+echo 'Time: '.date($date_format, $time);
 echo '<input id="time" type="hidden" name="time" value="'.$time.'" />';
 echo '<br />';
 
