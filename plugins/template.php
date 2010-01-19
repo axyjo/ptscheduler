@@ -35,10 +35,10 @@ class Template {
       <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/grid.css"  />
       <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/application.css" />
       <link rel="stylesheet" type="text/css" media="print"  href="stylesheets/print.css" />
-      <script type="text/javascript" src="scripts/application.js"></script>
       <script type="text/javascript" src="scripts/jquery.js"></script>
       <script type="text/javascript" src="scripts/jquery-ui.js"></script>
       <script type="text/javascript" src="scripts/jquery-form.js"></script>
+      <script type="text/javascript" src="scripts/application.js"></script>
       '.$this->scripts.'
       </head>
       <body>
