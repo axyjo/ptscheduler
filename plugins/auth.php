@@ -11,9 +11,11 @@ if(isset($_GET['login'])) {
   if ($username && $password && authenticate($username, $password, $params)) {
     $_SESSION['auth'] = md5($username.$secure_hash);
     $_SESSION['username'] = $username;
-    if (isset($admins[strtolower($username)])) {
+    getAllAdmins();
+    getAllTeachers();
+    if (isset($admins[get_user_id($username)])) {
       $_SESSION['user_access'] = USER_ADMIN;
-    } elseif(isset($teachers[strtolower($username)]) && $teacher_restrict < time()) {
+    } elseif(isset($teachers[get_user_id($username)]) && $teacher_restrict < time()) {
       $_SESSION['user_access'] = USER_TEACHER;
     } else {
       if($parent_restrict < time()) {

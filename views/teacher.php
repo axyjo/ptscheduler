@@ -49,6 +49,8 @@ $newappointments = array();
 foreach($appointments as $appointment) {
   $newappointments[$appointment['time']][] = $appointment;
 }
+
+getAllTeachers();
 $teacher = $teachers[$user_id];
 $return .= '<div id="'.$user_id.'">';
 $return .= '<span class="teacher grid_6"><strong>';

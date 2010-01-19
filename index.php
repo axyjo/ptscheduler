@@ -57,8 +57,9 @@ try {
   $check_res = $dbHandle->query($check);
 } catch (PDOException $e) {
   include($base_path.'/install.php');
-  exit();
+  exit;
 }
+unset($admins, $teachers);
 
 if($user_access == USER_FORBIDDEN) {
   // Send a login screen to unauthenticated users.
@@ -77,15 +78,6 @@ if($user_access == USER_FORBIDDEN) {
     include($base_path.'/delete.php');
     exit;
   } else {
-    $sqlGet = 'SELECT * FROM users WHERE status = '.USER_TEACHER.' ORDER BY `lname` ASC ';
-    $result_res = $dbHandle->query($sqlGet);
-    $tempteachers = array();
-    $teachers = array();
-    while ($result = $result_res->fetch()) $tempteachers[] = $result;
-    foreach ($tempteachers as $teacher) {
-      $teachers[$teacher['id']] = $teacher;
-    }
-    
     //this is the home page
     if ($user_access == USER_ADMIN) {
       //admin

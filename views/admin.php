@@ -22,6 +22,7 @@ for($i = 0; $i < count($times); $i++) {
 
 }
 
+getAllTeachers();
 foreach($teachers as $teacher) {
   $sql = 'SELECT * FROM appointments WHERE teacher='.$teacher['id'];
   $app_res = $dbHandle->query($sql);

@@ -11,11 +11,9 @@ echo '<div class="errors"></div>';
 echo 'Parent: ';
 
 echo '<select id="parent" name="parent">';
-$sql = 'SELECT * FROM users WHERE desc != "" AND status='.USER_PARENT.' ORDER BY uid ASC';
-$stmt = $dbHandle->prepare($sql);
-$stmt->execute();
-while($row = $stmt->fetch()) {
-  echo '<option value="'.$row['id'].'">'.$row['lname'].' ('.$row['desc'].')</option>';
+getAllParents();
+foreach($parents as $parent) {
+  echo '<option value="'.$parent['id'].'">'.$parent['lname'].' ('.$parent['desc'].')</option>';
 }
 echo '</select>';
 

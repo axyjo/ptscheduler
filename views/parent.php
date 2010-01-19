@@ -20,6 +20,8 @@ $getQuery = 'SELECT * FROM appointments WHERE `parent`= "'.$user_id.'" ORDER BY 
 $result_res = $dbHandle->query($getQuery);
 $appointments = array();
 
+getAllTeachers();
+
 while ($result = $result_res->fetch()) $appointments[] = $result;
 $hadAppointments = false;
 foreach($appointments as $appointment) {
@@ -42,6 +44,7 @@ for($i = 0; $i < count($times); $i++) {
 
 $return .= '<div id="time_grid">';
 
+getAllTeachers();
 foreach($teachers as $teacher) {
   $sql = 'SELECT * FROM appointments WHERE teacher='.$teacher['id'];
   $app_res = $dbHandle->query($sql);
