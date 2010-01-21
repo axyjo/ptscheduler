@@ -3,203 +3,203 @@
 /* NOTE: Anything after a "_" is a special tag for Internet Explorer. As it does not recognize all of the CSS tags created by the W3C, a few hacks had to be used to get the site looking right on it */
 
 body {
-	margin: 0;
-	padding: 5px;
-	background-color:#2f5c24;
-	background-image: url(../images/overlay-blocks.png);
-	_text-align: center;
+  margin: 0;
+  padding: 5px;
+  background-color:#2f5c24;
+  background-image: url(../images/overlay-blocks.png);
+  _text-align: center;
 }
 
 p {
-	position: relative;
-	width: auto;
-	float: left;
-	margin: 3px 10px;
-	padding: 4px;
-	display: block;
-	text-align: justify;
-	line-height: 20px;
-	text-indent: 10px;
+  position: relative;
+  width: auto;
+  float: left;
+  margin: 3px 10px;
+  padding: 4px;
+  display: block;
+  text-align: justify;
+  line-height: 20px;
+  text-indent: 10px;
 }
 
 div {
-	padding: 10px;
-	margin: 0 auto 0 auto;
-	text-align: justify;
-	color: #333;
-	font-family: arial, times, Times, georgia, serif;
-	font-size: 12px;
-	height: auto;
+  padding: 10px;
+  margin: 0 auto 0 auto;
+  text-align: justify;
+  color: #333;
+  font-family: arial, times, Times, georgia, serif;
+  font-size: 12px;
+  height: auto;
 }
 
 div#textos {
-	padding: 8px;
-	margin: 0 auto 0 auto;
-	text-align: justify;
-	color: #333;
-	font-family: arial, times, Times, georgia, serif;
-	font-size: 12px;
-	height: auto;
-	min-height: 100px;
-/*	float: left;*/
-	position: static;
-	line-height: 20px;
-	background-color:#FFFFFF;
+  padding: 8px;
+  margin: 0 auto 0 auto;
+  text-align: justify;
+  color: #333;
+  font-family: arial, times, Times, georgia, serif;
+  font-size: 12px;
+  height: auto;
+  min-height: 100px;
+/*  float: left;*/
+  position: static;
+  line-height: 20px;
+  background-color:#FFFFFF;
 }
 
 div#header {
-	position: static;
-	width: auto;
+  position: static;
+  width: auto;
 
-	/* IE Instruction */
-	_width: 597px;
+  /* IE Instruction */
+  _width: 597px;
 
-	padding: 0;
-	color:#FFFFFF;
-	background-color:#222;
+  padding: 0;
+  color:#FFFFFF;
+  background-color:#222;
 }
 
 /* SITE TITLE */
 
 h2, h2 a {
-	font-size: 19px;
-	text-transform: uppercase;
-	letter-spacing: 5px;
-	text-decoration: none;
-	color: white;
-	text-align: center;
-	font-family: Helvetica, Serifa, sans-serif;
-	padding: 32px;
-	margin: 0;
-	text-shadow: 0 3px 1px #000;
+  font-size: 19px;
+  text-transform: uppercase;
+  letter-spacing: 5px;
+  text-decoration: none;
+  color: white;
+  text-align: center;
+  font-family: Helvetica, Serifa, sans-serif;
+  padding: 32px;
+  margin: 0;
+  text-shadow: 0 3px 1px #000;
 }
 
 /* ARTICLE TITLES */
 
 h1 {
-	color:#464646;
-	font-family: Times;
-	letter-spacing: -2px;
-	font-size: 40px;
-	line-height: 35px;
-	padding: 2px;
-	margin: 0;
-	font-weight: 500;
-	margin-left: 14px;
-	margin-top: 10px;
-	max-width: 345px;
+  color:#464646;
+  font-family: Times;
+  letter-spacing: -2px;
+  font-size: 40px;
+  line-height: 35px;
+  padding: 2px;
+  margin: 0;
+  font-weight: 500;
+  margin-left: 14px;
+  margin-top: 10px;
+  max-width: 345px;
 
-	/* IE Instruction */
-	_width: 245px;
+  /* IE Instruction */
+  _width: 245px;
 
-	text-align: left;
-	font-weight: normal;
-	text-shadow: 0 1px 5px #ADADAD;
-	border-bottom: 1px solid #ADADAD;
+  text-align: left;
+  font-weight: normal;
+  text-shadow: 0 1px 5px #ADADAD;
+  border-bottom: 1px solid #ADADAD;
 }
 
 h1 span {
-	color:#538A1F;
-	font-size: 12px;
-	font-family: arial;
-	font-variant: small-caps;
-	letter-spacing: 2px;
+  color:#538A1F;
+  font-size: 12px;
+  font-family: arial;
+  font-variant: small-caps;
+  letter-spacing: 2px;
 
-	/* IE Instruction */
-	_letter-spacing: -1px;
-	_margin-left: -3px;
+  /* IE Instruction */
+  _letter-spacing: -1px;
+  _margin-left: -3px;
 
-	text-align: right;
-	text-shadow: none;
+  text-align: right;
+  text-shadow: none;
 }
 
 /* MENU */
-	/* LISTS */
+  /* LISTS */
 
 ul {
-	width: auto;
+  width: auto;
 
-	/* IE Instruction */
-	_width: 597px;
+  /* IE Instruction */
+  _width: 597px;
 
-	margin: 0;
-	padding: 6px;
-	position: relative;
-	/* background-color:#6CAA33; */
-	/* background-color: #3B6431; */
-	display: block;
+  margin: 0;
+  padding: 6px;
+  position: relative;
+  /* background-color:#6CAA33; */
+  /* background-color: #3B6431; */
+  display: block;
 
-	/* MENU FONT */
-	font-family: Helvetica, Geneva, sans-serif;
-	font-weight: 300;
-	font-size: 12px;
-	/* color:#FFFFFF; */
+  /* MENU FONT */
+  font-family: Helvetica, Geneva, sans-serif;
+  font-weight: 300;
+  font-size: 12px;
+  /* color:#FFFFFF; */
 }
 
 li {
-	/* display: inline; */
-	margin: 0;
-	list-style: none;
-	/* padding: 6px; */
+  /* display: inline; */
+  margin: 0;
+  list-style: none;
+  /* padding: 6px; */
 }
 
 li a:link, li a:visited
 {
-	padding: 10px 6px;
-	color:#CBF3A6;
-	text-decoration: none;
-	background: transparent;
+  padding: 10px 6px;
+  color:#CBF3A6;
+  text-decoration: none;
+  background: transparent;
 }
 
 li a:link:hover, li a:visited:hover
 {
-	color: white;
+  color: white;
 }
 
 div#textos a:link, div#textos a:visited
 {
-	color:#444;
-	border-bottom: 1px dotted #5E952C;
-	background-color: white;
-	cursor: move;
-	text-decoration: none;
-	padding: 2px;
+  color:#444;
+  border-bottom: 1px dotted #5E952C;
+  background-color: white;
+  cursor: move;
+  text-decoration: none;
+  padding: 2px;
 }
 
 div#textos a:link:hover
 {
-	color:#000;
-	background-color:#E3F7DA;
-	text-decoration: none;
-	padding: 2px;
+  color:#000;
+  background-color:#E3F7DA;
+  text-decoration: none;
+  padding: 2px;
 }
 
 small a {
-	color: #333;
+  color: #333;
 }
 
 /* IMAGES */
 img.left {
-	float: left;
-	position: relative;
-	margin: 5px 5px 0 0;
-	padding: 3px;
-	background-color:#FEFFF3;
-	border: 1px solid #DFF5D7;
+  float: left;
+  position: relative;
+  margin: 5px 5px 0 0;
+  padding: 3px;
+  background-color:#FEFFF3;
+  border: 1px solid #DFF5D7;
 }
 
 img.right {
-	float: right;
-	position: relative;
-	margin: 5px 0 0 5px;
-	padding: 3px;
-	background-color:#FEFFF3;
-	border: 1px solid #A6DF8F;
+  float: right;
+  position: relative;
+  margin: 5px 0 0 5px;
+  padding: 3px;
+  background-color:#FEFFF3;
+  border: 1px solid #A6DF8F;
 }
 
 img:hover, img.over {
-	background-color:#C6EDB6;
-	border: 1px solid #7ACC59;
+  background-color:#C6EDB6;
+  border: 1px solid #7ACC59;
 }
 
 #appointment {
@@ -213,8 +213,8 @@ img:hover, img.over {
 }
 
 div.spacer {
-	background-color: #8FC73E;
-	height: 1em;
+  background-color: #8FC73E;
+  height: 1em;
 }
 
 .red {
@@ -244,28 +244,33 @@ div.spacer {
 
 /* Dialog */
 .ui-dialog {
-	background-color: #fff;
-	border: 2px solid #000;
+  background-color: #fff;
+  border: 2px solid #000;
 }
 
 .ui-widget-overlay {
-	background: #aaaaaa;
-	opacity: .30;
-	filter:Alpha(Opacity=30);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  opacity: .7;
+  filter:Alpha(Opacity=70);
 }
 
 .ui-dialog-title {
-	float:left;
-	font-variant: small-caps;
-	font-style: oblique;
+  float:left;
+  font-variant: small-caps;
+  font-style: oblique;
 }
 
 .ui-dialog-titlebar-close {
-	float:right;
+  float:right;
 }
 
 .ui-dialog-content {
-	clear:both;
+  clear:both;
 }
 
 /* Errors */
