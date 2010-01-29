@@ -47,7 +47,7 @@ foreach($teachers as $teacher) {
     <div class="grid_2 throbber" id="throbber_'.$teacher['id'].'"></div>
     <div style="display:none;" id="times_'.$teacher['id'].'">';
   $script = '$("#link_'.$teacher['id'].'").click(function() { $("#times_'.$teacher['id'].'").toggle(); });';
-  $template->add_script($script);
+  $template->addScript($script);
   foreach($tabular_times as $minute => $hours_array) {
     foreach($hours_array as $hour => $epoch) {
       if(isset($appointments[$epoch])) {
