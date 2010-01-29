@@ -1,12 +1,3 @@
-function sleep(milliseconds) {
-  var start = new Date().getTime();
-  for (var i = 0; i < 1e7; i++) {
-    if ((new Date().getTime() - start) > milliseconds){
-      break;
-    }
-  }
-}
-
 $(document).ready(function () {
   $(".times").click(function () {
     var vars = this.id.split("-");
@@ -21,59 +12,35 @@ $(document).ready(function () {
     });
     
     if($(this).is(".green")) {
-      $.get("index.php?form", {teacher: t_id, time: time}, function(data, textStatus) {
-        $("#dialog").html(data);
-        $("#dialog").dialog({
-          modal: true,
-          title: "Adding new appointment",
-          width: 450,
-          show: "fade",
-          hide: "slide",
-          close: function(ev, ui) {
-            $("#textos").append("<div id=\"dialog\" />");
-          }
-        });
-        $(".app_form").ajaxForm({success: function(resp, stat) {
-          $("#throbber_"+t_id).hide();
-          if (resp=="success") {
-            $(".errors").html("<div class=\"green\">Your appointment has been successfully added!</div>");
-            sleep(1250);
-            window.location.reload();
-          } else {
-            $(".errors").html(resp);
-          }
-        }, beforeSubmit: function() {
-          $("#throbber_"+t_id).show();
-        }});
-      });
+      var title = "Adding new appointment";
+      var location = "form";
     } else {
-      $.get("index.php?delete", {teacher: t_id, time: time}, function(data, textStatus) {
-        if(data != "403") {
-          $("#dialog").html(data);
-          $("#dialog").dialog({
-            modal: true,
-            title: "Deleting appointment",
-            width: 450,
-            show: "fade",
-            hide: "slide",
-            close: function(ev, ui) {
-              $("#textos").append("<div id=\"dialog\" />");
-            }
-          });
-          $(".app_form").ajaxForm({success: function(resp, stat) {
-            $("#throbber_"+t_id).hide();
-            if (resp=="success") {
-              $(".errors").html("<div class=\"green\">Your appointment has been successfully deleted!</div>");
-              sleep(1250);
-              window.location.reload();
-            } else {
-              $(".errors").html(resp);
-            }
-          }, beforeSubmit: function() {
-            $("#throbber_"+t_id).show();
-          }});
+      var title = "Deleting appointment";
+      var location = "delete";
+    }
+    
+    $.get("index.php?"+location, {teacher: t_id, time: time}, function(data, textStatus) {
+      $("#dialog").html(data);
+      $("#dialog").dialog({
+        modal: true,
+        title: title,
+        width: 450,
+        show: "fade",
+        close: function(ev, ui) {
+          $("#textos").append("<div id=\"dialog\" />");
         }
       });
-    }
+      $(".app_form").ajaxForm({success: function(resp, stat) {
+        $("#throbber_"+t_id).hide();
+        if (resp=="success") {
+          $("#dialog").dialog('close');
+          window.location.reload();
+        } else {
+          $(".errors").html(resp);
+        }
+      }, beforeSubmit: function() {
+        $("#throbber_"+t_id).show();
+      }});
+    });
   });
 });
