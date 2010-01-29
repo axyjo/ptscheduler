@@ -1,26 +1,25 @@
 <?php
 
 class Template {
-
   var $title, $content, $scripts, $debug = NULL;
 
-  public function set_title($str) {
+  public function setTitle($str) {
     $this->title = $str;
   }
 
-  public function add_paragraph($str) {
+  public function addParagraph($str) {
     $this->content .= '<p>'.$str.'</p>';
   }
 
-  public function set_content($str) {
+  public function setContent($str) {
     $this->content = $str;
   }
 
-  public function add_script($scr) {
+  public function addScript($scr) {
     $this->scripts .= '<script>$(document).ready(function() {'.$scr.'});</script>';
   }
 
-  private function render_header() {
+  private function renderHeader() {
     $return = '<?xml version="1.0" encoding="UTF-8"?>
       <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
       <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
@@ -47,7 +46,7 @@ class Template {
     return $return;
   }
 
-  private function render_footer() {
+  private function renderFooter() {
     $debug_msg = '';
     if(is_array($this->debug)) {
       $mem_peak = $this->debug['mem']['peak']/1024/1024;
@@ -68,8 +67,8 @@ class Template {
   }
 
   public function render() {
-    echo $this->render_header();
+    echo $this->renderHeader();
     echo $this->content;
-    echo $this->render_footer();
+    echo $this->renderFooter();
   }
 }

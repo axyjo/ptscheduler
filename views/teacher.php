@@ -1,6 +1,6 @@
 <?php
 
-$template->set_title('Viewing Teacher Page');
+$template->setTitle('Viewing Teacher Page');
 
 $return = '<br /><strong>Currently logged in as: </strong>'. $_SESSION['username'].'. Click <a href="index.php?logout">here</a> to logout.';
 
@@ -76,4 +76,4 @@ foreach($tabular_times as $minute => $hours_array) {
 $return .= '</div></div>';
 
 $return .= '<div id="dialog"></div>';
-$template->set_content($return);
+$template->setContent($return);

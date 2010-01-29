@@ -1,6 +1,6 @@
 <?php
 
-$template->set_title('Login');
+$template->setTitle('Login');
 $content = '<p>Welcome to the parent teacher conference scheduler. If you don\'t know your username or password, please contact __________.</p>
 <br /><br />';
 
@@ -23,4 +23,4 @@ $content .= '
   </div>
 </form>';
 
-$template->set_content($content);
+$template->setContent($content);

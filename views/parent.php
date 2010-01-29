@@ -1,5 +1,5 @@
 <?php
-$template->set_title('Viewing Parent Page');
+$template->setTitle('Viewing Parent Page');
 
 $return = '<br /><strong>Currently logged in as: </strong>'. $_SESSION['username'].'. Click <a href="index.php?logout">here</a> to logout.';
 
@@ -71,4 +71,4 @@ foreach($teachers as $teacher) {
 $return .= '</div>';
 
 $return .= '<div id="dialog"></div>';
-$template->set_content($return);
+$template->setContent($return);
