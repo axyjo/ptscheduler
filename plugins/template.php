@@ -2,12 +2,7 @@
 
 class Template {
 
-  public $title = '';
-  //var $html = '';
-
-  public $content = '';
-
-  public $scripts = '';
+  var $title, $content, $scripts, $debug = NULL;
 
   public function set_title($str) {
     $this->title = $str;
@@ -53,13 +48,23 @@ class Template {
   }
 
   private function render_footer() {
+    $debug_msg = '';
+    if(is_array($this->debug)) {
+      $mem_peak = $this->debug['mem']['peak']/1024/1024;
+      $time = $this->debug['time']['end'] - $this->debug['time']['start'];
+      $debug_msg = 'Peak PHP memory usage: '.$mem_peak.' MB. Total request time: '.$time.' s.';
+    }
     $return = '
       </div>
-      <small>&copy; 2009-2010 <a href="http://akshayjoshi.com">Akshay Joshi</a>. Licensed under the <a href="http://creativecommons.org/licenses/MIT/">MIT License</a>.</small>
+      <small>&copy; 2009-2010 <a href="http://akshayjoshi.com">Akshay Joshi</a>. Licensed under the <a href="http://creativecommons.org/licenses/MIT/">MIT License</a>.'.$debug_msg.'</small>
       </div>
       </body>
       </html>';
     return $return;
+  }
+  
+  public function setDebugInfo($debug) {
+    $this->debug = $debug;
   }
 
   public function render() {

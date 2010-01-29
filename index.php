@@ -46,6 +46,9 @@ if ($debug) {
   if (!ini_get('display_errors')) {
     ini_set('display_errors', 1);
   }
+  $debug = array('time' => array(), 'mem' => array());
+  $debug['time']['start'] = microtime(TRUE);
+  $debug['mem']['start'] = memory_get_usage();
 } else {
   if (ini_get('display_errors')) {
     ini_set('display_errors', 0);
@@ -94,4 +97,12 @@ if($user_access == USER_FORBIDDEN) {
     }
   }
 }
+
+if($debug) {
+  $debug['time']['end'] = microtime(TRUE);
+  $debug['mem']['end'] = memory_get_usage();
+  $debug['mem']['peak'] = memory_get_peak_usage();
+  $template->setDebugInfo($debug);
+}
+
 $template->render();
