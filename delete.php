@@ -11,6 +11,17 @@ if(isset($_POST['hash'])) {
       $exec = 'DELETE FROM appointments WHERE `id` = '. $_POST['appointment'];
       $dbHandle->exec($exec);
       echo 'success';
+      $teacher = getUser($_POST['teacher']);
+      $teacher = $teacher['fname'].' '.$teacher['lname'];
+      $parent = getUser($_POST['parent']);
+      $parent = $parent['fname'].' '.$parent['lname'];
+      if($user_access == USER_ADMIN) {
+        $_SESSION['notices'][] = 'The appointment between '.$teacher.' and '.$parent.' on '.date($date_format, $_POST['time']).' has been deleted.';
+      } elseif($user_access == USER_TEACHER) {
+        $_SESSION['notices'][] = 'Your appointment with '.$parent.' on '.date($date_format, $_POST['time']).' has been deleted.';
+      } elseif($user_access == USER_PARENT) {
+        $_SESSION['notices'][] = 'Your appointment with '.$teacher.' on '.date($date_format, $_POST['time']).' has been deleted.';
+      }
     } else {
       echo 'Your security hash does not match the given variables.<br>';
       //echo $_POST['parent'].$_POST['teacher'].$secure_hash.$_POST['time'];
@@ -41,7 +52,7 @@ if(isset($_POST['hash'])) {
 
   echo '<form class="app_form" id="appointment" method="post" action="index.php?delete">';
   echo 'Please confirm the deletion of this appointment:<br />';
-  echo '<div class="errors"></div>';
+  echo '<div class="error"></div>';
   echo 'Parent: '.$parent['lname'].' ('.$parent['desc'].')';
    
   echo '<br />';

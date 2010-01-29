@@ -7,7 +7,6 @@ $time = $_GET['time'];
 //display the form
 echo '<form class="app_form" id="appointment" method="post" action="index.php?form">';
 
-echo '<div class="errors"></div>';
 echo 'Parent: ';
 
 echo '<select id="parent" name="parent">';

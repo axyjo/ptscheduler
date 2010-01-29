@@ -21,10 +21,11 @@ if(isset($_POST['hash'])) {
           $stmt->bindParam(':time', $_POST['time'], PDO::PARAM_INT);
           $stmt->execute();
           echo 'success';
+          addNotice($_POST['teacher'], $_POST['parent'], $_POST['time']);
           $stmt->closeCursor();
           //header('Location: index.php');
         } else {
-          echo '<div class="red"><ul>';
+          echo '<div class="error"><ul>';
           foreach($errors as $error) {
           	echo '<li>'.$error.'</li>';
           }
@@ -44,14 +45,15 @@ if(isset($_POST['hash'])) {
           $stmt->bindParam(':time', $_POST['time'], PDO::PARAM_INT);
           $stmt->execute();
           echo 'success';
+          addNotice($_POST['teacher'], $_POST['parent'], $_POST['time']);
           $stmt->closeCursor();
           //header('Location: index.php');
         } else {
-          echo '<div class="red"><ul>';
+          echo '<ul>';
           foreach($errors as $error) {
           	echo '<li>'.$error.'</li>';
           }
-          echo '</ul></div>';
+          echo '</ul>';
         }
       }
     }
@@ -68,14 +70,15 @@ if(isset($_POST['hash'])) {
         $stmt->bindParam(':time', $_POST['time'], PDO::PARAM_INT);
         $stmt->execute();
         echo 'success';
+        addNotice($_POST['teacher'], $_POST['parent'], $_POST['time']);
         $stmt->closeCursor();
         //header('Location: index.php');
       } else {
-        echo '<div class="red"><ul>';
+        echo '<ul>';
         foreach($errors as $error) {
           echo '<li>'.$error.'</li>';
         }
-        echo '</ul></div>';
+        echo '</ul>';
       }
     }
   }
@@ -94,6 +97,20 @@ if(isset($_POST['hash'])) {
   // no else because we shouldn't talk to strangers.
 }
 
+function addNotice($tid, $pid, $time) {
+  global $date_format, $user_access;
+  $teacher = getUser($tid);
+  $teacher = $teacher['fname'].' '.$teacher['lname'];
+  $parent = getUser($pid);
+  $parent = $parent['fname'].' '.$parent['lname'];
+  if($user_access == USER_ADMIN) {
+    $_SESSION['notices'][] = 'The appointment between '.$teacher.' and '.$parent.' on '.date($date_format, $time).' has been added.';
+  } elseif($user_access == USER_TEACHER) {
+    $_SESSION['notices'][] = 'Your appointment with '.$parent.' on '.date($date_format, $time).' has been added.';
+  } elseif($user_access == USER_PARENT) {
+    $_SESSION['notices'][] = 'Your appointment with '.$teacher.' on '.date($date_format, $time).' has been added.';
+  }
+}
 
 function validate($post) {
   // Create an empty array to hold the error messages.

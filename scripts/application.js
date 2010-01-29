@@ -36,7 +36,7 @@ $(document).ready(function () {
           $("#dialog").dialog('close');
           window.location.reload();
         } else {
-          $(".errors").html(resp);
+          $(".app_form").before(resp);
         }
       }, beforeSubmit: function() {
         $("#throbber_"+t_id).show();
