@@ -5,14 +5,14 @@ $return = '<br /><strong>Currently logged in as: </strong>'. $_SESSION['username
 
 $return .= '<h3>Instructions:</h3>';
 
-$return .= '<ul><li>Please use Firefox or Internet Explorer as your browser (with Javascript enabled). Safari does not work well.</li>
+$return .= '<ul><li>Please use a Javascript enabled browser to make your appointments.</li>
 <li>To schedule, please click next to the teachers name. Then, click on the time that you would like to schedule. Finally, click the Submit button.</li>
 <li>If <strong>an error occurs</strong> while scheduling your appointment, please refresh the page.</li>
 <li>If you need to delete a previously scheduled appointment, click the appointment again and select the Delete button.</li>
 
 <li>Locations of where teachers will be for conferences be emailed to you. They will also be available on the window of the HS office.</li>
 
-<li>Please email <a href="mailto:jesse-remington@acs.sch.ae">jesse-remington@acs.sch.ae</a> if you have problems.</li> </ul>';
+<li>Please contact <a href="mailto:'.$support_email.'">'.$support_email.'</a> if you have problems.</li> </ul>';
 
 $return .= '<h3>Your Current Appointments (<a href="javascript:window.print()">Print</a>):</h3>';
 

@@ -1,7 +1,7 @@
 <?php
 
 $template->setTitle('Login');
-$content = '<p>Welcome to the parent teacher conference scheduler. If you don\'t know your username or password, please contact __________.</p>
+$content = '<p>Welcome to the parent teacher conference scheduler. If you don\'t know your username or password, please contact <a href="mailto:'.$support_email.'">'.$support_email.'</a>.</p>
 <br /><br />';
 
 $content .= '

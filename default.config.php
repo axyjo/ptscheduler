@@ -13,6 +13,11 @@ $teachers['teacher2'] = TRUE;
 // not modify or uncomment if you aren't sure what this setting does.
 // $base_path = __DIR__;
 
+// Change the following to the email address of the person in charge of
+// handling technical support queries. Please note that this email address may
+// be visible to crawlbots and spam harvesters.
+$support_email = 'somebody@example.com';
+
 // Change the key of the following array to the date of the conferences in
 // YYYY-MM-DD format. See the commented example below.
 // $date_boundaries['2009-11-19'] = TRUE;
