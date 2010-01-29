@@ -65,9 +65,31 @@ class Template {
   public function setDebugInfo($debug) {
     $this->debug = $debug;
   }
+  
+  private function processMessages() {
+    $return = '';
+    if(isset($_SESSION['notices']) && is_array($_SESSION['notices']) && count($_SESSION['notices']) != 0) {
+      $return .= '<div class="notice"><ul>';
+      foreach($_SESSION['notices'] as $key => $notice) {
+        $return .= '<li>'.$notice.'</li>';
+      }
+      unset($_SESSION['notices']);
+      $return .= '</ul></div>';
+    }
+    if(isset($_SESSION['errors']) && is_array($_SESSION['errors']) && count($_SESSION['errors']) != 0) {
+      $return .= '<div class="error"><ul>';
+      foreach($_SESSION['errors'] as $key => $error) {
+        $return .= '<li>'.$error.'</li>';
+      }
+      unset($_SESSION['errors']);
+      $return .= '</ul></div>';
+    }    
+    return $return;
+  }
 
   public function render() {
     echo $this->renderHeader();
+    echo $this->processMessages();
     echo $this->content;
     echo $this->renderFooter();
   }

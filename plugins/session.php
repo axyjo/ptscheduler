@@ -14,9 +14,10 @@ session_start();
 
 // Check for invalid session entries.
 if(isset($_SESSION['auth']) && $_SESSION['auth'] != md5($_SESSION['username'].$secure_hash)) {
+  session_unset();
   session_destroy();
   session_start();
-  $_SESSION['login_errors'] = array('Invalid session. Please login again.');
+  $_SESSION['errors'][] = 'Invalid session. Please login again.';
   header('Location: index.php?login');
 } 
 

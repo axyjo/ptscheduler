@@ -21,26 +21,30 @@ if(isset($_GET['login'])) {
       if($parent_restrict < time()) {
         $_SESSION['user_access'] = USER_PARENT;
       } else {
-        $_SESSION['login_errors'] = array('You are currently not allowed to enter the website.');
+        $_SESSION['errors'][] = 'You are currently not allowed to enter the website.';
         $_SESSION['user_access'] = USER_FORBIDDEN;
       }
     }
   } else {
     $_SESSION['user_access'] = USER_FORBIDDEN;
-    $_SESSION['login_errors'] = array('Invalid username or password.'); 
+    $_SESSION['errors'][] = 'Invalid username or password.';
   }
   if($_SESSION['user_access'] == USER_FORBIDDEN) {
     unset($_SESSION['auth']);
     unset($_SESSION['username']);
   }
-  header('Location: index.php');
   
   if($_SESSION['user_access'] != USER_FORBIDDEN) {
     $_SESSION['user_id'] = getUserId($username);
+    $_SESSION['notices'][] = 'Successfully logged in as '.$username;
   }
+  
+  header('Location: index.php');
+  exit();
 } elseif(isset($_GET['logout'])) {
+  session_unset();
   session_destroy();
   session_start();
-  $_SESSION['login_errors'] = array('You have successfully logged out.');
+  $_SESSION['notices'][] = 'You have successfully logged out.';
   header('Location: index.php');
 }

@@ -276,8 +276,17 @@ div.spacer {
 /* Errors */
 
 div.error {
-  color: #fff;
-  background: #e63;
-  border-color: #d52;
   margin-top: 10px;
+  background: #eccecf;  
+  border:2px solid #9e0b0f;  
+  padding:10px;  
+  font-weight:bold;  
 }
+
+div.notice {
+  margin-top: 10px;
+  background: #e5f2be;   
+  border:2px solid #bedf5d;   
+  padding:10px;   
+  font-weight:bold;  
+}  
