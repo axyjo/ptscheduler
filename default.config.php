@@ -60,4 +60,4 @@ $db_url = 'sqlite:db.sqlite';
 $secure_hash = 'VQCMnwedl7W5jxpyxuUbOLImvShFCu0vQfp1SbYeX26fV8CESQxGpXzdjKB198X';
 
 // Set the following variable to TRUE if you wish to enable debugging output.
-$debug = TRUE;
+$debug = FALSE;
