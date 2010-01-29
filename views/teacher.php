@@ -45,7 +45,7 @@ $teacher = getUser($user_id);
 $return .= '<div id="'.$user_id.'">';
 $return .= '<span class="teacher grid_6"><strong>';
 $return .= $teacher['fname'].' '.$teacher['lname'];
-$return .= '</strong > - <a id="link_'.$user_id.'">Click here to view available appointments</a></span><br />
+$return .= '</strong ></span><br />
   <div class="grid_2 throbber" id="throbber_'.$user_id.'"></div>
   <div id="times_'.$user_id.'">';
 foreach($tabular_times as $minute => $hours_array) {
