@@ -1,100 +1,64 @@
 <?php
 
-//date format Y-m-d or timestamp
 if(isset($_POST['hash'])) {
-  //submit the form after checking hash
-  //var_dump($_POST);
-  //echo 'hash is set ';
-  if(isset($_POST['teacher'])) {
-    //admin or parent
-    //echo 'teacher is set ';
-    if(isset($_POST['parent'])) {
-      //echo 'parent is set ';
-      //admin: $teacher_id.$secure_hash.$time
-      if(substr($_POST['hash'],0,32) == md5($_POST['teacher'].$secure_hash.$_POST['time'])) {
-      	//echo 'hash matches';
-        $errors = validate($_POST);
-        if(count($errors) == 0) {
-          $stmt = $dbHandle->prepare('INSERT INTO appointments (parent, teacher, time) VALUES (:parent, :teacher, :time)');
-          $stmt->bindParam(':parent', $_POST['parent'], PDO::PARAM_INT);
-          $stmt->bindParam(':teacher', $_POST['teacher'], PDO::PARAM_INT);
-          $stmt->bindParam(':time', $_POST['time'], PDO::PARAM_INT);
-          $stmt->execute();
-          echo 'success';
-          addNotice($_POST['teacher'], $_POST['parent'], $_POST['time']);
-          $stmt->closeCursor();
-          //header('Location: index.php');
-        } else {
-          echo '<div class="error"><ul>';
-          foreach($errors as $error) {
-          	echo '<li>'.$error.'</li>';
-          }
-          echo '</ul></div>';
-        }
-      }
-    } else {
-      //parent: $secure_hash.$time
-      $_POST['parent'] = $user_id;
-      if(substr($_POST['hash'],0,32) == md5($secure_hash.$_POST['time'])) {
-      	//echo 'hash matches';
-        $errors = validate($_POST);
-        if(count($errors) == 0) {
-          $stmt = $dbHandle->prepare('INSERT INTO appointments (parent, teacher, time) VALUES (:parent, :teacher, :time)');
-          $stmt->bindParam(':parent', $_POST['parent'], PDO::PARAM_INT);
-          $stmt->bindParam(':teacher', $_POST['teacher'], PDO::PARAM_INT);
-          $stmt->bindParam(':time', $_POST['time'], PDO::PARAM_INT);
-          $stmt->execute();
-          echo 'success';
-          addNotice($_POST['teacher'], $_POST['parent'], $_POST['time']);
-          $stmt->closeCursor();
-          //header('Location: index.php');
-        } else {
-          echo '<ul>';
-          foreach($errors as $error) {
-          	echo '<li>'.$error.'</li>';
-          }
-          echo '</ul>';
-        }
-      }
-    }
+  $errors = validate($_POST);
+  if(count($errors) == 0) {
+    addAppointment($_POST['teacher'], $_POST['parent'], $_POST['time']);
+    addNotice($_POST['teacher'], $_POST['parent'], $_POST['time']);
+    echo 'success';
   } else {
-    //teacher: $secure_hash.$time
-    $_POST['teacher'] = $user_id;
-    if(substr($_POST['hash'],0,32) == md5($secure_hash.$_POST['time'])) {
-  	  //echo 'hash matches';
-  	  $errors = validate($_POST);
-      if(count($errors) == 0) {
-        $stmt = $dbHandle->prepare('INSERT INTO appointments (parent, teacher, time) VALUES (:parent, :teacher, :time)');
-        $stmt->bindParam(':parent', $_POST['parent'], PDO::PARAM_INT);
-        $stmt->bindParam(':teacher', $_POST['teacher'], PDO::PARAM_INT);
-        $stmt->bindParam(':time', $_POST['time'], PDO::PARAM_INT);
-        $stmt->execute();
-        echo 'success';
-        addNotice($_POST['teacher'], $_POST['parent'], $_POST['time']);
-        $stmt->closeCursor();
-        //header('Location: index.php');
-      } else {
-        echo '<ul>';
-        foreach($errors as $error) {
-          echo '<li>'.$error.'</li>';
-        }
-        echo '</ul>';
-      }
+    echo '<ul>';
+    foreach($errors as $error) {
+      echo '<li>'.$error.'</li>';
     }
+    echo '</ul>';
   }
 } else {
-  //this is the form page
-  if ($user_access == USER_ADMIN) {
-    //admin
-    include($base_path.'/views/admin_form.php');
-  } elseif ($user_access == USER_TEACHER) {
-    //teacher
-    include($base_path.'/views/teacher_form.php');
+  $teacher_id = $_GET['teacher'];
+  $time = $_GET['time'];
+  echo 'Please confirm the scheduling of this appointment:<br />';
+  echo '<form class="app_form" id="appointment" method="post" action="index.php?form">';
+  
+  echo 'Parent: ';
+  echo '<select id="parent" name="parent">';
+  if ($user_access == USER_ADMIN || $user_access == USER_TEACHER) {
+    getAllParents();  
   } elseif ($user_access == USER_PARENT) {
-    //parent
-    include($base_path.'/views/parent_form.php');
+    $parents = array($user_id => getUser($user_id));
   }
-  // no else because we shouldn't talk to strangers.
+  foreach($parents as $parent) {
+    echo '<option value="'.$parent['id'].'">'.$parent['lname'].' ('.$parent['desc'].')</option>';
+  }
+  echo '</select>';
+  echo '<br />';
+  
+  echo 'Teacher: ';
+  $sql = 'SELECT * FROM users WHERE id=:s LIMIT 1';
+  $stmt = $dbHandle->prepare($sql);
+  $stmt->bindParam(':s', $teacher_id);
+  $stmt->execute();
+  $row = $stmt->fetch();
+  echo $row['fname'].' '.$row['lname'];
+  echo '<input id="teacher" type="hidden" name="teacher" value="'.$row['id'].'" />';
+  echo '<br />';
+  
+  echo 'Time: '.date($date_format, $time);
+  echo '<input id="time" type="hidden" name="time" value="'.$time.'" />';
+  echo '<br />';
+  
+  echo '<input id="hash" type="hidden" name="hash" value="'.md5($secure_hash.$user_id.$time).'" />';
+  echo '<input type="submit" id="submit" value="Submit" />';
+  echo '</form>';
+}
+
+function addAppointment($tid, $pid, $time) {
+  global $dbHandle;
+  $stmt = $dbHandle->prepare('INSERT INTO appointments (parent, teacher, time) VALUES (:parent, :teacher, :time)');
+  $stmt->bindParam(':parent', $pid, PDO::PARAM_INT);
+  $stmt->bindParam(':teacher', $tid, PDO::PARAM_INT);
+  $stmt->bindParam(':time', $time, PDO::PARAM_INT);
+  $stmt->execute();
+  $stmt->closeCursor();
 }
 
 function addNotice($tid, $pid, $time) {
@@ -115,30 +79,37 @@ function addNotice($tid, $pid, $time) {
 function validate($post) {
   // Create an empty array to hold the error messages.
   $arrErrors = array();
-  //Only validate if the Submit button was clicked.
 
-  // Each time there's an error, add an error message to the error array
-  // using the field name as the key.
-  if ($post['teacher']==''||!is_numeric($post['teacher']))
-    $arrErrors['teacher'] = 'A valid teacher is required.';
-  if ($post['time']=='')
-    $arrErrors['time'] = 'A valid time is required.';
-  if (!is_within_time($post['time']))
-    $arrErrors['time'] = 'An appointment has to be completely within working hours.';
-  if (!is_within_date($post['time'])) {
-    $arrErrors['date'] = 'An appointment must fall on the designated date.';
+  // Each time there's an error, add an error message to the error array.
+  if(!validateHash($post)) {
+    $arrErrors[] = 'The security hash does not match the one in our records. Please try again.';
   }
-  if (teacher_time_conflicts($post['time'], $post['teacher'])) {
-    $arrErrors['time'] = 'This teacher already has another appointment at that time.';
+  if($post['teacher']==''||!is_numeric($post['teacher'])) {
+    $arrErrors[] = 'A valid teacher is required.';
   }
-  if (parent_time_conflicts($post['time'], $post['parent'])) {
-    $arrErrors['time'] = 'This parent already has another appointment at that time.';
+  if($post['time']=='') {
+    $arrErrors[] = 'A valid time is required.';
+  }
+  if(!isWithinTime($post['time'])) {
+    $arrErrors[] = 'An appointment has to be completely within working hours.';
+  }
+  if(!isWithinDate($post['time'])) {
+    $arrErrors[] = 'An appointment must fall on the designated date.';
+  }
+  if(teacherTimeConflicts($post['time'], $post['teacher'])) {
+    $arrErrors[] = 'This teacher already has another appointment at that time.';
+  }
+  if(parentTimeConflicts($post['time'], $post['parent'])) {
+    $arrErrors[] = 'This parent already has another appointment at that time.';
+  }
+  if(!validateUser($post)) {
+    $arrErrors[] = 'You may not schedule appointments for another user.';
   }
 
   return $arrErrors;
 }
 
-function is_within_date($timestamp = null) {
+function isWithinDate($timestamp = null) {
   global $date_boundaries;
   $date = date('Y-m-d', $timestamp);
   if ($date_boundaries[$date]) {
@@ -147,7 +118,7 @@ function is_within_date($timestamp = null) {
   return FALSE;
 }
 
-function is_within_time($timestamp=null) {
+function isWithinTime($timestamp=null) {
   global $time_boundaries;
   global $time_increments;
   global $timezone_offset;
@@ -162,10 +133,10 @@ function is_within_time($timestamp=null) {
     //ends too late
 	  return FALSE;
   }
-  return true;
+  return TRUE;
 }
 
-function teacher_time_conflicts($start=null, $teacher=null) {
+function teacherTimeConflicts($start=null, $teacher=null) {
   global $time_increments;
   global $dbHandle;
   $end = $start+$time_increments;
@@ -177,11 +148,11 @@ function teacher_time_conflicts($start=null, $teacher=null) {
     $array[0] = 0;
   }
 
-  if($array[0] > 0) return true;
-  return false;
+  if($array[0] > 0) return TRUE;
+  return FALSE;
 }
 
-function parent_time_conflicts($start=null, $parent=null) {
+function parentTimeConflicts($start=null, $parent=null) {
   global $time_increments;
   global $dbHandle;
   if ($parent == -1) return FALSE;
@@ -195,6 +166,25 @@ function parent_time_conflicts($start=null, $parent=null) {
     $array[0] = 0;
   }
 
-  if($array[0] > 0) return true;
-  return false;
+  if($array[0] > 0) return TRUE;
+  return FALSE;
+}
+
+function validateUser($post) {
+  global $user_access, $user_id;
+  if($user_access == USER_PARENT && $post['parent'] != $user_id) {
+    return FALSE;
+  } elseif($user_access == USER_TEACHER && $post['teacher'] != $user_id) {
+    return FALSE;
+  } else {
+    return TRUE;
+  }
+}
+
+function validateHash($post) {
+  global $secure_hash, $user_id;
+  if(substr($post['hash'],0,32) == md5($secure_hash.$user_id.$post['time'])) {
+    return TRUE;
+  }
+  return FALSE;
 }
