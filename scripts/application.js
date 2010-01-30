@@ -1,4 +1,6 @@
 $(document).ready(function () {
+  $('.notice').slideDown('slow');
+  $('.error').slideDown('slow');
   $(".times").click(function () {
     var vars = this.id.split("-");
     var t_id = vars[0];
@@ -36,10 +38,14 @@ $(document).ready(function () {
           $("#dialog").dialog('close');
           window.location.reload();
         } else {
-          $('.errors').remove();
           $(".app_form").before(resp);
+          $('.error').slideDown('slow');
         }
       }, beforeSubmit: function() {
+        var box = $('.error');
+        box.slideUp('fast', function() {
+          box.remove();
+        });
         $("#throbber_"+t_id).show();
       }});
     });

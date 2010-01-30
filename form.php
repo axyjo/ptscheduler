@@ -7,11 +7,11 @@ if(isset($_POST['hash'])) {
     addNotice($_POST['teacher'], $_POST['parent'], $_POST['time']);
     echo 'success';
   } else {
-    echo '<ul>';
+    echo '<div class="error"><ul>';
     foreach($errors as $error) {
       echo '<li>'.$error.'</li>';
     }
-    echo '</ul>';
+    echo '</ul></div>';
   }
 } else {
   $teacher_id = $_GET['teacher'];
