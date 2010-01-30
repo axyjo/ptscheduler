@@ -85,7 +85,11 @@ if($user_access == USER_FORBIDDEN) {
   } else {
     //this is the home page
     if ($user_access == USER_ADMIN) {
-      include($base_path.'/views/admin.php');
+      if(isset($_GET['list'])) {
+        include($base_path.'/views/list.php');
+      } else {
+        include($base_path.'/views/admin.php');
+      }
     } elseif ($user_access == USER_TEACHER) {
       include($base_path.'/views/teacher.php');
     } elseif ($user_access == USER_PARENT) {
