@@ -59,5 +59,4 @@ foreach($teachers as $teacher) {
   $return .= '</div>';
 }
 
-$return .= '<div id="dialog"></div>';
 $template->setContent($return);

@@ -75,5 +75,4 @@ foreach($tabular_times as $minute => $hours_array) {
 }
 $return .= '</div></div>';
 
-$return .= '<div id="dialog"></div>';
 $template->setContent($return);
