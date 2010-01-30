@@ -52,7 +52,6 @@ if(isset($_POST['hash'])) {
 
   echo '<form class="app_form" id="appointment" method="post" action="index.php?delete">';
   echo 'Please confirm the deletion of this appointment:<br />';
-  echo '<div class="error"></div>';
   echo 'Parent: '.$parent['lname'].' ('.$parent['desc'].')';
    
   echo '<br />';

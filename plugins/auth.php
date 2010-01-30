@@ -47,4 +47,5 @@ if(isset($_GET['login'])) {
   session_start();
   $_SESSION['notices'][] = 'You have successfully logged out.';
   header('Location: index.php');
+  exit();
 }

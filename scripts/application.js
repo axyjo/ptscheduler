@@ -36,6 +36,7 @@ $(document).ready(function () {
           $("#dialog").dialog('close');
           window.location.reload();
         } else {
+          $('.errors').remove();
           $(".app_form").before(resp);
         }
       }, beforeSubmit: function() {
