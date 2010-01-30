@@ -1,8 +1,12 @@
 <?php
 
 class Template {
-  var $title, $content, $scripts, $debug = NULL;
+  var $title, $content, $scripts, $debug, $site_name = NULL;
 
+  function __construct($site_name) {
+    $this->site_name = $site_name;
+  }
+  
   public function setTitle($str) {
     $this->title = $str;
   }
@@ -24,7 +28,7 @@ class Template {
       <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
       <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
       <head>
-      <title>Meeting Scheduler | '.$this->title.'</title>
+      <title>'.$this->title.' | '.$this->site_name.'</title>
       <meta http-equiv="content-type" content="text/html; charset=utf-8" />
       <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/grid.css"  />
       <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/application.css" />
@@ -38,7 +42,7 @@ class Template {
       <body>
       <div class="container_12">
       <div class="alpha omega" id="header">
-	      <h2><a href="index.php" title="Home">ACS Conference Scheduler</a></h2>
+	      <h2><a href="index.php" title="Home">'.$this->site_name.'</a></h2>
       </div>
       <div id="textos">
     ';

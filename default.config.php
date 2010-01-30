@@ -9,6 +9,10 @@ $admins['admin'] = TRUE;
 $teachers['teacher1'] = TRUE;
 $teachers['teacher2'] = TRUE;
 
+// Change this to the name of the site that will appear in the header section
+// of each page.
+$site_name = 'Parent Teacher Scheduler';
+
 // Change this to the absolute path to the directory of this installation. Do
 // not modify or uncomment if you aren't sure what this setting does.
 // $base_path = __DIR__;

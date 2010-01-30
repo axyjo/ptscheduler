@@ -8,18 +8,20 @@ $auth = array();
 // This isn't __DIR__ because it isn't supported in PHP < 5.3.0
 $base_path = dirname(__FILE__);
 
+require('config.php');
+
 // Check for the template engine before attemptig to load it.
 if(!file_exists($base_path.'/plugins/template.php')) {
   echo 'The template engine does not exist. Please redownload this application.';
   exit();
 } else {
   require($base_path.'/plugins/template.php');
-  $template = new Template();
+  $template = new Template($site_name);
 }
 
 // Check for all of the other required files without reverting to PHP's default
 // white page of errors.
-$required_files = array($base_path.'/config.php', $base_path.'/plugins/session.php', $base_path.'/plugins/db.php', $base_path.'/plugins/time.php');
+$required_files = array($base_path.'/plugins/session.php', $base_path.'/plugins/db.php', $base_path.'/plugins/time.php');
 $return = '<div class="error"><ul>';
 $stop = FALSE;
 foreach($required_files as $file) {
