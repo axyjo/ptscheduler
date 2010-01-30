@@ -1,5 +1,14 @@
 <?php
 
+/* To use this authentication method, set at least the following parameters
+ * in config.php:
+ * $auth['ldap'] = array(
+ *   'host' => '',
+ *   'port' => NULL,
+ *   'basedn' => '',
+ * );
+ */
+
 function authenticate($user, $pass, $params) {
   global $dbHandle;
   $ds = ldap_connect($params['host'], $params['port']);
