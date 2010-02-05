@@ -1,3 +1,13 @@
+==Information==
+
+PTScheduler is a web-based scheduling application that allows parents, teachers
+and administrators to schedule appointments for a parent-teacher conference
+without the need to fill out forms or call in. It is intended to minimize the
+amount of input needed by a school secretary into the data system of the
+school.
+
+==Licensing==
+
 This program is licensed under the terms of the MIT License. Please see the
 LICENSE file for the terms.
 
@@ -20,7 +30,8 @@ constraints.
 in config.php to match your settings.
  
  4. Change permissions on the config.php file so that all write privileges have
-been revoked.
+been revoked. Leaving write privileges on this file is a security vulnerability
+as users may be able to deface your site.
 
-If using an sqlite database, please ensure that the webserver user has write
+If using an sqlite database, please ensure that the web server user has write
 privileges on the database file.
