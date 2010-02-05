@@ -55,6 +55,6 @@ create_user_record(-1, '_break', 'Scheduled', 'Break', 'a@example.com', USER_PAR
 $return .= '<li>Created break user</li>';
 
 $return .= '</ul>';
-$template->set_content($return);
+$template->setContent($return);
 $template->render();
 $dbHandle = NULL;
