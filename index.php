@@ -40,8 +40,8 @@ foreach($required_files as $file) {
 }
 if($stop) {
   $return .= '</ul></div>';
-  $template->set_title('Error: files not found');
-  $template->set_content($return);
+  $template->setTitle('Error: files not found');
+  $template->setContent($return);
   $template->render();
   exit();
 } else {
