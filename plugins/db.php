@@ -4,8 +4,11 @@
 try{
   $dbHandle = new PDO($db_url);
   $dbHandle->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); 
-} catch( PDOException $exception ){
-  die($exception->getMessage());
+} catch(PDOException $exception){
+  $template->setTitle('Database error occured');
+  $template->setContent($exception->getMessage());
+  $template->render();
+  exit();
 }
 
 function getAllAdmins() {
