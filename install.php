@@ -19,23 +19,27 @@ $params = $auth[$method];
 include($base_path.'/plugins/'.$method.'.auth.php');
 $return = '<ul>';
 
-$dbHandle->exec('DROP TABLE IF EXISTS users');
-$return .= '<li>Deleted table <code>users</code>.</li>';
+try {
+  $dbHandle->exec('DROP TABLE IF EXISTS users');
+  $return .= '<li>Deleted table <code>users</code>.</li>';
 
-$res = $dbHandle->query('SELECT name FROM sqlite_master WHERE type="table" AND name="appointments"');
-if ($res->fetch()) {
-  $new_name = 'appointments_'.time();
-  $dbHandle->exec('ALTER TABLE appointments RENAME TO '.$new_name);
-  $return .= '<li>Renamed existing table <code>appointments</code> to <code>'.$new_name.'</code>.</li>';
+  $res = $dbHandle->query('SELECT name FROM sqlite_master WHERE type="table" AND name="appointments"');
+  if ($res->fetch()) {
+    $new_name = 'appointments_'.time();
+    $dbHandle->exec('ALTER TABLE appointments RENAME TO '.$new_name);
+    $return .= '<li>Renamed existing table <code>appointments</code> to <code>'.$new_name.'</code>.</li>';
+  }
+
+  $sqlCreateTable = 'CREATE TABLE users(id INTEGER, uid CHAR(50), fname CHAR(30), lname CHAR(30), email CHAR(200), status INTEGER, desc CHAR(200))';
+  $dbHandle->exec($sqlCreateTable);
+  $return .= '<li>Created table <code>users</code>.</li>';
+
+  $sqlCreateTable = 'CREATE TABLE appointments(id INTEGER PRIMARY KEY AUTOINCREMENT, parent INTEGER, teacher INTEGER, time INTEGER)';
+  $dbHandle->exec($sqlCreateTable);
+  $return .= '<li>Created table <code>appointments</code>.</li>';
+} catch (Exception $e) {
+  $template->throwException($e);
 }
-
-$sqlCreateTable = 'CREATE TABLE users(id INTEGER, uid CHAR(50), fname CHAR(30), lname CHAR(30), email CHAR(200), status INTEGER, desc CHAR(200))';
-$dbHandle->exec($sqlCreateTable);
-$return .= '<li>Created table <code>users</code>.</li>';
-
-$sqlCreateTable = 'CREATE TABLE appointments(id INTEGER PRIMARY KEY AUTOINCREMENT, parent INTEGER, teacher INTEGER, time INTEGER)';
-$dbHandle->exec($sqlCreateTable);
-$return .= '<li>Created table <code>appointments</code>.</li>';
 
 $users = userList($params);
 foreach($users as $id => $user) {
