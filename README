@@ -34,4 +34,5 @@ been revoked. Leaving write privileges on this file is a security vulnerability
 as users may be able to deface your site.
 
 If using an sqlite database, please ensure that the web server user has write
-privileges on the database file.
+privileges on the database file. In additon, the web server user also needs
+write access for the directory that is being used to store the sqlite database.
