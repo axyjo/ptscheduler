@@ -34,6 +34,14 @@ function getAllTeachers() {
   }
 }
 
+function getAllUsers() {
+  getAllParents();
+  getAllTeachers();
+  global $parents;
+  global $teachers;
+  return $teachers + $parents;
+}
+
 function getAllParents() {
   global $parents;
   global $dbHandle;

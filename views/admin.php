@@ -4,7 +4,7 @@ $template->setTitle('Viewing Admin Page');
 $template->addScript('');
 
 $return = '<br /><strong>Currently logged in as: </strong>'. $_SESSION['username'].'. Click <a href="index.php?logout">here</a> to logout.';
-$return .= '<br />Click <a href="index.php?list">here</a> to view appointments in terms of each parent.';
+$return .= '<br />Click <a href="index.php?list">here</a> to view appointments in terms of each user (teachers and parents).';
 
 $return .= '<h3>Instructions:</h3>';
 
