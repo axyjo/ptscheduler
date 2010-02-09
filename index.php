@@ -14,7 +14,7 @@ if(!file_exists($base_path.'/plugins/template.php')) {
   exit();
 } else {
   require($base_path.'/plugins/template.php');
-  $template = new Template($site_name);
+  $template = new Template();
 }
 
 // Check for configuration file before attempting to load it
@@ -25,6 +25,8 @@ if(!file_exists($base_path.'/config.php')) {
   exit();
 } else {
   require($base_path.'/config.php');
+  // Set site title now since it wasn't available before.
+  $template->setSiteName($site_name);
 }
 
 // Check for all of the other required files without reverting to PHP's default

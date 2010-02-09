@@ -3,7 +3,7 @@
 class Template {
   var $title, $content, $scripts, $debug, $site_name = NULL;
 
-  function __construct($site_name) {
+  function setSiteName($site_name) {
     $this->site_name = $site_name;
   }
   
