@@ -57,7 +57,9 @@ $timezone_offset = (int)date('Z');
 // your chosen method if there are any. The documentation for that method
 // should help you determine what settings need to be changed. By default, the
 // 'test' authentication method is enabled.
-$auth['test'] = array();
+$auth[] = array(
+  'method' => 'test',
+);
 
 // Set the following variable to a PDO compliant path. Defaults to an sqlite3
 // database within the current directory.
