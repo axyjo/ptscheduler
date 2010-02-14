@@ -2,6 +2,20 @@
 
 class Template {
   var $title, $content, $scripts, $debug, $site_name = NULL;
+  static $instance;
+
+  // Enforce the singleton class pattern to ensure a single instance.
+
+  private function __construct() {}
+
+  private function __clone() {}
+
+  public function getInstance() {
+    if(!self::$instance) {
+      self::$instance = new Template();
+    }
+    return self::$instance;
+  }
 
   public function setSiteName($site_name) {
     $this->site_name = $site_name;

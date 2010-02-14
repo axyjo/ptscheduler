@@ -14,7 +14,7 @@ if(!file_exists($base_path.'/plugins/template.php')) {
   exit();
 } else {
   require($base_path.'/plugins/template.php');
-  $template = new Template();
+  $template = Template::getInstance();
 }
 
 // Check for configuration file before attempting to load it
