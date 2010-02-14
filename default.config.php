@@ -31,7 +31,8 @@ $date_boundaries[''] = TRUE;
 // in your local timezone in seconds since midnight. These values default to
 // 8:00 AM and 4:30 PM. Additionally, change the $time_increments variable to
 // reflect the length of a meeting in seconds. $time_increments defaults to
-// 15 minutes.
+// 15 minutes. However, columns on the scheduling page only split when the
+// minutes are at 00.
 $time_boundaries['start'] = (8*60*60);
 $time_boundaries['end'] = (16*60*60) + (30*60);
 $time_increments = (15*60);
@@ -43,7 +44,7 @@ $time_increments = (15*60);
 $parent_restrict = 0;
 $teacher_restrict = 0;
 
-// Chane the following to modify the format in which dates are displayed when
+// Change the following to modify the format in which dates are displayed when
 // creating, updating or deleting appointments. This setting does not impact
 // the format of the dates on the home page.
 // @see http://www.php.net/manual/en/function.date.php
