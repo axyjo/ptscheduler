@@ -31,15 +31,15 @@ function getUserId($username) {
 function userList($params) {
   $ds = ldap_connect($params['host'], $params['port']);
   ldap_set_option($ds, LDAP_OPT_PROTOCOL_VERSION, 3);
-	$r = ldap_search($ds, $params['basedn'], 'uid=*');
-	$result = ldap_get_entries($ds, $r);
+  $r = ldap_search($ds, $params['basedn'], 'uid=*');
+  $result = ldap_get_entries($ds, $r);
   $list = array();
-	foreach($result as $entity) {
-	  //validate user data
-	  if (checkList($entity)) {
-	    //add processors here
-	    $entity['description'][0] = changeDesc(@$entity['description'][0]);
-      //build
+  foreach($result as $entity) {
+    // Check to make sure that the entity is valid before continuing.
+    if (checkList($entity)) {
+      // Process and modify the description according to the function.
+      $entity['description'][0] = changeDesc(@$entity['description'][0]);
+      // Build the final array entry.
       $list[$entity['uidnumber'][0]] = array(
         'uid' => $entity['uid'][0],
         'fname' => $entity['givenname'][0],
@@ -64,16 +64,18 @@ function checkList($e) {
 }
 
 function changeDesc($str = null) {
-  //check for numeric or nulls or none
+  // Check for null values, numeric values or the literal 'none'.
   if (is_null($str) || is_numeric($str) || $str == 'none') return null;
-  //check for old style descs where a semicolon separator was used for more than one child
+  // Check for the old style descriptions where a semicolon separator was used
+  // for more than one child.
   if (strstr($str, ';')) return null;
-  //check for old style descs where desc had 'Family Account with'
+  // Check for old style descriptions where desc had 'Family Account with'.
   if (strstr($str, 'Family Account with')) return null;
-  //clean up before applying performance-heavy regex
+  // Clean up before applying performance-heavy regular expressions.
   $str = str_replace('Family account of ', '', $str);
   $str = str_replace(' in the class of ', '', $str);
-  //apply some regex to get only the student name. basically, at this point, get letters and space only.
+  // Apply a regular expression to get only the student name. Basically, at this
+  // point, get letters and space only.
   $arr = array();
   preg_match('/^[A-Za-z\s]*/', $str, $arr);
   return $arr[0];
