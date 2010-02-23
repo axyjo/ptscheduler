@@ -40,7 +40,7 @@ try {
   $template->throwException($e);
 }
 
-$users = userList($params);
+$users = userList($auth[0]);
 foreach($users as $id => $user) {
   //deny by default
   $status = USER_FORBIDDEN;
