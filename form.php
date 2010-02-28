@@ -87,7 +87,7 @@ function addNotice($tid, $pid, $time) {
 
 function deleteAppointment($tid, $pid, $time) {
   global $dbHandle;
-  $stmt = $dbHandle->prepare('DELETE FROM appointments WHERE `parent` = :parent AND `teacher` = :teacher AND `time` = :time)');
+  $stmt = $dbHandle->prepare('DELETE FROM appointments WHERE `parent` = :parent AND `teacher` = :teacher AND `time` = :time');
   $stmt->bindParam(':parent', $pid, PDO::PARAM_INT);
   $stmt->bindParam(':teacher', $tid, PDO::PARAM_INT);
   $stmt->bindParam(':time', $time, PDO::PARAM_INT);
