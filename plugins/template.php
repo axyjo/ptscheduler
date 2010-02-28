@@ -81,7 +81,7 @@ class Template {
     $return = '
       <div id="dialog"></div>
       </div>
-      <small>&copy; 2009-2010 <a href="http://akshayjoshi.com">Akshay Joshi</a>. Licensed under the <a href="http://creativecommons.org/licenses/MIT/">MIT License</a>.'.$debug_msg.'</small>
+      <div id="copy">&copy; 2009-2010 <a href="http://akshayjoshi.com">Akshay Joshi</a>. Licensed under the <a href="http://creativecommons.org/licenses/MIT/">MIT License</a>.'.$debug_msg.'</div>
       </div>
       </body>
       </html>';

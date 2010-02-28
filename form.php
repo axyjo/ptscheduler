@@ -36,11 +36,14 @@ if(isset($_POST['hash'])) {
   $count_query = 'SELECT COUNT(*) FROM appointments WHERE `teacher`= '.$teacher_id.' AND `time` >= '.$time.' AND `time` < '.$end;
   $parent_query = 'SELECT `parent` FROM appointments WHERE `teacher`= '.$teacher_id.' AND `time` >= '.$time.' AND `time` < '.$end;
 
+  $current_parents = array();
   try {
     $result = $dbHandle->query($parent_query);
-    $current_parents = $result->fetchAll();
+    $arr = $result->fetchAll();
+    foreach($arr as $parent) {
+      $current_parents[$parent[0]] = $parent[0];
+    }
   } catch (Exception $e) {
-    $current_parents = array();
   }
 
   try {
@@ -51,8 +54,10 @@ if(isset($_POST['hash'])) {
     $count = 0;
   }
 
-  if($count < $simultaneous_appointments && !isset($current_parents[-1]) && !isset($current_parents[$user_id])) {
-    include('add.php');
+  if($count < $simultaneous_appointments) {
+    if(!isset($current_parents[-1]) && !isset($current_parents[$user_id])) {
+      include('add.php');
+    }
   }
 
   if($count > 0) {
