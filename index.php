@@ -86,11 +86,8 @@ if($user_access == USER_FORBIDDEN) {
 } else {  
   if(isset($_GET['logout'])) {
     include($base_path.'/plugins/auth.php');
-  } elseif(isset($_GET['form'])) {
+  } elseif(isset($_GET['add']) || isset($_GET['delete']) || isset($_GET['form']) ) {
     include($base_path.'/form.php');
-    exit;
-  } elseif(isset($_GET['delete'])) {
-    include($base_path.'/delete.php');
     exit;
   } else {
     //this is the home page

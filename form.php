@@ -1,68 +1,58 @@
 <?php
 
 if(isset($_POST['hash'])) {
-  $errors = validate($_POST);
-  if(count($errors) == 0) {
-    addAppointment($_POST['teacher'], $_POST['parent'], $_POST['time']);
-    addNotice($_POST['teacher'], $_POST['parent'], $_POST['time']);
-    echo 'success';
-  } else {
-    echo '<div class="error"><ul>';
-    foreach($errors as $error) {
-      echo '<li>'.$error.'</li>';
+  if(isset($_GET['add'])) {
+    $errors = validateAdd($_POST);
+    if(count($errors) == 0) {
+      addAppointment($_POST['teacher'], $_POST['parent'], $_POST['time']);
+      addNotice($_POST['teacher'], $_POST['parent'], $_POST['time']);
+      echo 'success';
+    } else {
+      echo '<div class="error"><ul>';
+      foreach($errors as $error) {
+        echo '<li>'.$error.'</li>';
+      }
+      echo '</ul></div>';
     }
-    echo '</ul></div>';
+  } elseif(isset($_GET['delete'])) {
+    $errors = validateDelete($_POST);
+    if(count($errors) == 0) {
+      deleteAppointment($_POST['teacher'], $_POST['parent'], $_POST['time']);
+      deleteNotice($_POST['teacher'], $_POST['parent'], $_POST['time']);
+      echo 'success';
+    } else {
+      echo '<div class="error"><ul>';
+      foreach($errors as $error) {
+        echo '<li>'.$error.'</li>';
+      }
+      echo '</ul></div>';
+    }
   }
 } else {
   $teacher_id = $_GET['teacher'];
   $time = $_GET['time'];
-  $end = $time+$time_increments;
-  $sql_query = 'SELECT COUNT(*), `parent` FROM appointments WHERE `teacher`= '.$teacher_id.' AND `time` >= '.$time.' AND `time` < '.$end;
+  $end = $time + $time_increments;
+
+  $count_query = 'SELECT COUNT(*) FROM appointments WHERE `teacher`= '.$teacher_id.' AND `time` >= '.$time.' AND `time` < '.$end;
+  $parent_query = 'SELECT `parent` FROM appointments WHERE `teacher`= '.$teacher_id.' AND `time` >= '.$time.' AND `time` < '.$end;
 
   try {
-    $result = $dbHandle->query($sql_query);
-    $arr = $result->fetch();
+    $result = $dbHandle->query($parent_query);
+    $current_parents = $result->fetchAll();
   } catch (Exception $e) {
-    $arr[0] = 0;
-    $arr[1] = -1;
+    $current_parents = array();
   }
-  $count = $arr[0];
-  $parent = $arr[1];
 
-  if($count < $simultaneous_appointments && $parent != -1) {
-    echo 'Please confirm the scheduling of this appointment:<br />';
-    echo '<form class="app_form" id="appointment" method="post" action="index.php?form">';
-    
-    echo 'Parent: ';
-    echo '<select id="parent" name="parent">';
-    if ($user_access == USER_ADMIN || $user_access == USER_TEACHER) {
-      getAllParents();  
-    } elseif ($user_access == USER_PARENT) {
-      $parents = array($user_id => getUser($user_id));
-    }
-    foreach($parents as $parent) {
-      echo '<option value="'.$parent['id'].'">'.$parent['lname'].' ('.$parent['desc'].')</option>';
-    }
-    echo '</select>';
-    echo '<br />';
-    
-    echo 'Teacher: ';
-    $sql = 'SELECT * FROM users WHERE id=:s LIMIT 1';
-    $stmt = $dbHandle->prepare($sql);
-    $stmt->bindParam(':s', $teacher_id);
-    $stmt->execute();
-    $row = $stmt->fetch();
-    echo $row['fname'].' '.$row['lname'];
-    echo '<input id="teacher" type="hidden" name="teacher" value="'.$row['id'].'" />';
-    echo '<br />';
-    
-    echo 'Time: '.date($date_format, $time);
-    echo '<input id="time" type="hidden" name="time" value="'.$time.'" />';
-    echo '<br />';
-    
-    echo '<input id="hash" type="hidden" name="hash" value="'.md5($secure_hash.$user_id.$time).'" />';
-    echo '<input type="submit" id="submit" value="Submit" />';
-    echo '</form>';
+  try {
+    $result = $dbHandle->query($count_query);
+    $count = $result->fetch();
+    $count = $count[0];
+  } catch (Exception $e) {
+    $count = 0;
+  }
+
+  if($count < $simultaneous_appointments && !isset($current_parents[-1]) && !isset($current_parents[$user_id])) {
+    include('add.php');
   }
 
   if($count > 0) {
@@ -95,7 +85,32 @@ function addNotice($tid, $pid, $time) {
   }
 }
 
-function validate($post) {
+function deleteAppointment($tid, $pid, $time) {
+  global $dbHandle;
+  $stmt = $dbHandle->prepare('DELETE FROM appointments WHERE `parent` = :parent AND `teacher` = :teacher AND `time` = :time)');
+  $stmt->bindParam(':parent', $pid, PDO::PARAM_INT);
+  $stmt->bindParam(':teacher', $tid, PDO::PARAM_INT);
+  $stmt->bindParam(':time', $time, PDO::PARAM_INT);
+  $stmt->execute();
+  $stmt->closeCursor();
+}
+
+function deleteNotice($tid, $pid, $time) {
+  global $date_format, $user_access;
+  $teacher = getUser($tid);
+  $teacher = $teacher['fname'].' '.$teacher['lname'];
+  $parent = getUser($pid);
+  $parent = $parent['fname'].' '.$parent['lname'];
+  if($user_access == USER_ADMIN) {
+    $_SESSION['notices'][] = 'The appointment between '.$teacher.' and '.$parent.' on '.date($date_format, $time).' has been deleted.';
+  } elseif($user_access == USER_TEACHER) {
+    $_SESSION['notices'][] = 'Your appointment with '.$parent.' on '.date($date_format, $time).' has been deleted.';
+  } elseif($user_access == USER_PARENT) {
+    $_SESSION['notices'][] = 'Your appointment with '.$teacher.' on '.date($date_format, $time).' has been deleted.';
+  }
+}
+
+function validateAdd($post) {
   // Create an empty array to hold the error messages.
   $arrErrors = array();
 
@@ -123,6 +138,28 @@ function validate($post) {
   }
   if(!validateUser($post)) {
     $arrErrors[] = 'You may not schedule appointments for another user.';
+  }
+
+  return $arrErrors;
+}
+
+
+function validateDelete($post) {
+  // Create an empty array to hold the error messages.
+  $arrErrors = array();
+
+  // Each time there's an error, add an error message to the error array.
+  if(!validateHash($post)) {
+    $arrErrors[] = 'The security hash does not match the one in our records. Please try again.';
+  }
+  if($post['teacher']==''||!is_numeric($post['teacher'])) {
+    $arrErrors[] = 'A valid teacher is required.';
+  }
+  if($post['time']=='') {
+    $arrErrors[] = 'A valid time is required.';
+  }
+  if(!validateUser($post)) {
+    $arrErrors[] = 'You may not delete appointments for another user.';
   }
 
   return $arrErrors;
