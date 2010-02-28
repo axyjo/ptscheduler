@@ -50,26 +50,45 @@ $return .= '</strong ></span><br />
   <div id="times_'.$user_id.'">';
 foreach($tabular_times as $minute => $hours_array) {
   foreach($hours_array as $hour => $epoch) {
-    if(isset($appointments[$epoch])) {
-      if($appointments[$epoch]['parent'] == -1) {
-        //break
-        $class = 'yellow';
-        $title = 'Break';
-      } else {
-        //real appointment
-        $class = 'red';
-        $parent = getUser($appointments[$epoch]['parent']);
-        $title = 'Appointment with: '.$parent['fname'].' '.$parent['lname'].' ('.$parent['desc'].')';
-      }
-    } else {
-      //free
+    if(!isset($appointments[$epoch]) || !is_array($appointments[$epoch])) {
+      $appointments[$epoch] = array();
       $class = 'green';
       $title = 'Available';
+      if($simultaneous_appointments > 1) {
+        $title .= ' ('.$simultaneous_appointments.'/'.$simultaneous_appointments.')';
+      }
+    }
+    $count = count($appointments[$epoch]);
+    if($count < $simultaneous_appointments) {
+      foreach($appointments[$epoch] as $appointment) {
+        if($appointment['parent'] == -1) {
+          $class = 'yellow';
+          $title = 'Break';
+          break;
+        }
+        $class = 'green';
+        $title = 'Available';
+        if($simultaneous_appointments > 1) {
+          $title .= ' ('.($simultaneous_appointments-$count).'/'.$simultaneous_appointments.')';
+        }
+      }
+    } else {
+      $class = 'red';
+      $title = 'Appointment with: ';
+      foreach($appointments[$epoch] as $appointment) {
+        $parent = getUser($appointment['parent']);
+        $title .= $parent['lname'].' ('.$parent['desc'].')';
+        if($appointment['parent'] == -1) {
+          $class = 'yellow';
+          $title = 'Break';
+          break;
+        }
+      }
     }
 
     $time = $hour.$minute;
 
-    $return .= '<span title="'.$title.'" class="'.$class.' times grid_1 push_2" id="'.$user_id.'-'.$epoch.'">'.$time.'</span>';
+    $return .= '<span title="'.$title.'" class="'.$class.' times grid_1 push_2" id="'.$teacher['id'].'-'.$epoch.'">'.$time.'</span>';
   }
   $return .= '<br />';
 }

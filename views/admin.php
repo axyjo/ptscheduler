@@ -23,7 +23,7 @@ foreach($teachers as $teacher) {
   $app_res = $dbHandle->query($sql);
   $appointments = array();
   while($result = $app_res->fetch()) {
-    $appointments[$result['time']] = $result;
+    $appointments[$result['time']][] = $result;
   }
 	$return .= '<div id="'.$teacher['id'].'">';
   $return .= '<span class="teacher grid_2"><strong>';
@@ -32,25 +32,40 @@ foreach($teachers as $teacher) {
     <div class="grid_2 throbber" id="throbber_'.$teacher['id'].'"></div>';
   foreach($tabular_times as $minute => $hours_array) {
     foreach($hours_array as $hour => $epoch) {
-      if(isset($appointments[$epoch])) {
-        if($appointments[$epoch]['parent'] == -1) {
-          //break
-          $class = 'yellow';
-          $title = 'Break';
-        } else {
-          if (!is_null($appointments[$epoch]['parent']) && $appointments[$epoch]['parent'] != 0) {//real appointment
-            $class = 'red';
-            $parent = getUser($appointments[$epoch]['parent']);
-            $title = 'Appointment with: '.$parent['fname'].' '.$parent['lname'].' ('.$parent['desc'].')';
-          } else {
-          	$class = 'purple';
-          	$title = 'Appointment with NULL parent';
+      if(!isset($appointments[$epoch]) || !is_array($appointments[$epoch])) {
+        $appointments[$epoch] = array();
+        $class = 'green';
+        $title = 'Available';
+        if($simultaneous_appointments > 1) {
+          $title .= ' ('.$simultaneous_appointments.'/'.$simultaneous_appointments.')';
+        }
+      }
+      $count = count($appointments[$epoch]);
+      if($count < $simultaneous_appointments) {
+        foreach($appointments[$epoch] as $appointment) {
+          if($appointment['parent'] == -1) {
+            $class = 'yellow';
+            $title = 'Break';
+            break;
+          }
+          $class = 'green';
+          $title = 'Available';
+          if($simultaneous_appointments > 1) {
+            $title .= ' ('.($simultaneous_appointments-$count).'/'.$simultaneous_appointments.')';
           }
         }
       } else {
-        //free
-        $class = 'green';
-        $title = 'Available';
+        $class = 'red';
+        $title = 'Appointment with: ';
+        foreach($appointments[$epoch] as $appointment) {
+          $parent = getUser($appointment['parent']);
+          $title .= $parent['lname'].' ('.$parent['desc'].')';
+          if($appointment['parent'] == -1) {
+            $class = 'yellow';
+            $title = 'Break';
+            break;
+          }
+        }
       }
 
       $time = $hour.$minute;

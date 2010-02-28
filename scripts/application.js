@@ -12,42 +12,43 @@ $(document).ready(function () {
       $(this).hide();
       $(this).unbind("ajaxStart ajaxComplete");
     });
-    
+
+    var location = "form";
     if($(this).is(".green")) {
       var title = "Adding new appointment";
-      var location = "form";
     } else {
       var title = "Deleting appointment";
-      var location = "delete";
     }
     
     $.get("index.php?"+location, {teacher: t_id, time: time}, function(data, textStatus) {
-      $("#dialog").html(data);
-      $("#dialog").dialog({
-        modal: true,
-        title: title,
-        width: 450,
-        show: "fade",
-        close: function(ev, ui) {
-          $("#textos").append("<div id=\"dialog\" />");
-        }
-      });
-      $(".app_form").ajaxForm({success: function(resp, stat) {
-        $("#throbber_"+t_id).hide();
-        if (resp=="success") {
-          $("#dialog").dialog('close');
-          window.location.reload();
-        } else {
-          $(".app_form").before(resp);
-          $('.error').slideDown('slow');
-        }
-      }, beforeSubmit: function() {
-        var box = $('.error');
-        box.slideUp('fast', function() {
-          box.remove();
+      if(data != "") {
+        $("#dialog").html(data);
+        $("#dialog").dialog({
+          modal: true,
+          title: title,
+          width: 450,
+          show: "fade",
+          close: function(ev, ui) {
+            $("#textos").append("<div id=\"dialog\" />");
+          }
         });
-        $("#throbber_"+t_id).show();
-      }});
+        $(".app_form").ajaxForm({success: function(resp, stat) {
+          $("#throbber_"+t_id).hide();
+          if (resp=="success") {
+            $("#dialog").dialog('close');
+            window.location.reload();
+          } else {
+            $(".app_form").before(resp);
+            $('.error').slideDown('slow');
+          }
+        }, beforeSubmit: function() {
+          var box = $('.error');
+          box.slideUp('fast', function() {
+            box.remove();
+          });
+          $("#throbber_"+t_id).show();
+        }});
+      }
     });
   });
 });

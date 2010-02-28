@@ -38,7 +38,7 @@ foreach($teachers as $teacher) {
   $app_res = $dbHandle->query($sql);
   $appointments = array();
   while($result = $app_res->fetch()) {
-    $appointments[$result['time']] = $result;
+    $appointments[$result['time']][] = $result;
   }
 	$return .= '<div id="'.$teacher['id'].'">';
   $return .= '<span class="teacher grid_6"><strong>';
@@ -50,13 +50,31 @@ foreach($teachers as $teacher) {
   $template->addScript($script);
   foreach($tabular_times as $minute => $hours_array) {
     foreach($hours_array as $hour => $epoch) {
-      if(isset($appointments[$epoch])) {
-          $class = 'red';
-          $title = 'Unavailable';
-      } else {
-        //free
+      if(!isset($appointments[$epoch]) || !is_array($appointments[$epoch])) {
+        $appointments[$epoch] = array();
         $class = 'green';
         $title = 'Available';
+        if($simultaneous_appointments > 1) {
+          $title .= ' ('.$simultaneous_appointments.'/'.$simultaneous_appointments.')';
+        }
+      }
+      $count = count($appointments[$epoch]);
+      if($count < $simultaneous_appointments) {
+        foreach($appointments[$epoch] as $appointment) {
+          if($appointment['parent'] == -1) {
+            $class = 'red';
+            $title = 'Unavailable';
+            break;
+          }
+          $class = 'green';
+          $title = 'Available';
+          if($simultaneous_appointments > 1) {
+            $title .= ' ('.($simultaneous_appointments-$count).'/'.$simultaneous_appointments.')';
+          }
+        }
+      } else {
+        $class = 'red';
+        $title = 'Unavailable';
       }
 
       $time = $hour.$minute;

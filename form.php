@@ -16,39 +16,58 @@ if(isset($_POST['hash'])) {
 } else {
   $teacher_id = $_GET['teacher'];
   $time = $_GET['time'];
-  echo 'Please confirm the scheduling of this appointment:<br />';
-  echo '<form class="app_form" id="appointment" method="post" action="index.php?form">';
-  
-  echo 'Parent: ';
-  echo '<select id="parent" name="parent">';
-  if ($user_access == USER_ADMIN || $user_access == USER_TEACHER) {
-    getAllParents();  
-  } elseif ($user_access == USER_PARENT) {
-    $parents = array($user_id => getUser($user_id));
+  $end = $time+$time_increments;
+  $sql_query = 'SELECT COUNT(*), `parent` FROM appointments WHERE `teacher`= '.$teacher_id.' AND `time` >= '.$time.' AND `time` < '.$end;
+
+  try {
+    $result = $dbHandle->query($sql_query);
+    $arr = $result->fetch();
+  } catch (Exception $e) {
+    $arr[0] = 0;
+    $arr[1] = -1;
   }
-  foreach($parents as $parent) {
-    echo '<option value="'.$parent['id'].'">'.$parent['lname'].' ('.$parent['desc'].')</option>';
+  $count = $arr[0];
+  $parent = $arr[1];
+
+  if($count < $simultaneous_appointments && $parent != -1) {
+    echo 'Please confirm the scheduling of this appointment:<br />';
+    echo '<form class="app_form" id="appointment" method="post" action="index.php?form">';
+    
+    echo 'Parent: ';
+    echo '<select id="parent" name="parent">';
+    if ($user_access == USER_ADMIN || $user_access == USER_TEACHER) {
+      getAllParents();  
+    } elseif ($user_access == USER_PARENT) {
+      $parents = array($user_id => getUser($user_id));
+    }
+    foreach($parents as $parent) {
+      echo '<option value="'.$parent['id'].'">'.$parent['lname'].' ('.$parent['desc'].')</option>';
+    }
+    echo '</select>';
+    echo '<br />';
+    
+    echo 'Teacher: ';
+    $sql = 'SELECT * FROM users WHERE id=:s LIMIT 1';
+    $stmt = $dbHandle->prepare($sql);
+    $stmt->bindParam(':s', $teacher_id);
+    $stmt->execute();
+    $row = $stmt->fetch();
+    echo $row['fname'].' '.$row['lname'];
+    echo '<input id="teacher" type="hidden" name="teacher" value="'.$row['id'].'" />';
+    echo '<br />';
+    
+    echo 'Time: '.date($date_format, $time);
+    echo '<input id="time" type="hidden" name="time" value="'.$time.'" />';
+    echo '<br />';
+    
+    echo '<input id="hash" type="hidden" name="hash" value="'.md5($secure_hash.$user_id.$time).'" />';
+    echo '<input type="submit" id="submit" value="Submit" />';
+    echo '</form>';
   }
-  echo '</select>';
-  echo '<br />';
-  
-  echo 'Teacher: ';
-  $sql = 'SELECT * FROM users WHERE id=:s LIMIT 1';
-  $stmt = $dbHandle->prepare($sql);
-  $stmt->bindParam(':s', $teacher_id);
-  $stmt->execute();
-  $row = $stmt->fetch();
-  echo $row['fname'].' '.$row['lname'];
-  echo '<input id="teacher" type="hidden" name="teacher" value="'.$row['id'].'" />';
-  echo '<br />';
-  
-  echo 'Time: '.date($date_format, $time);
-  echo '<input id="time" type="hidden" name="time" value="'.$time.'" />';
-  echo '<br />';
-  
-  echo '<input id="hash" type="hidden" name="hash" value="'.md5($secure_hash.$user_id.$time).'" />';
-  echo '<input type="submit" id="submit" value="Submit" />';
-  echo '</form>';
+
+  if($count > 0) {
+    include('delete.php');
+  }
 }
 
 function addAppointment($tid, $pid, $time) {
@@ -96,7 +115,7 @@ function validate($post) {
   if(!isWithinDate($post['time'])) {
     $arrErrors[] = 'An appointment must fall on the designated date.';
   }
-  if(teacherTimeConflicts($post['time'], $post['teacher'])) {
+  if(teacherTimeConflicts($post['time'], $post['teacher'], $post['parent'])) {
     $arrErrors[] = 'This teacher already has another appointment at that time.';
   }
   if(parentTimeConflicts($post['time'], $post['parent'])) {
@@ -136,11 +155,12 @@ function isWithinTime($timestamp=null) {
   return TRUE;
 }
 
-function teacherTimeConflicts($start=null, $teacher=null) {
+function teacherTimeConflicts($start=null, $teacher=null, $parent=NULL) {
   global $time_increments;
   global $dbHandle;
+  global $simultaneous_appointments;
   $end = $start+$time_increments;
-  $sql_query = 'SELECT COUNT(*) FROM appointments WHERE `teacher`= '.$teacher.' AND `time` >= '.$start.' AND `time` < '.$end;
+  $sql_query = 'SELECT COUNT(*) FROM appointments WHERE `parent` = -1 AND `teacher`= '.$teacher.' AND `time` >= '.$start.' AND `time` < '.$end;
   try {
     $result = $dbHandle->query($sql_query);
     $array = $result->fetch();
@@ -148,8 +168,27 @@ function teacherTimeConflicts($start=null, $teacher=null) {
     $array[0] = 0;
   }
 
-  if($array[0] > 0) return TRUE;
-  return FALSE;
+  if($array[0] > 0) {
+    return TRUE;
+  } else {
+    $real_sql_query = 'SELECT COUNT(*) FROM appointments WHERE `teacher`= '.$teacher.' AND `time` >= '.$start.' AND `time` < '.$end;
+    try {
+      $result = $dbHandle->query($real_sql_query);
+      $arr = $result->fetch();
+    } catch (Exception $e) {
+      $arr[0] = 0;
+    }
+
+    if($arr[0] >= $simultaneous_appointments) {
+      return TRUE;
+    } else {
+      if($parent == -1 && $arr[0] > 0) {
+        return TRUE;
+      } else {
+        return FALSE;
+      }
+    }
+  }
 }
 
 function parentTimeConflicts($start=null, $parent=null) {

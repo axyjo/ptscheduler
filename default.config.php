@@ -37,6 +37,10 @@ $time_boundaries['start'] = (8*60*60);
 $time_boundaries['end'] = (16*60*60) + (30*60);
 $time_increments = (15*60);
 
+// Change the following to the number of simultaneous appointments for one
+// teacher. Defaults to one appointment in one time slot.
+$simultaneous_appointments = 1;
+
 // Change the following variables to restrict when parents and teachers can
 // login. Administrators may login at any time. These values are in UNIXTIME
 // format and are in the UTC timezone. This value defaults to no restrictions
