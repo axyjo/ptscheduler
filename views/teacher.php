@@ -38,7 +38,7 @@ $sql = 'SELECT * FROM appointments WHERE teacher='.$user_id;
 $app_res = $dbHandle->query($sql);
 $appointments = array();
 while($result = $app_res->fetch()) {
-  if(!is_array($appointments[$result['time']])) {
+  if(!isset($appointments[$result['time']]) || !is_array($appointments[$result['time']])) {
     $appointments[$result['time']] = array();
   }
   $appointments[$result['time']][] = $result;
