@@ -14,11 +14,13 @@ LICENSE file for the terms.
 ## Server Configuration
 
 PTScheduler requires the following components:
+
 - a web server (Apache 2.0 or similar)
 - PHP 5 (5.2 or greater)
 - a database engine compatible with your PDO installation and its extensions
 
 Optionally, you may want the following components as well:
+
 - PHPUnit installed in PHP's include path for running tests
 - Git for updating the code
 
