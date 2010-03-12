@@ -8,6 +8,7 @@ if(isset($db_url)) {
   } catch(PDOException $exception){
     if(method_exists($template, 'throwException')) {
       $template->throwException($exception);
+      exit();
     } else {
       echo $exception->getMessage();
     }

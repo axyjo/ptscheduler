@@ -33,7 +33,6 @@ class Template {
     $this->setTitle('An error occured');
     $this->setContent($e->getMessage());
     $this->render();
-    exit();
   }
 
   private function renderHeader() {
