@@ -14,26 +14,26 @@ LICENSE file for the terms.
 ## Server Configuration
 
 PTScheduler requires the following components:
- - a web server (Apache 2.0 or similar)
- - PHP 5 (5.2 or greater)
- - a database engine compatible with your PDO installation and its extensions
+- a web server (Apache 2.0 or similar)
+- PHP 5 (5.2 or greater)
+- a database engine compatible with your PDO installation and its extensions
 
 Optionally, you may want the following components as well:
- - PHPUnit installed in PHP's include path for running tests
- - Git for updating the code
+- PHPUnit installed in PHP's include path for running tests
+- Git for updating the code
 
 ## Installation
 
- 1. Copy the default.config.php to config.php.
+1. Copy the default.config.php to config.php.
 
- 2. Change the appropriate settings within the config.php file. These include
+1. Change the appropriate settings within the config.php file. These include
 the security hash, list of teachers and administrators and the date and time
 constraints.
 
- 3. Ensure that a database engine is installed and edit the $db_url variable
+1. Ensure that a database engine is installed and edit the $db_url variable
 in config.php to match your settings.
 
- 4. Change permissions on the config.php file so that all write privileges have
+1. Change permissions on the config.php file so that all write privileges have
 been revoked. Leaving write privileges on this file is a security vulnerability
 as users may be able to deface your site.
 
