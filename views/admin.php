@@ -1,8 +1,6 @@
 <?php
 $template->setTitle('Viewing Admin Page');
 
-$template->addScript('');
-
 $return = '<br /><strong>Currently logged in as: </strong>'. $_SESSION['username'].'. Click <a href="index.php?logout">here</a> to logout.';
 $return .= '<br />Click <a href="index.php?list">here</a> to view appointments in terms of each user (teachers and parents).';
 
@@ -25,7 +23,7 @@ foreach($teachers as $teacher) {
   while($result = $app_res->fetch()) {
     $appointments[$result['time']][] = $result;
   }
-	$return .= '<div id="'.$teacher['id'].'">';
+  $return .= '<div id="'.$teacher['id'].'">';
   $return .= '<span class="teacher grid_2"><strong>';
   $return .= $teacher['fname'].' '.$teacher['lname'];
   $return .= '</strong></span><br />

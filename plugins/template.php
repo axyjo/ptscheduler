@@ -29,10 +29,6 @@ class Template {
     $this->content = $str;
   }
 
-  public function addScript($scr) {
-    $this->scripts .= '<script>$(document).ready(function() {'.$scr.'});</script>';
-  }
-
   public function throwException($e) {
     $this->setTitle('An error occured');
     $this->setContent($e->getMessage());

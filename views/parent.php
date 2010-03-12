@@ -40,14 +40,12 @@ foreach($teachers as $teacher) {
   while($result = $app_res->fetch()) {
     $appointments[$result['time']][] = $result;
   }
-	$return .= '<div id="'.$teacher['id'].'">';
+  $return .= '<div id="'.$teacher['id'].'">';
   $return .= '<span class="teacher grid_6"><strong>';
   $return .= $teacher['fname'].' '.$teacher['lname'];
-  $return .= '</strong > - <a id="link_'.$teacher['id'].'">Click here to view available appointments</a></span><br />
+  $return .= '</strong > - <a id="link_'.$teacher['id'].'" onclick=\'$("#times_'.$teacher['id'].'").slideToggle();\'>Click here to view available appointments</a></span><br />
     <div class="grid_2 throbber" id="throbber_'.$teacher['id'].'"></div>
     <div style="display:none;" id="times_'.$teacher['id'].'">';
-  $script = '$("#link_'.$teacher['id'].'").click(function() { $("#times_'.$teacher['id'].'").toggle(); });';
-  $template->addScript($script);
   foreach($tabular_times as $minute => $hours_array) {
     foreach($hours_array as $hour => $epoch) {
       if(!isset($appointments[$epoch]) || !is_array($appointments[$epoch])) {
