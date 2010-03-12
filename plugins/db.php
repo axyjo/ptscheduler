@@ -1,11 +1,17 @@
 <?php
 
-// connect to a database with PDO and return a database handle (Object Oriented)
-try{
-  $dbHandle = new PDO($db_url);
-  $dbHandle->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch(PDOException $exception){
-  $template->throwException($exception);
+if(isset($db_url)) {
+  // Connect to a database with PDO and return a database handle.
+  try{
+    $dbHandle = new PDO($db_url);
+    $dbHandle->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  } catch(PDOException $exception){
+    if(method_exists($template, 'throwException')) {
+      $template->throwException($exception);
+    } else {
+      echo $exception->getMessage();
+    }
+  }
 }
 
 function getAllAdmins() {
