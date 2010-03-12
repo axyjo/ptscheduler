@@ -1,13 +1,8 @@
-/* SITE THEME DEVELOPED BY FERNANDO LUCAS SANTOS, http://www.devixdesign.com/ - AVAILABLE PUBLICLY AT OSWD.com */
-
-/* NOTE: Anything after a "_" is a special tag for Internet Explorer. As it does not recognize all of the CSS tags created by the W3C, a few hacks had to be used to get the site looking right on it */
-
 body {
   margin: 0;
   padding: 5px;
   background-color:#2f5c24;
   background-image: url(../images/overlay-blocks.png);
-  _text-align: center;
 }
 
 p {
@@ -41,7 +36,6 @@ div#content {
   font-size: 12px;
   height: auto;
   min-height: 100px;
-/*  float: left;*/
   position: static;
   line-height: 20px;
   background-color:#FFFFFF;
@@ -50,10 +44,6 @@ div#content {
 div#header {
   position: static;
   width: auto;
-
-  /* IE Instruction */
-  _width: 597px;
-
   padding: 0;
   color:#FFFFFF;
   background-color:#222;
@@ -71,7 +61,7 @@ h2, h2 a {
   font-family: Helvetica, Serifa, sans-serif;
   padding: 32px;
   margin: 0;
-  text-shadow: 0 3px 1px #000;
+  text-shadow: 0 5px 1px #000;
 }
 
 /* ARTICLE TITLES */
@@ -88,10 +78,6 @@ h1 {
   margin-left: 14px;
   margin-top: 10px;
   max-width: 345px;
-
-  /* IE Instruction */
-  _width: 245px;
-
   text-align: left;
   font-weight: normal;
   text-shadow: 0 1px 5px #ADADAD;
@@ -104,11 +90,6 @@ h1 span {
   font-family: arial;
   font-variant: small-caps;
   letter-spacing: 2px;
-
-  /* IE Instruction */
-  _letter-spacing: -1px;
-  _margin-left: -3px;
-
   text-align: right;
   text-shadow: none;
 }
@@ -118,29 +99,20 @@ h1 span {
 
 ul {
   width: auto;
-
-  /* IE Instruction */
-  _width: 597px;
-
   margin: 0;
   padding: 6px;
   position: relative;
-  /* background-color:#6CAA33; */
-  /* background-color: #3B6431; */
   display: block;
 
   /* MENU FONT */
   font-family: Helvetica, Geneva, sans-serif;
   font-weight: 300;
   font-size: 12px;
-  /* color:#FFFFFF; */
 }
 
 li {
-  /* display: inline; */
   margin: 0;
   list-style: none;
-  /* padding: 6px; */
 }
 
 li a:link, li a:visited
@@ -176,30 +148,6 @@ div#content a:link:hover
 
 #copy a {
   color: #333;
-}
-
-/* IMAGES */
-img.left {
-  float: left;
-  position: relative;
-  margin: 5px 5px 0 0;
-  padding: 3px;
-  background-color:#FEFFF3;
-  border: 1px solid #DFF5D7;
-}
-
-img.right {
-  float: right;
-  position: relative;
-  margin: 5px 0 0 5px;
-  padding: 3px;
-  background-color:#FEFFF3;
-  border: 1px solid #A6DF8F;
-}
-
-img:hover, img.over {
-  background-color:#C6EDB6;
-  border: 1px solid #7ACC59;
 }
 
 #appointment {
