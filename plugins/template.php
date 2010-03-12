@@ -62,7 +62,7 @@ class Template {
       <div class="alpha omega" id="header">
         <h2><a href="index.php" title="Home">$this->site_name</a></h2>
       </div>
-      <div id="textos">
+      <div id="content">
         <h1>$this->title</h1>
 
 EOT;

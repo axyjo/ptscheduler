@@ -32,7 +32,7 @@ div {
   height: auto;
 }
 
-div#textos {
+div#content {
   padding: 8px;
   margin: 0 auto 0 auto;
   text-align: justify;
@@ -156,7 +156,7 @@ li a:link:hover, li a:visited:hover
   color: white;
 }
 
-div#textos a:link, div#textos a:visited
+div#content a:link, div#content a:visited
 {
   color:#444;
   border-bottom: 1px dotted #5E952C;
@@ -166,7 +166,7 @@ div#textos a:link, div#textos a:visited
   padding: 2px;
 }
 
-div#textos a:link:hover
+div#content a:link:hover
 {
   color:#000;
   background-color:#E3F7DA;
