@@ -25,10 +25,6 @@ class Template {
     $this->title = $str;
   }
 
-  public function addParagraph($str) {
-    $this->content .= '<p>'.$str.'</p>';
-  }
-
   public function setContent($str) {
     $this->content = $str;
   }
