@@ -20,7 +20,7 @@ class Template {
   public function setSiteName($site_name) {
     $this->site_name = $site_name;
   }
-  
+
   public function setTitle($str) {
     $this->title = $str;
   }
@@ -87,11 +87,11 @@ class Template {
       </html>';
     return $return;
   }
-  
+
   public function setDebugInfo($debug) {
     $this->debug = $debug;
   }
-  
+
   private function processMessages() {
     $return = '';
     if(isset($_SESSION['notices']) && is_array($_SESSION['notices']) && count($_SESSION['notices']) != 0) {
@@ -109,7 +109,7 @@ class Template {
       }
       unset($_SESSION['errors']);
       $return .= '</ul></div>';
-    }    
+    }
     return $return;
   }
 

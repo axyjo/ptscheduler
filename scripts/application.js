@@ -19,7 +19,7 @@ $(document).ready(function () {
     } else {
       var title = "Deleting appointment";
     }
-    
+
     $.get("index.php?"+location, {teacher: t_id, time: time}, function(data, textStatus) {
       if(data != "") {
         $("#dialog").html(data);

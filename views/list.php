@@ -28,7 +28,7 @@ if(!isset($_GET['user'])) {
       $return .= date($date_format, $result['time']).' - '.$users[$result['teacher']]['fname'].' '.$users[$result['teacher']]['lname'];
     } else {
       // This user is a teacher.
-      $return .= date($date_format, $result['time']).' - '.$users[$result['parent']]['fname'].' '.$users[$result['parent']]['lname'];      
+      $return .= date($date_format, $result['time']).' - '.$users[$result['parent']]['fname'].' '.$users[$result['parent']]['lname'];
     }
     $return .= '<br />';
   }

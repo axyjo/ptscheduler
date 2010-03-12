@@ -3,7 +3,7 @@
 // connect to a database with PDO and return a database handle (Object Oriented)
 try{
   $dbHandle = new PDO($db_url);
-  $dbHandle->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); 
+  $dbHandle->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch(PDOException $exception){
   $template->throwException($exception);
 }

@@ -83,7 +83,7 @@ if($user_access == USER_FORBIDDEN) {
   } else {
     include($base_path.'/views/login.php');
   }
-} else {  
+} else {
   if(isset($_GET['logout'])) {
     include($base_path.'/plugins/auth.php');
   } elseif(isset($_GET['add']) || isset($_GET['delete']) || isset($_GET['form']) ) {

@@ -6,7 +6,7 @@ echo '<form class="app_form" id="appointment" method="post" action="index.php?ad
 echo 'Parent: ';
 echo '<select id="parent" name="parent">';
 if ($user_access == USER_ADMIN || $user_access == USER_TEACHER) {
-  getAllParents();  
+  getAllParents();
 } elseif ($user_access == USER_PARENT) {
   $parents = array($user_id => getUser($user_id));
 }

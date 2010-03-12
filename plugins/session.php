@@ -19,7 +19,7 @@ if(isset($_SESSION['auth']) && $_SESSION['auth'] != md5($_SESSION['username'].$s
   session_start();
   $_SESSION['errors'][] = 'Invalid session. Please login again.';
   header('Location: index.php?login');
-} 
+}
 
 if(!isset($_SESSION['user_access'])) {
   $_SESSION['user_access'] = USER_FORBIDDEN;

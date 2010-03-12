@@ -276,18 +276,18 @@ div.spacer {
 /* Errors */
 
 div.error, div.notice {
-  padding:10px;   
-  font-weight:bold;  
+  padding:10px;
+  font-weight:bold;
   margin-top: 10px;
   display: none;
 }
 
 div.error {
-  background: #eccecf;  
-  border:2px solid #9e0b0f;  
+  background: #eccecf;
+  border:2px solid #9e0b0f;
 }
 
 div.notice {
-  background: #e5f2be;   
-  border:2px solid #bedf5d;   
-}  
+  background: #e5f2be;
+  border:2px solid #bedf5d;
+}

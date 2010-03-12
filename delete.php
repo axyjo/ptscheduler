@@ -7,14 +7,14 @@ $sql_query = 'SELECT * FROM appointments WHERE `teacher`= '.$teacher_id.' AND `t
 if($user_access == USER_PARENT) {
   $sql_query .= ' AND `parent` = '.$user_id;
 }
-  
+
 try {
   $result = $dbHandle->query($sql_query);
   $array = $result->fetchAll();
 } catch (Exception $e) {
   $array = null;
 }
-  
+
 if(count($array) > 0) {
   echo 'Please confirm the deletion of this appointment:<br />';
 } else {
@@ -27,7 +27,7 @@ foreach($array as $appointment) {
   } else {
     $parent = array('lname' => 'NULL', 'desc' => 'NULL');
   }
-  
+
   if($user_access == USER_PARENT && $appointment['parent'] != $user_id) {
     break;
   }
@@ -56,7 +56,7 @@ foreach($array as $appointment) {
   if($appointment['parent'] == 0) $appointment['parent'] = '';
 
   echo '<input id="hash" type="hidden" name="hash" value="'.md5($secure_hash.$user_id.$time).'  " />';
-  
+
   echo '<input type="submit" id="submit" value="Delete" />';
   echo '</form>';
 }

@@ -3,7 +3,7 @@
 if(isset($_GET['login'])) {
   $username = @$_POST['user'];
   $password = @$_POST['pass'];
-  
+
   foreach($auth as $method) {
     // Load the desired authentication module.
     require_once($method['method'].'.auth.php');
@@ -37,14 +37,14 @@ if(isset($_GET['login'])) {
       unset($_SESSION['auth']);
       unset($_SESSION['username']);
     }
-  
+
     if($_SESSION['user_access'] != USER_FORBIDDEN) {
       $_SESSION['user_id'] = getUserId($username);
       $_SESSION['notices'][] = 'Successfully logged in as '.$username;
       break;
     }
   }
-  
+
   header('Location: index.php');
   exit();
 
