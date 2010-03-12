@@ -1,4 +1,4 @@
-==Information==
+## Information
 
 PTScheduler is a web-based scheduling application that allows parents, teachers
 and administrators to schedule appointments for a parent-teacher conference
@@ -6,12 +6,12 @@ without the need to fill out forms or call in. It is intended to minimize the
 amount of input needed by a school secretary into the data system of the
 school.
 
-==Licensing==
+## Licensing
 
 This program is licensed under the terms of the MIT License. Please see the
 LICENSE file for the terms.
 
-==Server Configuration==
+## Server Configuration
 
 PTScheduler requires the following components:
  - a web server (Apache 2.0 or similar)
@@ -22,7 +22,7 @@ Optionally, you may want the following components as well:
  - PHPUnit installed in PHP's include path for running tests
  - Git for updating the code
 
-==Installation==
+## Installation
 
  1. Copy the default.config.php to config.php.
 
