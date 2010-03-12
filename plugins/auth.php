@@ -12,7 +12,7 @@ if(isset($_GET['login'])) {
     // if there is more than one authentication method enabled.
     $_SESSION['errors'] = array();
 
-    if ($username && $password && authenticate($username, $password, $method)) {
+    if ($username && $password && $auth->authenticate($username, $password)) {
       $_SESSION['auth'] = md5($username.$secure_hash);
       $_SESSION['username'] = $username;
       getAllAdmins();
@@ -55,4 +55,23 @@ if(isset($_GET['login'])) {
   $_SESSION['notices'][] = 'You have successfully logged out.';
   header('Location: index.php');
   exit();
+}
+
+abstract class Authentication {
+  var $dbHandle, $params;
+
+  abstract public function authenticate($user, $pass);
+  abstract public function userList();
+
+  public function __construct($dbHandle, $params) {
+    $this->dbHandle = $dbHandle;
+    $this->params = $params;
+  }
+
+  function getUserId($username) {
+    $sql = 'SELECT * FROM users WHERE uid = "'.strtolower($username).'"';
+    $res = $this->dbHandle->query($sql);
+    $arr = $this->dbHandle->fetch();
+    return (int)$arr['id'];
+  }
 }
