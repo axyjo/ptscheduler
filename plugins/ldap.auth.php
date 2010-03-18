@@ -11,7 +11,7 @@
 
 class LdapAuth extends Authentication {
 
-  function authenticate($user, $pass) {
+  public function authenticate($user, $pass) {
     $ds = ldap_connect($this->params['host'], $this->params['port']);
     ldap_set_option($ds, LDAP_OPT_PROTOCOL_VERSION, 3);
     if (@ldap_bind($ds, 'uid='.$user.',cn=users,'.$this->params['basedn'], $pass)) {
@@ -21,9 +21,7 @@ class LdapAuth extends Authentication {
     }
   }
 
-
-
-  function userList() {
+  public function userList() {
     $ds = ldap_connect($this->params['host'], $this->params['port']);
     ldap_set_option($ds, LDAP_OPT_PROTOCOL_VERSION, 3);
     $r = ldap_search($ds, $this->params['basedn'], 'uid=*');
