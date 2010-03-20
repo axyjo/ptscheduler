@@ -15,6 +15,8 @@ function create_user_record($id, $uid, $fname, $lname, $email, $status, $desc = 
 }
 
 // Choose the first authentication method as the primary method.
+$method = $auth[0];
+require_once($base_path.'/plugins/auth.php');
 require_once($base_path.'/plugins/'.$auth[0]['method'].'.auth.php');
 $return = '<ul>';
 
@@ -40,7 +42,7 @@ try {
   $template->throwException($e);
 }
 
-$users = userList($auth[0]);
+$users = $authHandle->userList();
 foreach($users as $id => $user) {
   //deny by default
   $status = USER_FORBIDDEN;

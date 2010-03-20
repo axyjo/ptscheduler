@@ -44,7 +44,7 @@ class LdapAuth extends Authentication {
     return $list;
   }
 
-  function checkList($e) {
+  public function checkList($e) {
     if (isset($e['uid'][0]) && isset($e['givenname'][0]) && isset($e['sn'][0])) {
       if ($e['givenname'][0] == 'Family') {
         if(count(preg_grep("/^[A-Za-z]+1[0-3][a-z]?$/", array($e['uid'][0]))) == 0) {
@@ -56,7 +56,7 @@ class LdapAuth extends Authentication {
     return FALSE;
   }
 
-  function changeDesc($str = null) {
+  public function changeDesc($str = null) {
     // Check for null values, numeric values or the literal 'none'.
     if (is_null($str) || is_numeric($str) || $str == 'none') return null;
     // Check for the old style descriptions where a semicolon separator was used
@@ -75,4 +75,4 @@ class LdapAuth extends Authentication {
   }
 }
 
-$auth = new LdapAuth($dbHandle, $method);
+$authHandle = new LdapAuth($dbHandle, $method);

@@ -1,7 +1,7 @@
 <?php
 
 class TestAuth extends Authentication {
-  function authenticate($user, $pass) {
+  public function authenticate($user, $pass) {
     if($user && $pass && $user == $pass) {
       if($user == 'admin' || $user == 'teacher1' || $user == 'teacher2' || $user == 'parent1' || $user == 'parent2') {
         return TRUE;
@@ -10,7 +10,7 @@ class TestAuth extends Authentication {
     return FALSE;
   }
 
-  function userList() {
+  public function userList() {
     $list = array();
     $list[1] = array('uid' => 'admin', 'fname' => 'Admin', 'lname' => 'Istrator', 'email' => 'admin@localhost');
     $list[2] = array('uid' => 'teacher1', 'fname' => 'Teacher', 'lname' => 'One', 'email' => 't1@localhost');
@@ -21,4 +21,4 @@ class TestAuth extends Authentication {
   }
 }
 
-$auth = new TestAuth($dbHandle, $method);
+$authHandle = new TestAuth($dbHandle, $method);
