@@ -2,9 +2,8 @@
 
 define('ROOT', getcwd());
 require_once ROOT.'/plugins/bootstrap.php';
-bootstrap();
 
-// Check for the template engine before attemptig to load it.
+// Check for the template engine before attempting to load it.
 if(!file_exists(ROOT.'/plugins/template.php')) {
   echo 'The template engine does not exist. Please redownload this application.';
   exit();
