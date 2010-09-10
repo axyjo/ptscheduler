@@ -1,7 +1,7 @@
 <?php
 
 define('ROOT', getcwd());
-require_once ROOT.'plugins/bootstrap.php';
+require_once ROOT.'/plugins/bootstrap.php';
 bootstrap();
 
 // Check for the template engine before attemptig to load it.
