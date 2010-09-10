@@ -44,12 +44,13 @@ class Template {
     <title>$this->title | $this->site_name</title>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/grid.css"  />
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/application.css" />
     <link rel="stylesheet" type="text/css" media="print"  href="stylesheets/print.css" />
     <script type="text/javascript" src="scripts/jquery.js"></script>
     <script type="text/javascript" src="scripts/jquery-ui.js"></script>
     <script type="text/javascript" src="scripts/jquery-form.js"></script>
+    <script type="text/javascript" src="scripts/less.js"></script>
     <script type="text/javascript" src="scripts/application.js"></script>
+    <link rel="stylesheet/less" type="text/css" media="screen" href="stylesheets/application.less" />
     $this->scripts
   </head>
   <body>
