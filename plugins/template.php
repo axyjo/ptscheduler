@@ -68,8 +68,8 @@ EOT;
   private function renderFooter() {
     $debug_msg = '';
     if(is_array($this->debug)) {
-      $mem_peak = $this->debug['mem']['peak']/1024/1024;
-      $time = $this->debug['time']['end'] - $this->debug['time']['start'];
+      $mem_peak = round($this->debug['mem']['peak']/1024/1024, 5);
+      $time = round($this->debug['time']['end'] - $this->debug['time']['start'], 5);
       $debug_msg = 'Peak PHP memory usage: '.$mem_peak.' MB. Total request time: '.$time.' s.';
     }
     $return = <<<EOT
