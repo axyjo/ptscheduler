@@ -28,4 +28,4 @@ class TestAuth extends Authentication {
   }
 }
 
-$authHandle = new TestAuth($dbHandle, $method);
+$authHandle = new TestAuth($dbHandle, $auth);

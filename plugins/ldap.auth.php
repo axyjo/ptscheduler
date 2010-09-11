@@ -48,4 +48,4 @@ class LdapAuth extends Authentication {
   }
 }
 
-$authHandle = new LdapAuth($dbHandle, $method);
+$authHandle = new LdapAuth($dbHandle, $auth);
