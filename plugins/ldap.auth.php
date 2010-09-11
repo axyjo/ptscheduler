@@ -30,8 +30,6 @@ class LdapAuth extends Authentication {
     foreach($result as $entity) {
       // Check to make sure that the entity is valid before continuing.
       if (checkList($entity)) {
-        // Process and modify the description according to the function.
-        $entity['description'][0] = changeDesc(@$entity['description'][0]);
         // Build the final array entry.
         $list[$entity['uidnumber'][0]] = array(
           'uid' => $entity['uid'][0],
@@ -54,24 +52,6 @@ class LdapAuth extends Authentication {
       return TRUE;
     }
     return FALSE;
-  }
-
-  public function changeDesc($str = null) {
-    // Check for null values, numeric values or the literal 'none'.
-    if (is_null($str) || is_numeric($str) || $str == 'none') return null;
-    // Check for the old style descriptions where a semicolon separator was used
-    // for more than one child.
-    if (strstr($str, ';')) return null;
-    // Check for old style descriptions where desc had 'Family Account with'.
-    if (strstr($str, 'Family Account with')) return null;
-    // Clean up before applying performance-heavy regular expressions.
-    $str = str_replace('Family account of ', '', $str);
-    $str = str_replace(' in the class of ', '', $str);
-    // Apply a regular expression to get only the student name. Basically, at this
-    // point, get letters and space only.
-    $arr = array();
-    preg_match('/^[A-Za-z\s]*/', $str, $arr);
-    return $arr[0];
   }
 }
 
