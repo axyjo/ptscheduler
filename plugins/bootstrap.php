@@ -1,5 +1,14 @@
 <?php
 
+// This function defines the behaviour for the custom error handler.
+function error_handler($errno, $errstr, $errfile, $errline) {
+  global $template;
+  $template->setTitle('A PHP error occurred.');
+  $template->setContent('<strong>Error:</strong> ' . $errstr . ' in ' . $errfile. ' on line ' . $errline);
+  $template->render();
+  exit();
+}
+
 error_reporting(E_ALL);
 $debug_info = array('time' => array(), 'mem' => array());
 $debug_info['time']['start'] = microtime(TRUE);
@@ -24,6 +33,9 @@ if(!file_exists(ROOT.'/config.php')) {
   // Set site title now since it wasn't available before.
   $template->setSiteName($site_name);
 }
+
+// Now that we've loaded the configuration, set our custom error handler.
+set_error_handler("error_handler");
 
 // Enable verbose error reporting if set.
 if ($debug) {
