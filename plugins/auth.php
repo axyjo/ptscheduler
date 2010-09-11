@@ -1,7 +1,7 @@
 <?php
 
 if(isset($_GET['login'])) {
-  $username = @$_POST['user'];
+  $username = @strtolower(@$_POST['user']);
   $password = @$_POST['pass'];
 
   // Load the desired authentication module.
