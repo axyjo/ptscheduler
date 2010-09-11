@@ -28,31 +28,17 @@ class LdapAuth extends Authentication {
     $result = ldap_get_entries($ds, $r);
     $list = array();
     foreach($result as $entity) {
-      // Check to make sure that the entity is valid before continuing.
-      if (checkList($entity)) {
-        // Build the final array entry.
-        $list[$entity['uidnumber'][0]] = array(
-          'uid' => $entity['uid'][0],
-          'fname' => $entity['givenname'][0],
-          'lname' => $entity['sn'][0],
-          'email' => @$entity['mail'][0],
-          'desc' => @$entity['description'][0]);
-        }
+      // Build the final array entry.
+      $list[$entity['uidnumber'][0]] = array(
+        'uid' => $entity['uid'][0],
+        'fname' => $entity['givenname'][0],
+        'lname' => $entity['sn'][0],
+        'email' => @$entity['mail'][0],
+        'desc' => @$entity['description'][0]);
       }
     return $list;
   }
 
-  public function checkList($e) {
-    if (isset($e['uid'][0]) && isset($e['givenname'][0]) && isset($e['sn'][0])) {
-      if ($e['givenname'][0] == 'Family') {
-        if(count(preg_grep("/^[A-Za-z]+1[0-3][a-z]?$/", array($e['uid'][0]))) == 0) {
-          return FALSE;
-        }
-      }
-      return TRUE;
-    }
-    return FALSE;
-  }
 }
 
 $authHandle = new LdapAuth($dbHandle, $method);
