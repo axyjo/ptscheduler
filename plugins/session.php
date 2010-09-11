@@ -24,4 +24,3 @@ if(isset($_SESSION['auth']) && $_SESSION['auth'] != md5($_SESSION['username'].$s
 if(!isset($_SESSION['user_access'])) {
   $_SESSION['user_access'] = USER_FORBIDDEN;
 }
-$user_access = $_SESSION['user_access'];

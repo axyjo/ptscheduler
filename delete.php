@@ -4,7 +4,7 @@ $teacher_id = $_GET['teacher'];
 $time = $_GET['time'];
 
 $sql_query = 'SELECT * FROM appointments WHERE `teacher`= '.$teacher_id.' AND `time` = '.$time;
-if($user_access == USER_PARENT) {
+if($_SESSION['user_access'] == USER_PARENT) {
   // Restrict what appointments a parent can delete.
   $sql_query .= ' AND `parent` = '.$_SESSION['user_id'];
 }
@@ -29,7 +29,7 @@ foreach($array as $appointment) {
     $parent = array('lname' => 'NULL', 'desc' => 'NULL');
   }
 
-  if($user_access == USER_PARENT && $appointment['parent'] != $_SESSION['user_id']) {
+  if($_SESSION['user_access'] == USER_PARENT && $appointment['parent'] != $_SESSION['user_id']) {
     // A parent is trying to delete an appointment that's not theirs.
     break;
   }

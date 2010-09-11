@@ -86,7 +86,7 @@ try {
   exit;
 }
 
-if($user_access == USER_FORBIDDEN) {
+if($_SESSION['user_access'] == USER_FORBIDDEN) {
   // Send a login screen to unauthenticated users.
   if(isset($_GET['login'])) {
     include(ROOT.'/plugins/auth.php');
@@ -101,15 +101,15 @@ if($user_access == USER_FORBIDDEN) {
     exit;
   } else {
     //this is the home page
-    if ($user_access == USER_ADMIN) {
+    if ($_SESSION['user_access'] == USER_ADMIN) {
       if(isset($_GET['list'])) {
         include(ROOT.'/views/list.php');
       } else {
         include(ROOT.'/views/admin.php');
       }
-    } elseif ($user_access == USER_TEACHER) {
+    } elseif ($_SESSION['user_access'] == USER_TEACHER) {
       include(ROOT.'/views/teacher.php');
-    } elseif ($user_access == USER_PARENT) {
+    } elseif ($_SESSION['user_access'] == USER_PARENT) {
       include(ROOT.'/views/parent.php');
     }
   }

@@ -4,14 +4,14 @@ echo 'Please confirm the scheduling of this appointment:<br />';
 echo '<form class="app_form" id="appointment" method="post" action="index.php?add">';
 
 echo 'Parent: ';
-if ($user_access == USER_ADMIN || $user_access == USER_TEACHER) {
+if ($_SESSION['user_access'] == USER_ADMIN || $_SESSION['user_access'] == USER_TEACHER) {
   getAllParents();
   echo '<select id="parent" name="parent">';
   foreach($parents as $parent) {
     echo '<option value="'.$parent['id'].'">'.$parent['lname'].'</option>';
   }
   echo '</select>';
-} elseif ($user_access == USER_PARENT) {
+} elseif ($_SESSION['user_access'] == USER_PARENT) {
   $parent = getUser($_SESSION['user_id']);
   echo $parent['fname'].' '.$parent['lname'];
   echo '<input id="parent" type="hidden" name="parent" value="'.$parent['id'].'" />';

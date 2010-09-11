@@ -76,16 +76,16 @@ function addAppointment($tid, $pid, $time) {
 }
 
 function addNotice($tid, $pid, $time) {
-  global $date_format, $user_access;
+  global $date_format;
   $teacher = getUser($tid);
   $teacher = $teacher['fname'].' '.$teacher['lname'];
   $parent = getUser($pid);
   $parent = $parent['fname'].' '.$parent['lname'];
-  if($user_access == USER_ADMIN) {
+  if($_SESSION['user_access'] == USER_ADMIN) {
     $_SESSION['notices'][] = 'The appointment between '.$teacher.' and '.$parent.' on '.date($date_format, $time).' has been added.';
-  } elseif($user_access == USER_TEACHER) {
+  } elseif($_SESSION['user_access'] == USER_TEACHER) {
     $_SESSION['notices'][] = 'Your appointment with '.$parent.' on '.date($date_format, $time).' has been added.';
-  } elseif($user_access == USER_PARENT) {
+  } elseif($_SESSION['user_access'] == USER_PARENT) {
     $_SESSION['notices'][] = 'Your appointment with '.$teacher.' on '.date($date_format, $time).' has been added.';
   }
 }
@@ -101,16 +101,16 @@ function deleteAppointment($tid, $pid, $time) {
 }
 
 function deleteNotice($tid, $pid, $time) {
-  global $date_format, $user_access;
+  global $date_format;
   $teacher = getUser($tid);
   $teacher = $teacher['fname'].' '.$teacher['lname'];
   $parent = getUser($pid);
   $parent = $parent['fname'].' '.$parent['lname'];
-  if($user_access == USER_ADMIN) {
+  if($_SESSION['user_access'] == USER_ADMIN) {
     $_SESSION['notices'][] = 'The appointment between '.$teacher.' and '.$parent.' on '.date($date_format, $time).' has been deleted.';
-  } elseif($user_access == USER_TEACHER) {
+  } elseif($_SESSION['user_access'] == USER_TEACHER) {
     $_SESSION['notices'][] = 'Your appointment with '.$parent.' on '.date($date_format, $time).' has been deleted.';
-  } elseif($user_access == USER_PARENT) {
+  } elseif($_SESSION['user_access'] == USER_PARENT) {
     $_SESSION['notices'][] = 'Your appointment with '.$teacher.' on '.date($date_format, $time).' has been deleted.';
   }
 }
@@ -252,10 +252,9 @@ function parentTimeConflicts($start=null, $parent=null) {
 }
 
 function validateUser($post) {
-  global $user_access, $_SESSION['user_id'];
-  if($user_access == USER_PARENT && $post['parent'] != $_SESSION['user_id']) {
+  if($_SESSION['user_access'] == USER_PARENT && $post['parent'] != $_SESSION['user_id']) {
     return FALSE;
-  } elseif($user_access == USER_TEACHER && $post['teacher'] != $_SESSION['user_id']) {
+  } elseif($_SESSION['user_access'] == USER_TEACHER && $post['teacher'] != $_SESSION['user_id']) {
     return FALSE;
   } else {
     return TRUE;
@@ -263,7 +262,7 @@ function validateUser($post) {
 }
 
 function validateHash($post) {
-  global $secure_hash, $_SESSION['user_id'];
+  global $secure_hash;
   if(substr($post['hash'],0,32) == md5($secure_hash.$_SESSION['user_id'].$post['time'])) {
     return TRUE;
   }
