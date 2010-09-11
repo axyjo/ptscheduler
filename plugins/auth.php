@@ -12,14 +12,14 @@ if(isset($_GET['login'])) {
     // if there is more than one authentication method enabled.
     $_SESSION['errors'] = array();
 
-    if ($username && $password && $auth->authenticate($username, $password)) {
+    if ($username && $password && $authHandle->authenticate($username, $password)) {
       $_SESSION['auth'] = md5($username.$secure_hash);
       $_SESSION['username'] = $username;
       getAllAdmins();
       getAllTeachers();
-      if (isset($admins[getUserId($username)])) {
+      if (isset($admins[$authHandle->getUserId($username)])) {
         $_SESSION['user_access'] = USER_ADMIN;
-      } elseif(isset($teachers[getUserId($username)]) && $teacher_restrict < time()) {
+      } elseif(isset($teachers[$authHandle->getUserId($username)]) && $teacher_restrict < time()) {
         $_SESSION['user_access'] = USER_TEACHER;
       } else {
         if($parent_restrict < time()) {
@@ -39,7 +39,7 @@ if(isset($_GET['login'])) {
     }
 
     if($_SESSION['user_access'] != USER_FORBIDDEN) {
-      $_SESSION['user_id'] = getUserId($username);
+      $_SESSION['user_id'] = $authHandle->getUserId($username);
       $_SESSION['notices'][] = 'Successfully logged in as '.$username;
       break;
     }
