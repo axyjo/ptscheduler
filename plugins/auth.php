@@ -15,30 +15,30 @@ if(isset($_GET['login'])) {
     if ($username && $password && $authHandle->authenticate($username, $password)) {
       $_SESSION['auth'] = md5($username.$secure_hash);
       $_SESSION['username'] = $username;
-      getAllAdmins();
-      getAllTeachers();
-      if (isset($admins[$authHandle->getUserId($username)])) {
-        $_SESSION['user_access'] = USER_ADMIN;
-      } elseif(isset($teachers[$authHandle->getUserId($username)]) && $teacher_restrict < time()) {
-        $_SESSION['user_access'] = USER_TEACHER;
+      $id = $authHandle->getUserId($username);
+      $user = getUser($id);
+      if(!$user) {
+        // This should never happen, but check just in case.
+        $user_access = USER_FORBIDDEN;
       } else {
-        if($parent_restrict < time()) {
-          $_SESSION['user_access'] = USER_PARENT;
-        } else {
+        $user_access = $user['status'];
+        // Deny any pre-restriction logins.
+        if (($user_access == USER_TEACHER && $teacher_restrict > time()) || ($user_access == USER_PARENT && $parent_restrict > time())) {
           $_SESSION['errors'][] = 'You are currently not allowed to enter the website.';
-          $_SESSION['user_access'] = USER_FORBIDDEN;
+          $user_access = USER_FORBIDDEN;
         }
       }
     } else {
-      $_SESSION['user_access'] = USER_FORBIDDEN;
+      $user_access = USER_FORBIDDEN;
       $_SESSION['errors'][] = 'Invalid username or password.';
     }
-    if($_SESSION['user_access'] == USER_FORBIDDEN) {
+    if($user_access == USER_FORBIDDEN) {
       unset($_SESSION['auth']);
       unset($_SESSION['username']);
     }
 
-    if($_SESSION['user_access'] != USER_FORBIDDEN) {
+    if($user_access != USER_FORBIDDEN) {
+      $_SESSION['user_access'] = $user_access;
       $_SESSION['user_id'] = $authHandle->getUserId($username);
       $_SESSION['notices'][] = 'Successfully logged in as '.$username;
       break;
