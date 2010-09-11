@@ -1,5 +1,9 @@
 <?php
 
+error_reporting(E_ALL);
+$debug = array('time' => array(), 'mem' => array());
+$debug['time']['start'] = microtime(TRUE);
+
 // Check for the template engine before attempting to load it.
 if(!file_exists(ROOT.'/plugins/template.php')) {
   echo 'The template engine does not exist. Please redownload this application.';
@@ -23,13 +27,9 @@ if(!file_exists(ROOT.'/config.php')) {
 
 // Enable verbose error reporting if set.
 if ($debug) {
-  error_reporting(E_ALL);
   if (!ini_get('display_errors')) {
     ini_set('display_errors', 1);
   }
-  $debug = array('time' => array(), 'mem' => array());
-  $debug['time']['start'] = microtime(TRUE);
-  $debug['mem']['start'] = memory_get_usage();
 } else {
   if (ini_get('display_errors')) {
     ini_set('display_errors', 0);
@@ -57,4 +57,10 @@ if($stop) {
   foreach($required_files as $file) {
     require($file);
   }
+}
+
+if($debug) {
+  $debug['time']['end'] = microtime(TRUE);
+  $debug['mem']['peak'] = memory_get_peak_usage();
+  $template->setDebugInfo($debug);
 }

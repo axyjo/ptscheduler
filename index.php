@@ -41,11 +41,4 @@ if($user_access == USER_FORBIDDEN) {
   }
 }
 
-if($debug) {
-  $debug['time']['end'] = microtime(TRUE);
-  $debug['mem']['end'] = memory_get_usage();
-  $debug['mem']['peak'] = memory_get_peak_usage();
-  $template->setDebugInfo($debug);
-}
-
 $template->render();
