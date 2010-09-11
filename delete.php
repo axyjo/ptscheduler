@@ -5,7 +5,8 @@ $time = $_GET['time'];
 
 $sql_query = 'SELECT * FROM appointments WHERE `teacher`= '.$teacher_id.' AND `time` = '.$time;
 if($user_access == USER_PARENT) {
-  $sql_query .= ' AND `parent` = '.$user_id;
+  // Restrict what appointments a parent can delete.
+  $sql_query .= ' AND `parent` = '.$_SESSION['user_id'];
 }
 
 try {
@@ -28,7 +29,8 @@ foreach($array as $appointment) {
     $parent = array('lname' => 'NULL', 'desc' => 'NULL');
   }
 
-  if($user_access == USER_PARENT && $appointment['parent'] != $user_id) {
+  if($user_access == USER_PARENT && $appointment['parent'] != $_SESSION['user_id']) {
+    // A parent is trying to delete an appointment that's not theirs.
     break;
   }
 
@@ -55,7 +57,7 @@ foreach($array as $appointment) {
   //checking for 0 parent;
   if($appointment['parent'] == 0) $appointment['parent'] = '';
 
-  echo '<input id="hash" type="hidden" name="hash" value="'.md5($secure_hash.$user_id.$time).'  " />';
+  echo '<input id="hash" type="hidden" name="hash" value="'.md5($secure_hash.$_SESSION['user_id'].$time).'  " />';
 
   echo '<input type="submit" id="submit" value="Delete" />';
   echo '</form>';

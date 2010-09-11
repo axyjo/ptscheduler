@@ -25,7 +25,3 @@ if(!isset($_SESSION['user_access'])) {
   $_SESSION['user_access'] = USER_FORBIDDEN;
 }
 $user_access = $_SESSION['user_access'];
-
-if(isset($_SESSION['user_id'])) {
-  $user_id = $_SESSION['user_id'];
-}

@@ -55,7 +55,7 @@ if(isset($_POST['hash'])) {
   }
 
   if($count < $simultaneous_appointments) {
-    if(!isset($current_parents[-1]) && !isset($current_parents[$user_id])) {
+    if(!isset($current_parents[-1]) && !isset($current_parents[$_SESSION['user_id']])) {
       include('add.php');
     }
   }
@@ -252,10 +252,10 @@ function parentTimeConflicts($start=null, $parent=null) {
 }
 
 function validateUser($post) {
-  global $user_access, $user_id;
-  if($user_access == USER_PARENT && $post['parent'] != $user_id) {
+  global $user_access, $_SESSION['user_id'];
+  if($user_access == USER_PARENT && $post['parent'] != $_SESSION['user_id']) {
     return FALSE;
-  } elseif($user_access == USER_TEACHER && $post['teacher'] != $user_id) {
+  } elseif($user_access == USER_TEACHER && $post['teacher'] != $_SESSION['user_id']) {
     return FALSE;
   } else {
     return TRUE;
@@ -263,8 +263,8 @@ function validateUser($post) {
 }
 
 function validateHash($post) {
-  global $secure_hash, $user_id;
-  if(substr($post['hash'],0,32) == md5($secure_hash.$user_id.$post['time'])) {
+  global $secure_hash, $_SESSION['user_id'];
+  if(substr($post['hash'],0,32) == md5($secure_hash.$_SESSION['user_id'].$post['time'])) {
     return TRUE;
   }
   return FALSE;
