@@ -43,9 +43,8 @@ class Template {
   <head>
     <title>$this->title | $this->site_name</title>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <link rel="stylesheet/less" href="stylesheets/grid.less" />
-    <link rel="stylesheet/less" href="stylesheets/print.less" />
-    <link rel="stylesheet/less" href="stylesheets/application.less" />
+    <link rel="stylesheet/less" media="print" href="stylesheets/print.less" />
+    <link rel="stylesheet/less" media="screen" href="stylesheets/application.less" />
     <script type="text/javascript" src="scripts/jquery.js"></script>
     <script type="text/javascript" src="scripts/jquery-ui.js"></script>
     <script type="text/javascript" src="scripts/jquery-form.js"></script>
@@ -54,7 +53,7 @@ class Template {
     $this->scripts
   </head>
   <body>
-    <div class="container_12">
+    <div class="container">
       <div class="alpha omega" id="header">
         <h2><a href="index.php" title="Home">$this->site_name</a></h2>
       </div>

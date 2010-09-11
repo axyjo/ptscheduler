@@ -51,7 +51,7 @@ foreach($tabular_times as $minute => $hours_array) {
 
     $time = $hour.$minute;
 
-    $return .= '<span title="'.$title.'" class="'.$class.' times grid_1 push_2" id="'.$teacher['id'].'-'.$epoch.'">'.$time.'</span>';
+    $return .= '<span title="'.$title.'" class="'.$class.' times" id="'.$teacher['id'].'-'.$epoch.'">'.$time.'</span>';
   }
   $return .= '<br />';
 }
