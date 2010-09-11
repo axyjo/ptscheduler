@@ -34,6 +34,8 @@ if (count($appointments) == 0) $return .= 'Sorry, you do not have any appointmen
 
 $tabular_times = tabularTimes();
 
+// TODO: Render the _grid.php partial here.
+
 $sql = 'SELECT * FROM appointments WHERE teacher='.$user_id;
 $app_res = $dbHandle->query($sql);
 $appointments = array();

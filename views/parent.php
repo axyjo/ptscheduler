@@ -32,7 +32,7 @@ if (count($appointments) == 0) $return .= 'Sorry, you do not have any appointmen
 $tabular_times = tabularTimes();
 
 $return .= '<div id="time_grid">';
-
+// TODO: Render the _grid.php partial here.
 foreach($teachers as $teacher) {
   $sql = 'SELECT * FROM appointments WHERE teacher='.$teacher['id'];
   $app_res = $dbHandle->query($sql);
