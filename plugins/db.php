@@ -63,25 +63,10 @@ function getAllParents() {
   }
 }
 
-function getUser($uid) {
-  // Check the teachers array first, then parents and finally, admins.
-  getAllTeachers();
-  global $teachers;
-  if(!isset($teachers[$uid])) {
-    getAllParents();
-    global $parents;
-    if(!isset($parents[$uid])) {
-      getAllAdmins();
-      global $admins;
-      if(!isset($admins[$uid])) {
-        return FALSE;
-      } else {
-        return $admins[$uid];
-      }
-    } else {
-      return $parents[$uid];
-    }
-  } else {
-    return $teachers[$uid];
-  }
+function getUser($id) {
+  global $dbHandle;
+  if(!is_numeric($id)) return FALSE;
+  $sql = 'SELECT * FROM users WHERE id = '.$id.' ORDER BY `lname` ASC LIMIT 1';
+  $result_res = $dbHandle->query($sql);
+  return $result_res->fetch();
 }
