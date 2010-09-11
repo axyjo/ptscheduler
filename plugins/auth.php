@@ -70,9 +70,9 @@ abstract class Authentication {
   }
 
   function getUserId($username) {
-    $sql = 'SELECT * FROM users WHERE uid = "'.strtolower($username).'"';
+    $sql = 'SELECT id FROM users WHERE uid = "'.strtolower($username).'"';
     $res = $this->dbHandle->query($sql);
-    $arr = $this->dbHandle->fetch();
-    return (int)$arr['id'];
+    $id = $res->fetchColumn();
+    return (int)$id;
   }
 }
