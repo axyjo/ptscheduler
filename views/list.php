@@ -16,23 +16,11 @@ if(!isset($_GET['user'])) {
 
   $template->setContent($return);
 } else {
+  // Because the partial appends to the $return array so that it's compatible
+  // with other views, we must set the $return variable.
+  $return = '';
   $user = getUser($_GET['user']);
-  $return = '<h3>'.$user['fname'].' '.$user['lname'].'\'s Current Appointments:</h3>';
-  $time = time() - 300;
-  $getQuery = 'SELECT * FROM appointments WHERE `teacher` = "'.$user['id'].'" OR `parent`= "'.$user['id'].'" ORDER BY `time` ASC';
-  $result_res = $dbHandle->query($getQuery);
-  $appointments = array();
-  while($result = $result_res->fetch()) {
-    $appointments[] = $result;
-    if(isset($parents[$user['id']])) {
-      $return .= date($date_format, $result['time']).' - '.$users[$result['teacher']]['fname'].' '.$users[$result['teacher']]['lname'];
-    } else {
-      // This user is a teacher.
-      $return .= date($date_format, $result['time']).' - '.$users[$result['parent']]['fname'].' '.$users[$result['parent']]['lname'];
-    }
-    $return .= '<br />';
-  }
-  if (count($appointments) == 0) $return .= 'Sorry, tihs user does not have any appointments in the future.';
+  include(ROOT.'/views/_appointments.php');
   $_SESSION['notices'][] = $return;
   header('Location: index.php');
   exit();

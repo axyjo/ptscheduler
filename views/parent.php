@@ -14,20 +14,8 @@ $return .= '<ul><li>Please use a Javascript enabled browser to make your appoint
 
 <li>Please contact <a href="mailto:'.$support_email.'">'.$support_email.'</a> if you have problems.</li> </ul>';
 
-$return .= '<h3>Your Current Appointments (<a href="javascript:window.print()">Print</a>):</h3>';
-
-getAllTeachers();
-
-$time = time() - 300;
-$getQuery = 'SELECT * FROM appointments WHERE `parent`= "'.$user_id.'" ORDER BY `time` ASC';
-$result_res = $dbHandle->query($getQuery);
-$appointments = array();
-while($result = $result_res->fetch()) {
-  $appointments[] = $result;
-  $return .= '<br />';
-  $return .= date($date_format, $result['time']).' - '.$teachers[$result['teacher']]['fname'].' '.$teachers[$result['teacher']]['lname'];
-}
-if (count($appointments) == 0) $return .= 'Sorry, you do not have any appointments in the future.<br /><br />';
+$user = getUser($_SESSION['user_id']);
+include(ROOT.'/views/_appointments.php');
 
 $tabular_times = tabularTimes();
 getAllTeachers();
