@@ -1,8 +1,8 @@
 <?php
 
 error_reporting(E_ALL);
-$debug = array('time' => array(), 'mem' => array());
-$debug['time']['start'] = microtime(TRUE);
+$debug_info = array('time' => array(), 'mem' => array());
+$debug_info['time']['start'] = microtime(TRUE);
 
 // Check for the template engine before attempting to load it.
 if(!file_exists(ROOT.'/plugins/template.php')) {
@@ -60,7 +60,7 @@ if($stop) {
 }
 
 if($debug) {
-  $debug['time']['end'] = microtime(TRUE);
-  $debug['mem']['peak'] = memory_get_peak_usage();
-  $template->setDebugInfo($debug);
+  $debug_info['time']['end'] = microtime(TRUE);
+  $debug_info['mem']['peak'] = memory_get_peak_usage();
+  $template->setDebugInfo($debug_info);
 }
