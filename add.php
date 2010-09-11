@@ -4,32 +4,30 @@ echo 'Please confirm the scheduling of this appointment:<br />';
 echo '<form class="app_form" id="appointment" method="post" action="index.php?add">';
 
 echo 'Parent: ';
-echo '<select id="parent" name="parent">';
 if ($user_access == USER_ADMIN || $user_access == USER_TEACHER) {
   getAllParents();
+  echo '<select id="parent" name="parent">';
+  foreach($parents as $parent) {
+    echo '<option value="'.$parent['id'].'">'.$parent['lname'].'</option>';
+  }
+  echo '</select>';
 } elseif ($user_access == USER_PARENT) {
-  $parents = array($user_id => getUser($user_id));
+  $parent = getUser($_SESSION['user_id']);
+  echo $parent['fname'].' '.$parent['lname'];
+  echo '<input id="parent" type="hidden" name="parent" value="'.$parent['id'].'" />';
 }
-foreach($parents as $parent) {
-  echo '<option value="'.$parent['id'].'">'.$parent['lname'].' ('.$parent['desc'].')</option>';
-}
-echo '</select>';
 echo '<br />';
 
 echo 'Teacher: ';
-$sql = 'SELECT * FROM users WHERE id=:s LIMIT 1';
-$stmt = $dbHandle->prepare($sql);
-$stmt->bindParam(':s', $teacher_id);
-$stmt->execute();
-$row = $stmt->fetch();
-echo $row['fname'].' '.$row['lname'];
-echo '<input id="teacher" type="hidden" name="teacher" value="'.$row['id'].'" />';
+$teacher = getUser($teacher_id);
+echo $teacher['fname'].' '.$teacher['lname'];
+echo '<input id="teacher" type="hidden" name="teacher" value="'.$teacher['id'].'" />';
 echo '<br />';
 
 echo 'Time: '.date($date_format, $time);
 echo '<input id="time" type="hidden" name="time" value="'.$time.'" />';
 echo '<br />';
 
-echo '<input id="hash" type="hidden" name="hash" value="'.md5($secure_hash.$user_id.$time).'" />';
+echo '<input id="hash" type="hidden" name="hash" value="'.md5($secure_hash.$_SESSION['user_id'].$time).'" />';
 echo '<input type="submit" id="submit" value="Submit" />';
 echo '</form>';
