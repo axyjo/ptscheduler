@@ -8,9 +8,9 @@ $content .= '
 <form id="user-login-form" method="post" accept-charset="UTF-8" action="index.php?login">
   <div>
       <label for="user">Username: </label>
-      <input type="text" value="" size="15" name="user" id="user" maxlength="60" />
+      <input type="text" value="" size="25" name="user" id="user" maxlength="60" /><br />
       <label for="pass">Password: </label>
-      <input type="password" size="15" maxlength="60" name="pass" id="pass" />
+      <input type="password" size="25" maxlength="60" name="pass" id="pass" /><br />
     <input type="submit" value="Login" name="submit"/>
   </div>
 </form>';
