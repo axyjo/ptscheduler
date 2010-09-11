@@ -21,6 +21,21 @@ if(!file_exists(ROOT.'/config.php')) {
   $template->setSiteName($site_name);
 }
 
+// Enable verbose error reporting if set.
+if ($debug) {
+  error_reporting(E_ALL);
+  if (!ini_get('display_errors')) {
+    ini_set('display_errors', 1);
+  }
+  $debug = array('time' => array(), 'mem' => array());
+  $debug['time']['start'] = microtime(TRUE);
+  $debug['mem']['start'] = memory_get_usage();
+} else {
+  if (ini_get('display_errors')) {
+    ini_set('display_errors', 0);
+  }
+}
+
 // Check for all of the other required files without reverting to PHP's default
 // white page of errors.
 $required_files = array(ROOT.'/plugins/session.php', ROOT.'/plugins/db.php', ROOT.'/plugins/time.php');

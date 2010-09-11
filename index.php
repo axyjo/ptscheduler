@@ -3,21 +3,6 @@
 define('ROOT', getcwd());
 require_once ROOT.'/plugins/bootstrap.php';
 
-// Enable verbose error reporting if set.
-if ($debug) {
-  error_reporting(E_ALL);
-  if (!ini_get('display_errors')) {
-    ini_set('display_errors', 1);
-  }
-  $debug = array('time' => array(), 'mem' => array());
-  $debug['time']['start'] = microtime(TRUE);
-  $debug['mem']['start'] = memory_get_usage();
-} else {
-  if (ini_get('display_errors')) {
-    ini_set('display_errors', 0);
-  }
-}
-
 try {
   $check = 'SELECT 1 FROM users';
   $check_res = $dbHandle->query($check);
