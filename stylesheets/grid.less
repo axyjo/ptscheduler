@@ -1,0 +1,123 @@
+/**
+ * A LessCSS version of the 960 Grid System
+ *
+ * http://lesscss.org/
+ * http://960.gs/
+ */
+
+/*********************************************************************
+ * Settings *
+ *********************************************************************/
+
+/* Maximum width of the document
+ ********************************/
+@document_width: 960px;
+
+/* The gutter width
+ ********************************/
+
+@gutter: 20px;
+
+/* Number of columns
+ ********************************/
+
+@columns: 12;
+
+/*********************************************************************
+ * Container *
+ *********************************************************************/
+
+.container {
+    width: @document_width;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+/*********************************************************************
+ * Grid *
+ *********************************************************************/
+
+@column_width: (@document_width - @gutter * @columns) / @columns;
+
+.grid(@col:1) {
+    width: (@column_width + ((@col - 1) * (@column_width + @gutter)));
+    display:inline;
+    float: left;
+    position: relative;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+/*********************************************************************
+ * Grid >> Children (Alpha ~ First, Omega ~ Last) *
+ *********************************************************************/
+
+.alpha {
+margin-left: 0;
+}
+
+.omega {
+margin-right: 0;
+}
+
+/*********************************************************************
+ * Extra Space >> 2 Columns *
+ *********************************************************************/
+
+.prefix(@col:1) {
+    padding-left: (@col) * (@column_width + @gutter);
+}
+
+.suffix(@col:1) {
+    padding-right: (@col) * (@column_width + @gutter);
+}
+
+/*********************************************************************
+ * Push & Pull >> 2 Columns *
+ *********************************************************************/
+
+.push(@col:1) {
+    left: (@col) * (@column_width + @gutter);
+}
+
+.pull(@col:1) {
+    right: (@col) * (@column_width + @gutter);
+}
+
+
+/*********************************************************************
+ * Clear Floated Elements *
+ *********************************************************************/
+
+.clear {
+clear: both;
+display: block;
+overflow: hidden;
+visibility: hidden;
+width: 0;
+height: 0;
+}
+
+
+.clearfix:after {
+clear: both;
+content: ' ';
+display: block;
+font-size: 0;
+line-height: 0;
+visibility: hidden;
+width: 0;
+height: 0;
+}
+
+.clearfix {
+display: inline-block;
+}
+
+* html .clearfix {
+height: 1%;
+}
+
+.clearfix {
+display: block;
+}
