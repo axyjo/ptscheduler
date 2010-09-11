@@ -62,6 +62,7 @@ abstract class Authentication {
 
   abstract public function authenticate($user, $pass);
   abstract public function userList();
+  abstract public function acl($user_id);
 
   public function __construct($dbHandle, $params) {
     $this->dbHandle = $dbHandle;

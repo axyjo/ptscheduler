@@ -6,6 +6,9 @@
  *   'host' => '',
  *   'port' => NULL,
  *   'basedn' => '',
+ *   'admin_filter' => '',
+ *   'teacher_filter' => '',
+ *   'parent_filter' => '',
  * );
  */
 
@@ -39,6 +42,10 @@ class LdapAuth extends Authentication {
     return $list;
   }
 
+  public function acl($user_id) {
+    // TODO: Complete this function.
+    return USER_FORBIDDEN;
+  }
 }
 
 $authHandle = new LdapAuth($dbHandle, $method);

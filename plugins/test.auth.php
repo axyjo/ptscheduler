@@ -15,9 +15,16 @@ class TestAuth extends Authentication {
     $list[1] = array('uid' => 'admin', 'fname' => 'Admin', 'lname' => 'Istrator', 'email' => 'admin@localhost');
     $list[2] = array('uid' => 'teacher1', 'fname' => 'Teacher', 'lname' => 'One', 'email' => 't1@localhost');
     $list[3] = array('uid' => 'teacher2', 'fname' => 'Teacher', 'lname' => 'Two', 'email' => 't2@localhost');
-    $list[4] = array('uid' => 'parent1', 'fname' => 'Family', 'lname' => 'Doe', 'email' => 'p1@localhost');
-    $list[5] = array('uid' => 'parent2', 'fname' => 'Family', 'lname' => 'Roe', 'email' => 'p2@localhost');
+    $list[4] = array('uid' => 'parent1', 'fname' => 'John', 'lname' => 'Doe', 'email' => 'p1@localhost');
+    $list[5] = array('uid' => 'parent2', 'fname' => 'Richard', 'lname' => 'Roe', 'email' => 'p2@localhost');
     return $list;
+  }
+
+  public function acl($user_id) {
+    if ($user_id == 1) return USER_ADMIN;
+    if ($user_id == 2 || $user_id == 3) return USER_TEACHER;
+    if ($user_id == 4 || $user_id == 5) return USER_PARENT;
+    return USER_FORBIDDEN;
   }
 }
 
