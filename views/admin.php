@@ -15,9 +15,9 @@ $return .= '<ul><li>Please use a Javascript enabled browser to make your appoint
 $return .= '<br />';
 
 $tabular_times = tabularTimes();
-getAllTeachers();
+$teachers = getAllUsersByStatus(USER_TEACHER);
 $return .= '<div id="time_grid">';
-foreach($teacher_list as $teacher) {
+foreach($teachers as $teacher) {
   include(ROOT.'/views/_grid.php');
 }
 $return .= '</div>';

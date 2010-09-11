@@ -18,9 +18,9 @@ $user = getUser($_SESSION['user_id']);
 include(ROOT.'/views/_appointments.php');
 
 $tabular_times = tabularTimes();
-getAllTeachers();
+$teachers = getAllUsersByStatus(USER_TEACHER);
 $return .= '<div id="time_grid">';
-foreach($teacher_list as $teacher) {
+foreach($teachers as $teacher) {
   include(ROOT.'/views/_grid.php');
 }
 $return .= '</div>';

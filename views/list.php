@@ -1,7 +1,7 @@
 <?php
 
 $template->setTitle('Viewing User List');
-$users = getAllUsers();
+$users = getAllUsersByStatus(USER_TEACHER) + getAllUsersByStatus(USER_PARENT);
 if(!isset($_GET['user'])) {
   // Remove the break user.
   unset($users[-1]);

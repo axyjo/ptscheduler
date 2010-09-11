@@ -5,7 +5,7 @@ echo '<form class="app_form" id="appointment" method="post" action="index.php?ad
 
 echo 'Parent: ';
 if ($_SESSION['user_access'] == USER_ADMIN || $_SESSION['user_access'] == USER_TEACHER) {
-  getAllParents();
+  $parents = getAllUsersByStatus(USER_PARENT);
   echo '<select id="parent" name="parent">';
   foreach($parents as $parent) {
     echo '<option value="'.$parent['id'].'">'.$parent['lname'].'</option>';
