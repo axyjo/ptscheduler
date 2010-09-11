@@ -4,7 +4,7 @@ function create_user_record($id, $uid, $fname, $lname, $email, $status, $desc = 
   global $dbHandle;
   $stmt = $dbHandle->prepare('INSERT INTO users (id, uid, fname, lname, email, status, desc) VALUES (:id, :uid, :fname, :lname, :email, :status, :desc)');
   $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-  $stmt->bindParam(':uid', strtolower($uid), PDO::PARAM_STR);
+  $stmt->bindParam(':uid', $uid, PDO::PARAM_STR);
   $stmt->bindParam(':fname', $fname, PDO::PARAM_STR);
   $stmt->bindParam(':lname', $lname, PDO::PARAM_STR);
   $stmt->bindParam(':email', $email, PDO::PARAM_STR);
@@ -45,6 +45,8 @@ try {
 $users = $authHandle->userList();
 foreach($users as $id => $user) {
   if(!isset($user['description'])) $user['description'] = '';
+  // Lowercase usernames so that there are no case conflicts.
+  $user['uid'] = strtolower($user['uid']);
   $status = $authHandle->acl($id);
   create_user_record($id, $user['uid'], $user['fname'], $user['lname'], $user['email'], $status, $user['description']);
   $return .= '<li>Created user #';
