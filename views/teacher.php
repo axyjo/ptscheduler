@@ -31,10 +31,10 @@ while($result = $result_res->fetch()) {
 }
 if (count($appointments) == 0) $return .= 'Sorry, you do not have any appointments in the future.<br /><br />';
 
-
 $tabular_times = tabularTimes();
-
 $teacher = getUser($_SESSION['user_id']);
+$return .= '<div id="time_grid">';
 include(ROOT.'/views/_grid.php');
+$return .= '</div>';
 
 $template->setContent($return);

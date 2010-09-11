@@ -30,9 +30,11 @@ while($result = $result_res->fetch()) {
 if (count($appointments) == 0) $return .= 'Sorry, you do not have any appointments in the future.<br /><br />';
 
 $tabular_times = tabularTimes();
-
+getAllTeachers();
+$return .= '<div id="time_grid">';
 foreach($teacher_list as $teacher) {
   include(ROOT.'/views/_grid.php');
 }
+$return .= '</div>';
 
 $template->setContent($return);

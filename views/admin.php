@@ -13,11 +13,13 @@ $return .= '<ul><li>Please use a Javascript enabled browser to make your appoint
 <li>Please contact <a href="mailto:'.$support_email.'">'.$support_email.'</a> if you have problems.</li> </ul>';
 
 $return .= '<br />';
-$tabular_times = tabularTimes();
 
+$tabular_times = tabularTimes();
 getAllTeachers();
-foreach($teachers as $teacher) {
+$return .= '<div id="time_grid">';
+foreach($teacher_list as $teacher) {
   include(ROOT.'/views/_grid.php');
 }
+$return .= '</div>';
 
 $template->setContent($return);
