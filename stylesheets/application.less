@@ -27,36 +27,46 @@ div {
   margin:0 auto;
   padding:10px;
   text-align:justify;
-}
+  
+  #content {
+    background-color:#FFF;
+    line-height:20px;
+    min-height:100px;
+    padding:8px;
+    position:static;
+    
+    a:link, a:visited {
+      background-color:#FFF;
+      border-bottom:1px dotted #5E952C;
+      color:#444;
+      cursor:move;
+      padding:2px;
+      text-decoration:none;
+    }
 
-div#content {
-  background-color:#FFF;
-  color:#333;
-  font-family:arial, times, Times, georgia, serif;
-  font-size:12px;
-  height:auto;
-  line-height:20px;
-  margin:0 auto;
-  min-height:100px;
-  padding:8px;
-  position:static;
-  text-align:justify;
-}
-
-div#header,div#footer {
-  background-color:#222;
-  padding:0;
-  position:static;
-  width:auto;
-}
-
-div#footer {
-  color:#ddd;
-  padding:5px;
-}
-
-div#footer a {
-  color:#aaa;
+    a:link:hover {
+      background-color:#E3F7DA;
+      color:#000;
+      padding:2px;
+      text-decoration:none;
+    }
+  }
+  
+  #header, #footer {
+    background-color:#222;
+    padding:0;
+    position:static;
+    width:auto;
+  }
+  
+  #footer {
+    color:#ddd;
+    padding:5px;
+    
+    a {
+      color: #aaa;
+    }
+  }
 }
 
 h2,h2 a {
@@ -85,16 +95,16 @@ h1 {
   padding:2px;
   text-align:left;
   text-shadow:0 1px 5px #ADADAD;
-}
-
-h1 span {
-  color:#538A1F;
-  font-family:arial;
-  font-size:12px;
-  font-variant:small-caps;
-  letter-spacing:2px;
-  text-align:right;
-  text-shadow:none;
+  
+  span {
+    color:#538A1F;
+    font-family:arial;
+    font-size:12px;
+    font-variant:small-caps;
+    letter-spacing:2px;
+    text-align:right;
+    text-shadow:none;
+  }
 }
 
 ul {
@@ -111,30 +121,16 @@ ul {
 li {
   list-style:none;
   margin:0;
+  
+  a:link,li a:visited {
+    background:transparent;
+    color:#CBF3A6;
+    padding:10px 6px;
+    text-decoration:none;
+  }
 }
 
-li a:link,li a:visited {
-  background:transparent;
-  color:#CBF3A6;
-  padding:10px 6px;
-  text-decoration:none;
-}
 
-div#content a:link,div#content a:visited {
-  background-color:#FFF;
-  border-bottom:1px dotted #5E952C;
-  color:#444;
-  cursor:move;
-  padding:2px;
-  text-decoration:none;
-}
-
-div#content a:link:hover {
-  background-color:#E3F7DA;
-  color:#000;
-  padding:2px;
-  text-decoration:none;
-}
 
 .teacher {
   float:left;
