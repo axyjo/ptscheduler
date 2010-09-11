@@ -76,3 +76,12 @@ if($debug) {
   $debug_info['mem']['peak'] = memory_get_peak_usage();
   $template->setDebugInfo($debug_info);
 }
+
+// Check to see if the 'users' table exists. If not, then run the install file.
+try {
+  $check = 'SELECT 1 FROM users';
+  $check_res = $dbHandle->query($check);
+} catch (PDOException $e) {
+  include(ROOT.'/install.php');
+  exit;
+}

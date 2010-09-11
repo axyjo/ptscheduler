@@ -3,15 +3,6 @@
 define('ROOT', getcwd());
 require_once ROOT.'/plugins/bootstrap.php';
 
-try {
-  $check = 'SELECT 1 FROM users';
-  $check_res = $dbHandle->query($check);
-} catch (PDOException $e) {
-  include(ROOT.'/install.php');
-  exit;
-}
-unset($admins, $teachers);
-
 if($user_access == USER_FORBIDDEN) {
   // Send a login screen to unauthenticated users.
   if(isset($_GET['login'])) {
