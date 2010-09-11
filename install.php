@@ -46,13 +46,13 @@ $users = $authHandle->userList();
 foreach($users as $id => $user) {
   //deny by default
   $status = USER_FORBIDDEN;
-  if(!isset($user['desc'])) $user['desc'] = '';
+  if(!isset($user['description'])) $user['description'] = '';
   if($user['fname'] == 'Family') $status = USER_PARENT;
   if(isset($teachers[strtolower($user['uid'])])) $status = USER_TEACHER;
   if(isset($admins[strtolower($user['uid'])])) $status = USER_ADMIN;
-  create_user_record($id, $user['uid'], $user['fname'], $user['lname'], $user['email'], $status, $user['desc']);
+  create_user_record($id, $user['uid'], $user['fname'], $user['lname'], $user['email'], $status, $user['description']);
   $return .= '<li>Created user #';
-  $return .= $id.' - '.$user['fname'].' '.$user['lname'].' ('.$user['uid'].' '.$user['email'].') - '.$user['desc'] . $status;
+  $return .= $id.' - '.$user['fname'].' '.$user['lname'].' ('.$user['uid'].' '.$user['email'].') - '.$user['description'] . $status;
   $return .= '</li>';
 }
 
