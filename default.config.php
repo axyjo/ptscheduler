@@ -1,21 +1,8 @@
 <?php
 
-// Add each administrator's username in lowercase as a new element in the
-// $admins array.
-$admins['admin'] = TRUE;
-
-// Add each teacher's username in lowercase as a new element in the $teachers
-// array.
-$teachers['teacher1'] = TRUE;
-$teachers['teacher2'] = TRUE;
-
 // Change this to the name of the site that will appear in the header section
 // of each page.
 $site_name = 'Parent Teacher Scheduler';
-
-// Change this to the absolute path to the directory of this installation. Do
-// not modify or uncomment if you aren't sure what this setting does.
-// $base_path = __DIR__;
 
 // Change the following to the email address of the person in charge of
 // handling technical support queries. Please note that this email address may
