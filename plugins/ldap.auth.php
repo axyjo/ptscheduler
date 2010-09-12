@@ -35,8 +35,8 @@ class LdapAuth extends Authentication {
   }
 
   public function authenticate($user, $pass) {
-    connectToServer();
-    $result = searchServer('uid='.$user, array('dn'));
+    $this->connectToServer();
+    $result = $this->searchServer('uid='.$user, array('dn'));
     if (is_array($result)) {
       if (!is_null($result[0]['dn'])) {
         if (@ldap_bind($this->ds, $result[0]['dn'], $pass)) {
@@ -48,7 +48,7 @@ class LdapAuth extends Authentication {
   }
 
   public function userList() {
-    connectToServer();
+    $this->connectToServer();
     $attributes = array(
       $this->params['id_field'],
       $this->params['uid_field'],
@@ -57,32 +57,46 @@ class LdapAuth extends Authentication {
       $this->params['email_field'],
       $this->params['description_field'],
     );
-    $result = searchServer('uid=*', $attributes);
+    $result = $this->searchServer('uid=*', $attributes);
     $list = array();
     foreach($result as $entity) {
+      // Check to make sure values exist.
+      if (!isset($entity[$this->params['id_field']][0]) || !isset($entity[$this->params['uid_field']][0])) {
+        continue;
+      } elseif (!isset($entity[$this->params['fname_field']][0]) || !isset($entity[$this->params['lname_field']][0])) {
+        continue;
+      }
+      if (!isset($entity[$this->params['email_field']][0])) {
+        $entity[$this->params['email_field']] = array(0 => '');
+      }
+      if (!isset($entity[$this->params['description_field']][0])) {
+        $entity[$this->params['description_field']] = array(0 => '');
+      }
+
       // Build the final array entry.
       $list[$entity[$this->params['id_field']][0]] = array(
         'uid' => $entity[$this->params['uid_field']][0],
         'fname' => $entity[$this->params['fname_field']][0],
         'lname' => $entity[$this->params['lname_field']][0],
         'email' => $entity[$this->params['email_field']][0],
-        'description' => @$entity[$this->params['description_field']][0]
+        'description' => $entity[$this->params['description_field']][0]
       );
     }
     return $list;
   }
 
   public function acl($user_id) {
+    $this->connectToServer();
     $filter = '(&(uidnumber='.$user_id.')%%%)';
     $attr = array('uid');
 
-    $result = searchServer(str_replace('%%%', $this->params['admin_filter'], $filter), $attr);
+    $result = $this->searchServer(str_replace('%%%', $this->params['admin_filter'], $filter), $attr);
     if (is_array($result)) return USER_ADMIN;
 
-    $result = searchServer(str_replace('%%%', $this->params['teacher_filter'], $filter), $attr);
+    $result = $this->searchServer(str_replace('%%%', $this->params['teacher_filter'], $filter), $attr);
     if (is_array($result)) return USER_TEACHER;
 
-    $result = searchServer(str_replace('%%%', $this->params['parent_filter'], $filter), $attr);
+    $result = $this->searchServer(str_replace('%%%', $this->params['parent_filter'], $filter), $attr);
     if (is_array($result)) return USER_PARENT;
 
     return USER_FORBIDDEN;
