@@ -25,8 +25,13 @@ foreach($tabular_times as $minute => $hours_array) {
     if($count < $simultaneous_appointments) {
       foreach($appointments[$epoch] as $appointment) {
         if($appointment['parent'] == -1) {
-          $class = 'yellow';
-          $title = 'Break';
+          if ($_SESSION['user_access'] == USER_TEACHER || $_SESSION['user_access'] == USER_ADMIN) {
+            $class = 'yellow';
+            $title = 'Break';
+          } else {
+            $class = 'red';
+            $title = 'Unavailable';
+          }
           break;
         }
         $class = 'green';
@@ -37,15 +42,21 @@ foreach($tabular_times as $minute => $hours_array) {
       }
     } else {
       $class = 'red';
-      $title = 'Appointment with: ';
-      foreach($appointments[$epoch] as $appointment) {
-        $parent = getUser($appointment['parent']);
-        $title .= $parent['lname'].' ('.$parent['desc'].')';
-        if($appointment['parent'] == -1) {
-          $class = 'yellow';
-          $title = 'Break';
-          break;
+      if ($_SESSION['user_access'] == USER_TEACHER || $_SESSION['user_access'] == USER_ADMIN) {
+        $title = 'Appointment with: ';
+        foreach($appointments[$epoch] as $appointment) {
+          $parent = getUser($appointment['parent']);
+          $title .= $parent['lname'].', ';
+          if($appointment['parent'] == -1) {
+            $class = 'yellow';
+            $title = 'Break';
+            break;
+          }
         }
+        // Remove the last comma+space.
+        $title = substr($title, 0, -2);
+      } else {
+        $title = 'Unavailable';
       }
     }
 
