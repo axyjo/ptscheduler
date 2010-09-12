@@ -26,7 +26,7 @@ foreach($array as $appointment) {
   if(!is_null($appointment['parent'])) {
     $parent = getUser($appointment['parent']);
   } else {
-    $parent = array('lname' => 'NULL', 'desc' => 'NULL');
+    $parent = array('lname' => 'NULL', 'description' => 'NULL');
   }
 
   if($_SESSION['user_access'] == USER_PARENT && $appointment['parent'] != $_SESSION['user_id']) {
@@ -35,7 +35,7 @@ foreach($array as $appointment) {
   }
 
   echo '<form class="app_form" id="appointment" method="post" action="index.php?delete">';
-  echo 'Parent: '.$parent['lname'].' ('.$parent['desc'].')';
+  echo 'Parent: '.$parent['lname'].' ('.$parent['description'].')';
 
   echo '<br />';
 
