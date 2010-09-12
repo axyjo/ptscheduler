@@ -12,11 +12,11 @@ class TestAuth extends Authentication {
 
   public function userList() {
     $list = array();
-    $list[1] = array('uid' => 'admin', 'fname' => 'Admin', 'lname' => 'Istrator', 'email' => 'admin@localhost');
-    $list[2] = array('uid' => 'teacher1', 'fname' => 'Teacher', 'lname' => 'One', 'email' => 't1@localhost');
-    $list[3] = array('uid' => 'teacher2', 'fname' => 'Teacher', 'lname' => 'Two', 'email' => 't2@localhost');
-    $list[4] = array('uid' => 'parent1', 'fname' => 'John', 'lname' => 'Doe', 'email' => 'p1@localhost');
-    $list[5] = array('uid' => 'parent2', 'fname' => 'Richard', 'lname' => 'Roe', 'email' => 'p2@localhost');
+    $list[1] = array('uid' => 'admin', 'fname' => 'Admin', 'lname' => 'Istrator', 'email' => 'admin@localhost', 'description' => 'admin user');
+    $list[2] = array('uid' => 'teacher1', 'fname' => 'Teacher', 'lname' => 'One', 'email' => 't1@localhost', 'description' => 'teacher1 user');
+    $list[3] = array('uid' => 'teacher2', 'fname' => 'Teacher', 'lname' => 'Two', 'email' => 't2@localhost', 'description' => 'teacher2 user');
+    $list[4] = array('uid' => 'parent1', 'fname' => 'John', 'lname' => 'Doe', 'email' => 'p1@localhost', 'description' => 'parent1 user');
+    $list[5] = array('uid' => 'parent2', 'fname' => 'Richard', 'lname' => 'Roe', 'email' => 'p2@localhost', 'description' => 'parent2 user');
     return $list;
   }
 
