@@ -37,8 +37,8 @@ class LdapAuth extends Authentication {
   public function authenticate($user, $pass) {
     connectToServer();
     $result = searchServer('uid='.$user, array('dn'));
-    if (is_array($result) {
-      if (!is_null($result[0]['dn']) {
+    if (is_array($result)) {
+      if (!is_null($result[0]['dn'])) {
         if (@ldap_bind($this->ds, $result[0]['dn'], $pass)) {
           return TRUE;
         }
