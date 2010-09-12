@@ -1,15 +1,15 @@
 <?php
 
-function create_user_record($id, $uid, $fname, $lname, $email, $status, $desc = null) {
+function create_user_record($id, $uid, $fname, $lname, $email, $status, $description = null) {
   global $dbHandle;
-  $stmt = $dbHandle->prepare('INSERT INTO users (id, uid, fname, lname, email, status, desc) VALUES (:id, :uid, :fname, :lname, :email, :status, :desc)');
+  $stmt = $dbHandle->prepare('INSERT INTO users (id, uid, fname, lname, email, status, description) VALUES (:id, :uid, :fname, :lname, :email, :status, :description)');
   $stmt->bindParam(':id', $id, PDO::PARAM_INT);
   $stmt->bindParam(':uid', $uid, PDO::PARAM_STR);
   $stmt->bindParam(':fname', $fname, PDO::PARAM_STR);
   $stmt->bindParam(':lname', $lname, PDO::PARAM_STR);
   $stmt->bindParam(':email', $email, PDO::PARAM_STR);
   $stmt->bindParam(':status', $status, PDO::PARAM_INT);
-  $stmt->bindParam(':desc', $desc, PDO::PARAM_STR);
+  $stmt->bindParam(':description', $description, PDO::PARAM_STR);
   $stmt->execute();
   $stmt->closeCursor();
 }
@@ -31,7 +31,7 @@ try {
     $return .= '<li>Renamed existing table <code>appointments</code> to <code>'.$new_name.'</code>.</li>';
   }
 
-  $sqlCreateTable = 'CREATE TABLE users(id INTEGER, uid CHAR(50), fname CHAR(30), lname CHAR(30), email CHAR(200), status INTEGER, desc CHAR(200))';
+  $sqlCreateTable = 'CREATE TABLE users(id INTEGER, uid CHAR(50), fname CHAR(30), lname CHAR(30), email CHAR(200), status INTEGER, description TEXT)';
   $dbHandle->exec($sqlCreateTable);
   $return .= '<li>Created table <code>users</code>.</li>';
 
