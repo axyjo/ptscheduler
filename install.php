@@ -14,10 +14,8 @@ function create_user_record($id, $uid, $fname, $lname, $email, $status, $descrip
   $stmt->closeCursor();
 }
 
-// Choose the first authentication method as the primary method.
-$method = $auth[0];
 require_once(ROOT.'/plugins/auth.php');
-require_once(ROOT.'/plugins/'.$auth[0]['method'].'.auth.php');
+require_once(ROOT.'/plugins/'.$auth['method'].'.auth.php');
 $return = '<ul>';
 
 try {
