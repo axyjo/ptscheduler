@@ -10,7 +10,7 @@ if(!isset($_GET['user'])) {
 
   foreach($users as $user) {
     $return .= '<a href="index.php?list&user='.$user['id'].'">';
-    $return .= $user['fname'].' '.$user['lname'].' ('.$user['desc'].')';
+    $return .= $user['fname'].' '.$user['lname'].' ('.$user['description'].')';
     $return .= '</a><br />';
   }
 
