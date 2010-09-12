@@ -2,7 +2,8 @@
 
 /* To use this authentication method, set the following parameters in
  * config.php:
- * $auth['ldap'] = array(
+ * $auth = array(
+ *   'method' => 'ldap',
  *   'host' => '',
  *   'port' => NULL,
  *   'basedn' => '',
